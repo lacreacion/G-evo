@@ -4,8 +4,6 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/common/Logo';
 import { 
-  ChevronDown, 
-  ChevronUp,
   ArrowUpRight, 
   Menu, 
   X,
@@ -43,25 +41,25 @@ export const FloatingNavbar: React.FC = () => {
 
   return (
     <>
-      {/* Barra de Menú Principal - Diseño y Colores Fieles a la Referencia */}
-      <header className="sticky top-0 left-0 right-0 z-40 bg-[#E6E9EE]/95 backdrop-blur-md border-b border-[#D3D7DD] transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 md:h-[70px] flex items-center justify-between">
+      {/* Barra de Menú Principal - Colores y Sombras Exactas de la Imagen */}
+      <header className="sticky top-0 left-0 right-0 z-40 bg-[#CCD1D5] border-b border-[#BAC0C5] transition-all duration-300 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 md:h-[68px] flex items-center justify-between">
           
-          {/* 1. Logotipo Oficial G-evo en el Extremo Izquierdo */}
+          {/* 1. Logotipo Oficial con Colores y Relieve 3D Exactos */}
           <Logo size="md" />
 
-          {/* 2. Menú de Navegación Central (Desktop) */}
-          <nav className="hidden lg:flex items-center gap-2 xl:gap-4 text-sm font-medium text-gray-700">
+          {/* 2. Navegación Central */}
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-3 text-sm font-medium text-[#374151]">
             
             {/* Inicio */}
             <Link
               href="/"
-              className="px-3 py-1.5 rounded-lg hover:text-emerald-600 transition-colors"
+              className="px-3 py-1.5 rounded-lg text-[#374151] hover:text-[#0E8A54] transition-colors"
             >
               Inicio
             </Link>
 
-            {/* Servicios con Menú Desplegable Flotante */}
+            {/* Servicios con Menú Desplegable */}
             <div 
               className="relative"
               onMouseEnter={() => setServicesDropdownOpen(true)}
@@ -71,105 +69,103 @@ export const FloatingNavbar: React.FC = () => {
                 onClick={() => setServicesDropdownOpen(!servicesDropdownOpen)}
                 className={`px-3 py-1.5 rounded-full flex items-center gap-1 transition-all cursor-pointer ${
                   servicesDropdownOpen
-                    ? 'bg-white text-emerald-600 font-bold pill-button-shadow'
-                    : 'hover:text-emerald-600 text-gray-700'
+                    ? 'bg-white text-[#0E8A54] font-bold shadow-[0_4px_14px_rgba(0,0,0,0.08)]'
+                    : 'text-[#374151] hover:text-[#0E8A54]'
                 }`}
               >
                 <span>Servicios</span>
-                {servicesDropdownOpen ? (
-                  <ChevronUp className="w-3.5 h-3.5 text-emerald-600" />
-                ) : (
-                  <ChevronDown className="w-3.5 h-3.5 text-gray-500" />
-                )}
+                <span className={`text-[10px] ml-0.5 transition-transform ${servicesDropdownOpen ? 'rotate-180 text-[#DCA81A]' : 'text-gray-500'}`}>
+                  ▼
+                </span>
               </button>
 
               {/* Tarjeta Desplegable de Servicios */}
               {servicesDropdownOpen && (
-                <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl dropdown-card-shadow border border-gray-100 p-2.5 z-50 animate-fadeIn">
+                <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] border border-gray-100 p-2.5 z-50 animate-fadeIn">
                   <div className="space-y-1">
                     
-                    {/* Servicio 1: Tarjetas Digitales */}
+                    {/* Servicio 1 */}
                     <button
                       onClick={() => handleServiceClick('servicios-tarjetas')}
-                      className="w-full p-2.5 rounded-xl hover:bg-emerald-50/60 flex items-center justify-between text-left transition-colors group cursor-pointer"
+                      className="w-full p-2.5 rounded-xl hover:bg-[#E6F9F0] flex items-center justify-between text-left transition-colors group cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-100/70 text-emerald-600 flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-lg bg-[#D1FAE5] text-[#0E8A54] flex items-center justify-center shrink-0">
                           <CreditCard className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-gray-900 group-hover:text-emerald-700">
+                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#0E8A54]">
                             Tarjetas Digitales (NFC &amp; QR)
                           </div>
-                          <div className="text-[11px] text-gray-500">
+                          <div className="text-[11px] text-[#6B7280]">
                             Conexión instantánea sin papel
                           </div>
                         </div>
                       </div>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-emerald-600 shrink-0" />
+                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#0E8A54] shrink-0" />
                     </button>
 
-                    {/* Servicio 2: Catálogos E-commerce */}
+                    {/* Servicio 2 */}
                     <button
                       onClick={() => handleServiceClick('servicios-catalogos')}
-                      className="w-full p-2.5 rounded-xl hover:bg-emerald-50/60 flex items-center justify-between text-left transition-colors group cursor-pointer"
+                      className="w-full p-2.5 rounded-xl hover:bg-[#E6F9F0] flex items-center justify-between text-left transition-colors group cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-100/70 text-emerald-600 flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-lg bg-[#D1FAE5] text-[#0E8A54] flex items-center justify-center shrink-0">
                           <ShoppingBag className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-gray-900 group-hover:text-emerald-700">
+                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#0E8A54]">
                             Catálogos E-commerce
                           </div>
-                          <div className="text-[11px] text-gray-500">
+                          <div className="text-[11px] text-[#6B7280]">
                             Pedidos directos a WhatsApp
                           </div>
                         </div>
                       </div>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-emerald-600 shrink-0" />
+                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#0E8A54] shrink-0" />
                     </button>
 
-                    {/* Servicio 3: Menús Digitales */}
+                    {/* Servicio 3 */}
                     <button
                       onClick={() => handleServiceClick('servicios-menus')}
-                      className="w-full p-2.5 rounded-xl hover:bg-emerald-50/60 flex items-center justify-between text-left transition-colors group cursor-pointer"
+                      className="w-full p-2.5 rounded-xl hover:bg-[#E6F9F0] flex items-center justify-between text-left transition-colors group cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-100/70 text-emerald-600 flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-lg bg-[#D1FAE5] text-[#0E8A54] flex items-center justify-center shrink-0">
                           <UtensilsCrossed className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-gray-900 group-hover:text-emerald-700">
+                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#0E8A54]">
                             Menús y Vitrinas Digitales
                           </div>
-                          <div className="text-[11px] text-gray-500">
+                          <div className="text-[11px] text-[#6B7280]">
                             Experiencia visual gastronómica
                           </div>
                         </div>
                       </div>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-emerald-600 shrink-0" />
+                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#0E8A54] shrink-0" />
                     </button>
 
-                    {/* Servicio 4: Agente de Soporte IA */}
+                    {/* Servicio 4 */}
                     <button
                       onClick={() => handleServiceClick('servicios-ia')}
-                      className="w-full p-2.5 rounded-xl hover:bg-emerald-50/60 flex items-center justify-between text-left transition-colors group cursor-pointer"
+                      className="w-full p-2.5 rounded-xl hover:bg-[#E6F9F0] flex items-center justify-between text-left transition-colors group cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-100/70 text-emerald-600 flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-lg bg-[#D1FAE5] text-[#0E8A54] flex items-center justify-center shrink-0">
                           <Bot className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-gray-900 group-hover:text-emerald-700">
+                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#0E8A54]">
                             Agente de Soporte IA 24/7
                           </div>
-                          <div className="text-[11px] text-gray-500">
+                          <div className="text-[11px] text-[#6B7280]">
                             Atención automática de stock
                           </div>
                         </div>
                       </div>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-emerald-600 shrink-0" />
+                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#0E8A54] shrink-0" />
                     </button>
 
                   </div>
@@ -180,12 +176,12 @@ export const FloatingNavbar: React.FC = () => {
             {/* Agente de IA */}
             <Link
               href="#ai-demo"
-              className="px-3 py-1.5 rounded-lg hover:text-emerald-600 transition-colors"
+              className="px-3 py-1.5 rounded-lg text-[#374151] hover:text-[#0E8A54] transition-colors"
             >
               Agente de IA
             </Link>
 
-            {/* Quiénes somos (Píldora Activa con Menú Desplegable Idéntico a la Imagen) */}
+            {/* Quiénes somos - Píldora Activa Exacta con Sombra y Flecha Dorada ▲ */}
             <div
               className="relative"
               onMouseEnter={() => setAboutDropdownOpen(true)}
@@ -193,82 +189,80 @@ export const FloatingNavbar: React.FC = () => {
             >
               <button
                 onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
-                className="px-4 py-1.5 rounded-full bg-white text-emerald-600 font-bold text-sm pill-button-shadow flex items-center gap-1.5 border border-white/80 cursor-pointer"
+                className="px-4 py-2 rounded-full bg-white text-[#0E8A54] font-bold text-sm shadow-[0_4px_16px_rgba(255,255,255,0.9),0_2px_8px_rgba(0,0,0,0.08)] flex items-center gap-1.5 cursor-pointer border border-white"
               >
                 <span>Quiénes somos</span>
-                {aboutDropdownOpen ? (
-                  <ChevronUp className="w-3.5 h-3.5 text-emerald-600" />
-                ) : (
-                  <ChevronDown className="w-3.5 h-3.5 text-emerald-600" />
-                )}
+                <span className="text-[10px] text-[#DCA81A] font-extrabold ml-0.5">
+                  ▲
+                </span>
               </button>
 
-              {/* Ventana Flotante Idéntica a la Imagen de Referencia */}
+              {/* Ventana Flotante Exacta con Resplandor Blanco */}
               {aboutDropdownOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 bg-white rounded-2xl dropdown-card-shadow border border-gray-100 p-2.5 z-50 animate-fadeIn">
-                  <div className="space-y-1">
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-76 bg-white rounded-[24px] shadow-[0_20px_45px_rgba(0,0,0,0.12),0_0_25px_rgba(255,255,255,0.8)] border border-gray-100 p-3 z-50 animate-fadeIn">
+                  <div className="space-y-1.5">
                     
-                    {/* Visión */}
+                    {/* Visión (Resaltado con Fondo Pastel Degradado) */}
                     <button
                       onClick={() => openCorporateModal('vision')}
-                      className="w-full p-2.5 rounded-xl hover:bg-emerald-50/60 flex items-center justify-between text-left transition-colors group cursor-pointer"
+                      className="w-full p-2.5 rounded-2xl bg-gradient-to-r from-[#E6F9F0] via-[#F4FBF0] to-[#FFFBEB] border border-emerald-200/50 flex items-center justify-between text-left transition-all hover:scale-[1.01] cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-xl bg-[#D1FAE5] text-[#0E8A54] flex items-center justify-center shrink-0">
                           <Compass className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-gray-900 group-hover:text-emerald-700">
+                          <div className="text-xs font-bold text-[#111827]">
                             Visión
                           </div>
-                          <div className="text-[11px] text-gray-500">
+                          <div className="text-[11px] text-[#6B7280]">
                             El futuro que queremos crear
                           </div>
                         </div>
                       </div>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                      <ArrowUpRight className="w-4 h-4 text-[#A855F7] shrink-0" />
                     </button>
 
                     {/* Misión */}
                     <button
                       onClick={() => openCorporateModal('mision')}
-                      className="w-full p-2.5 rounded-xl hover:bg-emerald-50/60 flex items-center justify-between text-left transition-colors group cursor-pointer"
+                      className="w-full p-2.5 rounded-2xl hover:bg-gray-50 flex items-center justify-between text-left transition-colors group cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-xl bg-[#F0FDF4] text-[#10B981] flex items-center justify-center shrink-0">
                           <Target className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-gray-900 group-hover:text-emerald-700">
+                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#0E8A54]">
                             Misión
                           </div>
-                          <div className="text-[11px] text-gray-500">
+                          <div className="text-[11px] text-[#6B7280]">
                             Lo que hacemos cada día
                           </div>
                         </div>
                       </div>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                      <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-[#0E8A54] shrink-0" />
                     </button>
 
                     {/* Historia */}
                     <button
                       onClick={() => openCorporateModal('historia')}
-                      className="w-full p-2.5 rounded-xl hover:bg-emerald-50/60 flex items-center justify-between text-left transition-colors group cursor-pointer"
+                      className="w-full p-2.5 rounded-2xl hover:bg-gray-50 flex items-center justify-between text-left transition-colors group cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-xl bg-[#F0FDF4] text-[#10B981] flex items-center justify-center shrink-0">
                           <BookOpen className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-gray-900 group-hover:text-emerald-700">
+                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#0E8A54]">
                             Historia
                           </div>
-                          <div className="text-[11px] text-gray-500">
+                          <div className="text-[11px] text-[#6B7280]">
                             La idea detrás de G-evo
                           </div>
                         </div>
                       </div>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                      <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-[#0E8A54] shrink-0" />
                     </button>
 
                   </div>
@@ -278,46 +272,46 @@ export const FloatingNavbar: React.FC = () => {
 
           </nav>
 
-          {/* 3. Extremo Derecho: Botones de Facebook, Instagram y Portal Clientes */}
+          {/* 3. Extremo Derecho: Facebook, Instagram y Portal Clientes */}
           <div className="hidden sm:flex items-center gap-2.5">
             
-            {/* Botón Facebook (Píldora Redonda Blanca) */}
+            {/* Botón Facebook */}
             <a
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-9 h-9 rounded-full bg-white pill-button-shadow flex items-center justify-center text-gray-700 hover:text-blue-600 hover:scale-105 transition-all border border-gray-100/60 cursor-pointer"
-              aria-label="Ir a Facebook de G-evo"
+              className="w-9 h-9 rounded-2xl bg-white shadow-[0_2px_10px_rgba(0,0,0,0.06),0_0_8px_rgba(255,255,255,0.8)] flex items-center justify-center text-[#1E293B] hover:text-[#1877F2] hover:scale-105 transition-all cursor-pointer border border-white"
+              aria-label="Facebook de G-evo"
             >
               <FacebookIcon className="w-4 h-4" />
             </a>
 
-            {/* Botón Instagram (Píldora Redonda Blanca) */}
+            {/* Botón Instagram */}
             <a
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-9 h-9 rounded-full bg-white pill-button-shadow flex items-center justify-center text-gray-700 hover:text-pink-600 hover:scale-105 transition-all border border-gray-100/60 cursor-pointer"
-              aria-label="Ir a Instagram de G-evo"
+              className="w-9 h-9 rounded-2xl bg-white shadow-[0_2px_10px_rgba(0,0,0,0.06),0_0_8px_rgba(255,255,255,0.8)] flex items-center justify-center text-[#1E293B] hover:text-[#E4405F] hover:scale-105 transition-all cursor-pointer border border-white"
+              aria-label="Instagram de G-evo"
             >
               <InstagramIcon className="w-4 h-4" />
             </a>
 
-            {/* Botón Portal Clientes (Píldora Blanca Destacada con Flecha ↗) */}
+            {/* Botón Portal Clientes */}
             <Link
               href="/login"
-              className="px-4 py-2 rounded-full bg-white pill-button-shadow text-xs sm:text-sm font-semibold text-gray-800 hover:text-emerald-600 flex items-center gap-1.5 border border-gray-100/60 hover:scale-[1.02] transition-all cursor-pointer group"
+              className="px-4 py-2 rounded-full bg-white shadow-[0_3px_12px_rgba(0,0,0,0.08),0_0_10px_rgba(255,255,255,0.9)] text-xs sm:text-sm font-semibold text-[#1E293B] hover:text-[#0E8A54] flex items-center gap-1.5 hover:scale-[1.02] transition-all cursor-pointer border border-white group"
             >
               <span>Portal clientes</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-emerald-600 transition-colors" />
+              <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#0E8A54] transition-colors" />
             </Link>
 
           </div>
 
-          {/* Botón Hamburguesa en Mobile */}
+          {/* Mobile Hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded-xl bg-white pill-button-shadow text-gray-700 hover:text-black border border-gray-200"
+            className="lg:hidden p-2 rounded-xl bg-white shadow-sm text-gray-700 hover:text-black border border-gray-200"
             aria-label="Abrir menú de navegación"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -325,7 +319,7 @@ export const FloatingNavbar: React.FC = () => {
 
         </div>
 
-        {/* Menú Desplegable Responsivo para Móviles */}
+        {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="lg:hidden bg-white border-b border-gray-200 px-5 py-4 space-y-4 shadow-xl animate-fadeIn">
             <div className="flex flex-col gap-2 text-sm font-semibold text-gray-700">
@@ -337,33 +331,32 @@ export const FloatingNavbar: React.FC = () => {
                 Inicio
               </Link>
 
-              {/* Servicios en Mobile */}
               <div className="p-2 border-t border-gray-100">
-                <div className="text-xs uppercase font-bold text-emerald-600 mb-1">
+                <div className="text-xs uppercase font-bold text-[#0E8A54] mb-1">
                   Servicios
                 </div>
                 <div className="space-y-1 pl-2">
                   <button
                     onClick={() => handleServiceClick('servicios-tarjetas')}
-                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-emerald-600"
+                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-[#0E8A54]"
                   >
                     • Tarjetas Digitales (NFC &amp; QR)
                   </button>
                   <button
                     onClick={() => handleServiceClick('servicios-catalogos')}
-                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-emerald-600"
+                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-[#0E8A54]"
                   >
                     • Catálogos E-commerce Autónomos
                   </button>
                   <button
                     onClick={() => handleServiceClick('servicios-menus')}
-                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-emerald-600"
+                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-[#0E8A54]"
                   >
                     • Menús y Vitrinas Digitales
                   </button>
                   <button
                     onClick={() => handleServiceClick('servicios-ia')}
-                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-emerald-600"
+                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-[#0E8A54]"
                   >
                     • Agente de Soporte IA 24/7
                   </button>
@@ -378,9 +371,8 @@ export const FloatingNavbar: React.FC = () => {
                 Agente de IA
               </Link>
 
-              {/* Quiénes somos en Mobile */}
               <div className="p-2 border-t border-gray-100">
-                <div className="text-xs uppercase font-bold text-emerald-600 mb-2">
+                <div className="text-xs uppercase font-bold text-[#0E8A54] mb-2">
                   Quiénes somos
                 </div>
                 <div className="grid grid-cols-3 gap-2">
@@ -412,7 +404,7 @@ export const FloatingNavbar: React.FC = () => {
                   href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-700"
+                  className="w-9 h-9 rounded-2xl bg-gray-100 flex items-center justify-center text-gray-700"
                 >
                   <FacebookIcon className="w-4 h-4" />
                 </a>
@@ -420,7 +412,7 @@ export const FloatingNavbar: React.FC = () => {
                   href="https://instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-700"
+                  className="w-9 h-9 rounded-2xl bg-gray-100 flex items-center justify-center text-gray-700"
                 >
                   <InstagramIcon className="w-4 h-4" />
                 </a>
@@ -429,7 +421,7 @@ export const FloatingNavbar: React.FC = () => {
               <Link
                 href="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-4 py-2 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center gap-1.5"
+                className="px-4 py-2 rounded-full bg-[#0E8A54] text-white font-bold text-xs flex items-center gap-1.5"
               >
                 <span>Portal clientes</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />

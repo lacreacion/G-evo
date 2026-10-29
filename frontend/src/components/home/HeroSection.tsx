@@ -17,64 +17,54 @@ import {
 export const HeroSection: React.FC = () => {
   return (
     <section className="relative min-h-[92vh] pt-32 pb-16 md:pt-40 md:pb-24 flex items-center justify-center overflow-hidden">
-      {/* Background Animated Dynamic Video-Inspired Glows & Mesh */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Animated Orbs */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] md:w-[900px] h-[350px] md:h-[500px] bg-gradient-to-tr from-amber-500/15 via-emerald-500/15 to-transparent rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute top-1/3 -left-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-10 -right-20 w-96 h-96 bg-amber-500/10 rounded-full blur-[100px]" />
-
-        {/* Dynamic Grid / Cyber Mesh */}
+      {/* Background Grid Pattern Matching Reference Screenshot */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden bg-[#F8F9FA]">
         <div 
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute inset-0 opacity-[0.4]"
           style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, #ffffff 1px, transparent 0)`,
-            backgroundSize: '36px 36px'
+            backgroundImage: `linear-gradient(to right, #E2E8F0 1px, transparent 1px), linear-gradient(to bottom, #E2E8F0 1px, transparent 1px)`,
+            backgroundSize: '40px 40px'
           }}
         />
+        {/* Soft Ambient Light Glows */}
+        <div className="absolute top-1/4 right-1/4 w-[500px] h-[350px] bg-gradient-to-tr from-amber-400/10 via-emerald-400/10 to-transparent rounded-full blur-[100px]" />
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
           {/* Columna Izquierda: Mensaje Central & Propuesta de Valor */}
-          <div className="lg:col-span-7 text-center lg:text-left space-y-6">
+          <div className="lg:col-span-7 text-center lg:text-left space-y-5">
             
-            {/* Pill Flotante de Estado */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-amber-500/30 backdrop-blur-md shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span className="text-xs font-semibold tracking-wide text-gray-200">
-                Ecosistema Comercial de Nueva Generación
-              </span>
-              <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300">
-                G-evo 2.0
-              </span>
+            {/* Tagline de la Imagen de Referencia */}
+            <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-[#D97706]">
+              <span className="w-6 h-0.5 bg-[#D97706] rounded-full" />
+              <span>El Siguiente Paso de tu Negocio</span>
             </div>
 
-            {/* Titular Principal con Identidad Tipográfica Oficial */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] text-white">
-              Haz que tu negocio evolucione con{' '}
-              <span className="text-gold-metallic">G-</span>
-              <span className="text-green-vibrant">evo.</span>
+            {/* Titular Principal Fiel a la Imagen */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] text-[#111827]">
+              Tu negocio merece <br className="hidden sm:inline" />
+              evolucionar con <span className="text-[#D97706]">G-</span><span className="text-[#0E8A54]">evo.</span>
             </h1>
 
-            <p className="text-base sm:text-lg text-gray-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
-              Diseñamos y desplegamos tus <span className="text-amber-300 font-semibold">Tarjetas Digitales Inteligentes (NFC/QR)</span> y <span className="text-emerald-400 font-semibold">Catálogos E-commerce Autónomos</span>. Una vez creados por nosotros, tú gestionas tus productos, fotos y precios con total libertad.
+            <p className="text-base sm:text-lg text-[#4B5563] max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
+              Diseñamos y desplegamos tus <span className="text-[#D97706] font-semibold">Tarjetas Digitales Inteligentes (NFC/QR)</span> y <span className="text-[#0E8A54] font-semibold">Catálogos E-commerce Autónomos</span>. Una vez creados por nosotros, tú gestionas tus productos, fotos y precios con total libertad.
             </p>
 
             {/* Badges de Autoridad */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-gray-400 pt-2">
-              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
-                <Wifi className="w-4 h-4 text-amber-400" />
-                <span>NFC &amp; QR Dinámico</span>
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs text-[#4B5563] pt-1">
+              <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-gray-200 shadow-sm">
+                <Wifi className="w-4 h-4 text-[#D97706]" />
+                <span className="font-medium">NFC &amp; QR Dinámico</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
-                <ShoppingBag className="w-4 h-4 text-emerald-400" />
-                <span>Pedidos a WhatsApp</span>
+              <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-gray-200 shadow-sm">
+                <ShoppingBag className="w-4 h-4 text-[#0E8A54]" />
+                <span className="font-medium">Pedidos a WhatsApp</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
-                <Bot className="w-4 h-4 text-emerald-400" />
-                <span>Agente IA 24/7 Disponible</span>
+              <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-gray-200 shadow-sm">
+                <Bot className="w-4 h-4 text-[#0E8A54]" />
+                <span className="font-medium">Agente IA 24/7 Disponible</span>
               </div>
             </div>
 
