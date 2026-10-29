@@ -17,3 +17,4 @@
 - **NO** escribe lógica de negocio en la aplicación.
 - **NO** programa controladores de API backend ni endpoints REST.
 - **NO** interviene en el diseño del frontend.
+

@@ -18,3 +18,4 @@
 - **NO** interviene en el diseño visual ni en las hojas de estilo (CSS/Tailwind) del frontend.
 - **NO** crea componentes JSX ni vistas de Next.js.
 - **NO** altera directamente esquemas SQL sin coordinar con `db-sql`.
+

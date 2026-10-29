@@ -15,3 +15,4 @@
 ## ⛔ Limitaciones Estrictas (Qué NO debe hacer)
 - **NO** modifica código fuente de producción directamente.
 - Solo reporta fallos, redacta casos de prueba y entrega reportes de cobertura de tests.
+

@@ -16,3 +16,4 @@
 - **NO** añade nuevas funcionalidades de negocio.
 - **NO** altera las especificaciones de contratos de API acordadas.
 - Solo optimiza y refactoriza lo existente asegurando que las pruebas sigan pasando.
+

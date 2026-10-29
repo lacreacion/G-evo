@@ -20,3 +20,4 @@
 - **NO** manipula la lógica de bases de datos relacionales ni diseña esquemas SQL.
 - **NO** crea migraciones ni administra credenciales de base de datos.
 - **NO** escribe lógica de backend fuera de llamadas a APIs REST/JSON.
+

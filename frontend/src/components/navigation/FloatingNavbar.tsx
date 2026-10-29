@@ -1,291 +1,438 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/common/Logo';
 import { 
   ChevronDown, 
-  Sparkles, 
-  Compass, 
-  Target, 
-  BookOpen, 
+  ChevronUp,
+  ArrowUpRight, 
   Menu, 
-  X, 
-  ArrowUpRight,
-  LogIn
+  X,
+  CreditCard,
+  ShoppingBag,
+  UtensilsCrossed,
+  Bot,
+  Compass,
+  Target,
+  BookOpen
 } from 'lucide-react';
+import { FacebookIcon, InstagramIcon } from '@/components/common/SocialIcons';
 import { CorporateModal, CorporateTab } from '@/components/modals/CorporateModal';
 
 export const FloatingNavbar: React.FC = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
   const [activeCorporateTab, setActiveCorporateTab] = useState<CorporateTab>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const openCorporateModal = (tab: 'vision' | 'mision' | 'historia') => {
     setActiveCorporateTab(tab);
-    setDropdownOpen(false);
+    setAboutDropdownOpen(false);
     setMobileMenuOpen(false);
+  };
+
+  const handleServiceClick = (targetId: string) => {
+    setServicesDropdownOpen(false);
+    setMobileMenuOpen(false);
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
     <>
-      {/* Floating Navbar Container */}
-      <header className="fixed top-0 left-0 right-0 z-40 flex justify-center px-4 pt-4 md:pt-6 transition-all duration-300">
-        <nav
-          className={`w-full max-w-6xl rounded-2xl md:rounded-full px-5 py-3 md:px-7 md:py-3.5 transition-all duration-300 flex items-center justify-between border ${
-            isScrolled
-              ? 'bg-[#0B101B]/90 backdrop-blur-xl border-amber-500/20 nav-floating-shadow'
-              : 'bg-[#0B101B]/75 backdrop-blur-lg border-white/10 shadow-lg'
-          }`}
-        >
-          {/* Logo Principal con colores oficiales G-evo */}
+      {/* Barra de Menú Principal - Diseño y Colores Fieles a la Referencia */}
+      <header className="sticky top-0 left-0 right-0 z-40 bg-[#E6E9EE]/95 backdrop-blur-md border-b border-[#D3D7DD] transition-all duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 md:h-[70px] flex items-center justify-between">
+          
+          {/* 1. Logotipo Oficial G-evo en el Extremo Izquierdo */}
           <Logo size="md" />
 
-          {/* Menú de Navegación Desktop */}
-          <div className="hidden lg:flex items-center gap-7 text-sm font-medium text-gray-300">
+          {/* 2. Menú de Navegación Central (Desktop) */}
+          <nav className="hidden lg:flex items-center gap-2 xl:gap-4 text-sm font-medium text-gray-700">
+            
+            {/* Inicio */}
             <Link
               href="/"
-              className="hover:text-emerald-400 transition-colors"
+              className="px-3 py-1.5 rounded-lg hover:text-emerald-600 transition-colors"
             >
               Inicio
             </Link>
 
-            <Link
-              href="#servicios"
-              className="hover:text-emerald-400 transition-colors"
+            {/* Servicios con Menú Desplegable Flotante */}
+            <div 
+              className="relative"
+              onMouseEnter={() => setServicesDropdownOpen(true)}
+              onMouseLeave={() => setServicesDropdownOpen(false)}
             >
-              Servicios
-            </Link>
-
-            <Link
-              href="#mostrario"
-              className="hover:text-amber-400 transition-colors flex items-center gap-1.5"
-            >
-              <span>Mostrario</span>
-              <span className="px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30">
-                Ejemplos
-              </span>
-            </Link>
-
-            <Link
-              href="#ai-demo"
-              className="hover:text-emerald-400 transition-colors flex items-center gap-1.5"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Agente IA</span>
-            </Link>
-
-            {/* Menú Desplegable Interactivo: Quiénes Somos (Visión, Misión, Historia) */}
-            <div className="relative group">
               <button
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                onMouseEnter={() => setDropdownOpen(true)}
-                className="flex items-center gap-1 hover:text-emerald-400 transition-colors py-1 cursor-pointer"
+                onClick={() => setServicesDropdownOpen(!servicesDropdownOpen)}
+                className={`px-3 py-1.5 rounded-full flex items-center gap-1 transition-all cursor-pointer ${
+                  servicesDropdownOpen
+                    ? 'bg-white text-emerald-600 font-bold pill-button-shadow'
+                    : 'hover:text-emerald-600 text-gray-700'
+                }`}
               >
-                <span>Quiénes Somos</span>
-                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${dropdownOpen ? 'rotate-180 text-emerald-400' : ''}`} />
+                <span>Servicios</span>
+                {servicesDropdownOpen ? (
+                  <ChevronUp className="w-3.5 h-3.5 text-emerald-600" />
+                ) : (
+                  <ChevronDown className="w-3.5 h-3.5 text-gray-500" />
+                )}
               </button>
 
-              {/* Dropdown Window Popover */}
-              {dropdownOpen && (
-                <div
-                  onMouseLeave={() => setDropdownOpen(false)}
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 p-2 bg-[#0E1524] border border-amber-500/30 rounded-2xl shadow-2xl backdrop-blur-2xl animate-fadeIn"
-                >
-                  <div className="p-2 text-[11px] font-bold uppercase tracking-wider text-amber-400/80 border-b border-white/5">
-                    Conoce el Ecosistema
+              {/* Tarjeta Desplegable de Servicios */}
+              {servicesDropdownOpen && (
+                <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl dropdown-card-shadow border border-gray-100 p-2.5 z-50 animate-fadeIn">
+                  <div className="space-y-1">
+                    
+                    {/* Servicio 1: Tarjetas Digitales */}
+                    <button
+                      onClick={() => handleServiceClick('servicios-tarjetas')}
+                      className="w-full p-2.5 rounded-xl hover:bg-emerald-50/60 flex items-center justify-between text-left transition-colors group cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-emerald-100/70 text-emerald-600 flex items-center justify-center shrink-0">
+                          <CreditCard className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-gray-900 group-hover:text-emerald-700">
+                            Tarjetas Digitales (NFC &amp; QR)
+                          </div>
+                          <div className="text-[11px] text-gray-500">
+                            Conexión instantánea sin papel
+                          </div>
+                        </div>
+                      </div>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-emerald-600 shrink-0" />
+                    </button>
+
+                    {/* Servicio 2: Catálogos E-commerce */}
+                    <button
+                      onClick={() => handleServiceClick('servicios-catalogos')}
+                      className="w-full p-2.5 rounded-xl hover:bg-emerald-50/60 flex items-center justify-between text-left transition-colors group cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-emerald-100/70 text-emerald-600 flex items-center justify-center shrink-0">
+                          <ShoppingBag className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-gray-900 group-hover:text-emerald-700">
+                            Catálogos E-commerce
+                          </div>
+                          <div className="text-[11px] text-gray-500">
+                            Pedidos directos a WhatsApp
+                          </div>
+                        </div>
+                      </div>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-emerald-600 shrink-0" />
+                    </button>
+
+                    {/* Servicio 3: Menús Digitales */}
+                    <button
+                      onClick={() => handleServiceClick('servicios-menus')}
+                      className="w-full p-2.5 rounded-xl hover:bg-emerald-50/60 flex items-center justify-between text-left transition-colors group cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-emerald-100/70 text-emerald-600 flex items-center justify-center shrink-0">
+                          <UtensilsCrossed className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-gray-900 group-hover:text-emerald-700">
+                            Menús y Vitrinas Digitales
+                          </div>
+                          <div className="text-[11px] text-gray-500">
+                            Experiencia visual gastronómica
+                          </div>
+                        </div>
+                      </div>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-emerald-600 shrink-0" />
+                    </button>
+
+                    {/* Servicio 4: Agente de Soporte IA */}
+                    <button
+                      onClick={() => handleServiceClick('servicios-ia')}
+                      className="w-full p-2.5 rounded-xl hover:bg-emerald-50/60 flex items-center justify-between text-left transition-colors group cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-emerald-100/70 text-emerald-600 flex items-center justify-center shrink-0">
+                          <Bot className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-gray-900 group-hover:text-emerald-700">
+                            Agente de Soporte IA 24/7
+                          </div>
+                          <div className="text-[11px] text-gray-500">
+                            Atención automática de stock
+                          </div>
+                        </div>
+                      </div>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-emerald-600 shrink-0" />
+                    </button>
+
                   </div>
-
-                  <button
-                    onClick={() => openCorporateModal('vision')}
-                    className="w-full mt-1 p-2.5 rounded-xl hover:bg-white/5 flex items-start gap-3 text-left transition-colors group/item"
-                  >
-                    <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 group-hover/item:border-emerald-400">
-                      <Compass className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold text-white group-hover/item:text-emerald-400">
-                        Nuestra Visión
-                      </div>
-                      <div className="text-[11px] text-gray-400 line-clamp-1">
-                        Hacia dónde proyectamos la marca.
-                      </div>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => openCorporateModal('mision')}
-                    className="w-full p-2.5 rounded-xl hover:bg-white/5 flex items-start gap-3 text-left transition-colors group/item"
-                  >
-                    <div className="p-2 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 group-hover/item:border-amber-400">
-                      <Target className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold text-white group-hover/item:text-amber-400">
-                        Nuestra Misión
-                      </div>
-                      <div className="text-[11px] text-gray-400 line-clamp-1">
-                        Propósito y valor comercial.
-                      </div>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => openCorporateModal('historia')}
-                    className="w-full p-2.5 rounded-xl hover:bg-white/5 flex items-start gap-3 text-left transition-colors group/item"
-                  >
-                    <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 group-hover/item:border-emerald-400">
-                      <BookOpen className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold text-white group-hover/item:text-emerald-400">
-                        Nuestra Historia
-                      </div>
-                      <div className="text-[11px] text-gray-400 line-clamp-1">
-                        Génesis de la evolución dorada.
-                      </div>
-                    </div>
-                  </button>
                 </div>
               )}
             </div>
 
+            {/* Agente de IA */}
             <Link
-              href="#contacto"
-              className="hover:text-emerald-400 transition-colors"
+              href="#ai-demo"
+              className="px-3 py-1.5 rounded-lg hover:text-emerald-600 transition-colors"
             >
-              Contacto
+              Agente de IA
             </Link>
-          </div>
 
-          {/* Botones de Acción (Acceso de Cliente & Cotización) */}
-          <div className="hidden md:flex items-center gap-3">
-            {/* Acceso para Clientes Finales */}
+            {/* Quiénes somos (Píldora Activa con Menú Desplegable Idéntico a la Imagen) */}
+            <div
+              className="relative"
+              onMouseEnter={() => setAboutDropdownOpen(true)}
+              onMouseLeave={() => setAboutDropdownOpen(false)}
+            >
+              <button
+                onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
+                className="px-4 py-1.5 rounded-full bg-white text-emerald-600 font-bold text-sm pill-button-shadow flex items-center gap-1.5 border border-white/80 cursor-pointer"
+              >
+                <span>Quiénes somos</span>
+                {aboutDropdownOpen ? (
+                  <ChevronUp className="w-3.5 h-3.5 text-emerald-600" />
+                ) : (
+                  <ChevronDown className="w-3.5 h-3.5 text-emerald-600" />
+                )}
+              </button>
+
+              {/* Ventana Flotante Idéntica a la Imagen de Referencia */}
+              {aboutDropdownOpen && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 bg-white rounded-2xl dropdown-card-shadow border border-gray-100 p-2.5 z-50 animate-fadeIn">
+                  <div className="space-y-1">
+                    
+                    {/* Visión */}
+                    <button
+                      onClick={() => openCorporateModal('vision')}
+                      className="w-full p-2.5 rounded-xl hover:bg-emerald-50/60 flex items-center justify-between text-left transition-colors group cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                          <Compass className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-gray-900 group-hover:text-emerald-700">
+                            Visión
+                          </div>
+                          <div className="text-[11px] text-gray-500">
+                            El futuro que queremos crear
+                          </div>
+                        </div>
+                      </div>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                    </button>
+
+                    {/* Misión */}
+                    <button
+                      onClick={() => openCorporateModal('mision')}
+                      className="w-full p-2.5 rounded-xl hover:bg-emerald-50/60 flex items-center justify-between text-left transition-colors group cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                          <Target className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-gray-900 group-hover:text-emerald-700">
+                            Misión
+                          </div>
+                          <div className="text-[11px] text-gray-500">
+                            Lo que hacemos cada día
+                          </div>
+                        </div>
+                      </div>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                    </button>
+
+                    {/* Historia */}
+                    <button
+                      onClick={() => openCorporateModal('historia')}
+                      className="w-full p-2.5 rounded-xl hover:bg-emerald-50/60 flex items-center justify-between text-left transition-colors group cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                          <BookOpen className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-gray-900 group-hover:text-emerald-700">
+                            Historia
+                          </div>
+                          <div className="text-[11px] text-gray-500">
+                            La idea detrás de G-evo
+                          </div>
+                        </div>
+                      </div>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                    </button>
+
+                  </div>
+                </div>
+              )}
+            </div>
+
+          </nav>
+
+          {/* 3. Extremo Derecho: Botones de Facebook, Instagram y Portal Clientes */}
+          <div className="hidden sm:flex items-center gap-2.5">
+            
+            {/* Botón Facebook (Píldora Redonda Blanca) */}
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-9 h-9 rounded-full bg-white pill-button-shadow flex items-center justify-center text-gray-700 hover:text-blue-600 hover:scale-105 transition-all border border-gray-100/60 cursor-pointer"
+              aria-label="Ir a Facebook de G-evo"
+            >
+              <FacebookIcon className="w-4 h-4" />
+            </a>
+
+            {/* Botón Instagram (Píldora Redonda Blanca) */}
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-9 h-9 rounded-full bg-white pill-button-shadow flex items-center justify-center text-gray-700 hover:text-pink-600 hover:scale-105 transition-all border border-gray-100/60 cursor-pointer"
+              aria-label="Ir a Instagram de G-evo"
+            >
+              <InstagramIcon className="w-4 h-4" />
+            </a>
+
+            {/* Botón Portal Clientes (Píldora Blanca Destacada con Flecha ↗) */}
             <Link
               href="/login"
-              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium text-gray-300 hover:text-white rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
-              title="Portal de Gestión para Clientes"
+              className="px-4 py-2 rounded-full bg-white pill-button-shadow text-xs sm:text-sm font-semibold text-gray-800 hover:text-emerald-600 flex items-center gap-1.5 border border-gray-100/60 hover:scale-[1.02] transition-all cursor-pointer group"
             >
-              <LogIn className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Portal Clientes</span>
+              <span>Portal clientes</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-emerald-600 transition-colors" />
             </Link>
 
-            {/* CTA Principal de Cotización */}
-            <Link
-              href="#contacto"
-              className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-black rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 transition-all transform hover:scale-[1.02]"
-            >
-              <span>Cotizar Ahora</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </Link>
           </div>
 
-          {/* Mobile Menu Hamburger */}
+          {/* Botón Hamburguesa en Mobile */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-gray-300 hover:text-white rounded-lg bg-white/5 border border-white/10"
-            aria-label="Abrir menú"
+            className="lg:hidden p-2 rounded-xl bg-white pill-button-shadow text-gray-700 hover:text-black border border-gray-200"
+            aria-label="Abrir menú de navegación"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
-        </nav>
 
-        {/* Mobile Slide-down Menu */}
+        </div>
+
+        {/* Menú Desplegable Responsivo para Móviles */}
         {mobileMenuOpen && (
-          <div className="lg:hidden absolute top-20 left-4 right-4 p-5 bg-[#0D1321] border border-amber-500/30 rounded-2xl shadow-2xl backdrop-blur-2xl animate-fadeIn space-y-4">
-            <div className="flex flex-col gap-3 text-sm font-medium text-gray-200">
+          <div className="lg:hidden bg-white border-b border-gray-200 px-5 py-4 space-y-4 shadow-xl animate-fadeIn">
+            <div className="flex flex-col gap-2 text-sm font-semibold text-gray-700">
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-2 hover:bg-white/5 rounded-lg"
+                className="p-2 rounded-lg hover:bg-gray-100"
               >
                 Inicio
               </Link>
-              <Link
-                href="#servicios"
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2 hover:bg-white/5 rounded-lg"
-              >
-                Servicios
-              </Link>
-              <Link
-                href="#mostrario"
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2 hover:bg-white/5 rounded-lg flex items-center justify-between"
-              >
-                <span>Mostrario de Ejemplos</span>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                  Casos Reales
-                </span>
-              </Link>
-              <Link
-                href="#ai-demo"
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2 hover:bg-white/5 rounded-lg flex items-center gap-2"
-              >
-                <Sparkles className="w-4 h-4 text-emerald-400" />
-                <span>Demostración Agente IA</span>
-              </Link>
 
-              {/* Opciones Institucionales en Mobile */}
-              <div className="pt-2 border-t border-white/10">
-                <div className="text-xs uppercase font-bold text-amber-400 px-2 py-1">
-                  Quiénes Somos (G-evo)
+              {/* Servicios en Mobile */}
+              <div className="p-2 border-t border-gray-100">
+                <div className="text-xs uppercase font-bold text-emerald-600 mb-1">
+                  Servicios
                 </div>
-                <div className="grid grid-cols-3 gap-2 mt-2">
+                <div className="space-y-1 pl-2">
                   <button
-                    onClick={() => openCorporateModal('vision')}
-                    className="p-2 rounded-lg bg-white/5 text-xs text-center hover:bg-white/10"
+                    onClick={() => handleServiceClick('servicios-tarjetas')}
+                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-emerald-600"
                   >
-                    Visión
+                    • Tarjetas Digitales (NFC &amp; QR)
                   </button>
                   <button
-                    onClick={() => openCorporateModal('mision')}
-                    className="p-2 rounded-lg bg-white/5 text-xs text-center hover:bg-white/10"
+                    onClick={() => handleServiceClick('servicios-catalogos')}
+                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-emerald-600"
                   >
-                    Misión
+                    • Catálogos E-commerce Autónomos
                   </button>
                   <button
-                    onClick={() => openCorporateModal('historia')}
-                    className="p-2 rounded-lg bg-white/5 text-xs text-center hover:bg-white/10"
+                    onClick={() => handleServiceClick('servicios-menus')}
+                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-emerald-600"
                   >
-                    Historia
+                    • Menús y Vitrinas Digitales
+                  </button>
+                  <button
+                    onClick={() => handleServiceClick('servicios-ia')}
+                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-emerald-600"
+                  >
+                    • Agente de Soporte IA 24/7
                   </button>
                 </div>
               </div>
 
               <Link
-                href="#contacto"
+                href="#ai-demo"
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-2 hover:bg-white/5 rounded-lg"
+                className="p-2 rounded-lg hover:bg-gray-100"
               >
-                Contacto
+                Agente de IA
               </Link>
+
+              {/* Quiénes somos en Mobile */}
+              <div className="p-2 border-t border-gray-100">
+                <div className="text-xs uppercase font-bold text-emerald-600 mb-2">
+                  Quiénes somos
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  <button
+                    onClick={() => openCorporateModal('vision')}
+                    className="p-2 rounded-xl bg-gray-50 border border-gray-200 text-xs text-center font-bold text-gray-700"
+                  >
+                    Visión ↗
+                  </button>
+                  <button
+                    onClick={() => openCorporateModal('mision')}
+                    className="p-2 rounded-xl bg-gray-50 border border-gray-200 text-xs text-center font-bold text-gray-700"
+                  >
+                    Misión ↗
+                  </button>
+                  <button
+                    onClick={() => openCorporateModal('historia')}
+                    className="p-2 rounded-xl bg-gray-50 border border-gray-200 text-xs text-center font-bold text-gray-700"
+                  >
+                    Historia ↗
+                  </button>
+                </div>
+              </div>
             </div>
 
-            <div className="pt-3 border-t border-white/10 flex flex-col gap-2">
+            <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-700"
+                >
+                  <FacebookIcon className="w-4 h-4" />
+                </a>
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-700"
+                >
+                  <InstagramIcon className="w-4 h-4" />
+                </a>
+              </div>
+
               <Link
                 href="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-gray-200"
+                className="px-4 py-2 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center gap-1.5"
               >
-                Ingreso Portal Clientes
-              </Link>
-              <Link
-                href="#contacto"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-emerald-400 text-xs font-bold text-black"
-              >
-                Cotizar Tarjeta o Catálogo
+                <span>Portal clientes</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           </div>
@@ -301,4 +448,3 @@ export const FloatingNavbar: React.FC = () => {
     </>
   );
 };
-

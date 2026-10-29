@@ -16,3 +16,4 @@
 - **NO** escribe código de producción directo.
 - **NO** configura servidores ni ejecuta comandos de infraestructura.
 - **NO** diseña pantallas visuales ni manipula hojas de estilo.
+

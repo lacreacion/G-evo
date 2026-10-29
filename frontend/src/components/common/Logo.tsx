@@ -4,99 +4,90 @@ import Link from 'next/link';
 interface LogoProps {
   className?: string;
   size?: 'sm' | 'md' | 'lg';
-  showTagline?: boolean;
 }
 
 export const Logo: React.FC<LogoProps> = ({
   className = '',
-  size = 'md',
-  showTagline = false
+  size = 'md'
 }) => {
   const sizeMap = {
-    sm: { icon: 28, text: 'text-xl', badge: 'text-[9px]' },
-    md: { icon: 38, text: 'text-2xl md:text-3xl', badge: 'text-[10px]' },
-    lg: { icon: 52, text: 'text-4xl md:text-5xl', badge: 'text-xs' }
+    sm: { icon: 26, text: 'text-xl' },
+    md: { icon: 34, text: 'text-2xl' },
+    lg: { icon: 44, text: 'text-3xl' }
   };
 
   const currentSize = sizeMap[size];
 
   return (
-    <Link href="/" className={`inline-flex items-center gap-3 group select-none ${className}`}>
-      {/* Isotipo: Tricolor geométrico de alta precisión (Dorado, Verde y Blanco/Gris tecnológico) */}
+    <Link href="/" className={`inline-flex items-center gap-2.5 group select-none ${className}`}>
+      {/* Isotipo Fiel a la Imagen: 4 pétalos orgánicos (Dorado, Verde, Gris Plata y Verde Oscuro) */}
       <div className="relative flex items-center justify-center">
         <svg
           width={currentSize.icon}
           height={currentSize.icon}
-          viewBox="0 0 48 48"
+          viewBox="0 0 36 36"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           className="transform transition-transform duration-300 group-hover:scale-105"
         >
-          {/* Fondo sutil */}
-          <rect width="48" height="48" rx="12" fill="#0C121E" />
-          <rect width="48" height="48" rx="12" stroke="url(#borderGradient)" strokeWidth="1.5" />
-
-          {/* Ala Dorada Izquierda / Isotipo G */}
+          {/* Pétalo Superior Izquierdo: Dorado Metálico */}
           <path
-            d="M12 24C12 16.5 17.5 12 24 12C28.5 12 32 14.5 34 18L28.5 21C27.5 19 25.5 17.5 23.5 17.5C19.5 17.5 17.5 20.5 17.5 24C17.5 27.5 19.5 30.5 23.5 30.5C26 30.5 28 29 29 27H23.5V22H34.5V28C32 33 28 36 23.5 36C17.5 36 12 31.5 12 24Z"
-            fill="url(#goldGradient)"
+            d="M16.5 16.5C16.5 10 11.5 5 5 5C5 11.5 10 16.5 16.5 16.5Z"
+            fill="url(#goldPetalGradient)"
           />
 
-          {/* Vértice y Acento Verde Vibrante (Evolución digital) */}
-          <circle cx="35" cy="15" r="4" fill="url(#greenGradient)" />
+          {/* Pétalo Superior Derecho: Verde Vibrante */}
           <path
-            d="M32 32L38 26M38 26H32M38 26V32"
-            stroke="url(#greenGradient)"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            d="M19.5 16.5C19.5 10 24.5 5 31 5C31 11.5 26 16.5 19.5 16.5Z"
+            fill="url(#greenPetalGradient)"
           />
 
-          {/* Acento Blanco / Gris Metalizado de Reflejo */}
+          {/* Pétalo Inferior Izquierdo: Gris Plata Metalizado */}
           <path
-            d="M16 19C18 15 22 13 25 13"
-            stroke="#FFFFFF"
-            strokeWidth="1.2"
-            strokeLinecap="round"
-            strokeOpacity="0.7"
+            d="M16.5 19.5C16.5 26 11.5 31 5 31C5 24.5 10 19.5 16.5 19.5Z"
+            fill="url(#silverPetalGradient)"
           />
 
-          {/* Definición de Gradientes Oficiales */}
+          {/* Pétalo Inferior Derecho: Verde Bosque Tecnológico */}
+          <path
+            d="M19.5 19.5C19.5 26 24.5 31 31 31C31 24.5 26 19.5 19.5 19.5Z"
+            fill="url(#darkGreenPetalGradient)"
+          />
+
+          {/* Definiciones de Gradientes Oficiales */}
           <defs>
-            <linearGradient id="goldGradient" x1="12" y1="12" x2="35" y2="36" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#FFF3B0" />
-              <stop offset="40%" stopColor="#D4AF37" />
-              <stop offset="100%" stopColor="#996515" />
+            <linearGradient id="goldPetalGradient" x1="5" y1="5" x2="16.5" y2="16.5" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#FDE68A" />
+              <stop offset="50%" stopColor="#D97706" />
+              <stop offset="100%" stopColor="#B45309" />
             </linearGradient>
 
-            <linearGradient id="greenGradient" x1="30" y1="12" x2="40" y2="34" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#A7F3D0" />
-              <stop offset="50%" stopColor="#10B981" />
+            <linearGradient id="greenPetalGradient" x1="19.5" y1="5" x2="31" y2="16.5" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#6EE7B7" />
+              <stop offset="60%" stopColor="#10B981" />
               <stop offset="100%" stopColor="#059669" />
             </linearGradient>
 
-            <linearGradient id="borderGradient" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.5" />
-              <stop offset="50%" stopColor="#10B981" stopOpacity="0.2" />
-              <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.1" />
+            <linearGradient id="silverPetalGradient" x1="5" y1="19.5" x2="16.5" y2="31" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#FFFFFF" />
+              <stop offset="50%" stopColor="#9CA3AF" />
+              <stop offset="100%" stopColor="#6B7280" />
+            </linearGradient>
+
+            <linearGradient id="darkGreenPetalGradient" x1="19.5" y1="19.5" x2="31" y2="31" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#10B981" />
+              <stop offset="70%" stopColor="#047857" />
+              <stop offset="100%" stopColor="#064E3B" />
             </linearGradient>
           </defs>
         </svg>
       </div>
 
-      {/* Tipografía Oficial: 'G-' dorado metalizado y '-evo.' en verde vibrante */}
-      <div className="flex flex-col">
-        <div className={`font-black tracking-tight leading-none ${currentSize.text}`}>
-          <span className="text-gold-metallic">G-</span>
-          <span className="text-green-vibrant">evo.</span>
-        </div>
-        {showTagline && (
-          <span className={`text-gray-400 font-medium tracking-wider uppercase mt-1 ${currentSize.badge}`}>
-            Tarjetas &amp; Catálogos Digitales
-          </span>
-        )}
+      {/* Tipografía Oficial: 'G-' dorado y '-evo.' en verde vibrante */}
+      <div className={`font-black tracking-tight leading-none ${currentSize.text}`}>
+        <span className="text-[#D97706] font-extrabold">G-</span>
+        <span className="text-[#10B981] font-extrabold">evo.</span>
       </div>
     </Link>
   );
 };
-

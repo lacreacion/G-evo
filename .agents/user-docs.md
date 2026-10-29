@@ -14,3 +14,4 @@
 ## ⛔ Limitaciones Estrictas (Qué NO debe hacer)
 - **NO** redacta documentación interna de arquitectura técnica, esquemas de BD ni APIs.
 - No utiliza tecnicismos de programación; se enfoca 100% en el usuario de negocio.
+

@@ -48,11 +48,16 @@ export const CascadeServices: React.FC = () => {
         <div className="space-y-12">
           {CASCADE_SERVICES.map((service: ServiceItem, index: number) => {
             const isEven = index % 2 === 0;
+            const serviceAnchorId = 
+              service.id === 1 ? 'servicios-tarjetas' :
+              service.id === 2 ? 'servicios-catalogos' :
+              service.id === 3 ? 'servicios-menus' : 'servicios-ia';
 
             return (
               <div
                 key={service.id}
-                className="group relative rounded-3xl bg-gradient-to-b from-[#111827]/90 to-[#0A0E17]/90 border border-white/10 hover:border-emerald-500/40 p-6 md:p-10 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/10"
+                id={serviceAnchorId}
+                className="group relative rounded-3xl bg-gradient-to-b from-[#111827]/90 to-[#0A0E17]/90 border border-white/10 hover:border-emerald-500/40 p-6 md:p-10 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/10 scroll-mt-24"
                 style={{
                   // Simulación de efecto cascada progresivo
                   animationDelay: `${index * 150}ms`

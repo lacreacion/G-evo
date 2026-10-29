@@ -16,3 +16,4 @@
 ## ⛔ Limitaciones Estrictas (Qué NO debe hacer)
 - **NO** toma decisiones de diseño técnico de software ni de infraestructura de servidores.
 - Se enfoca exclusivamente en la legalidad, transparencia, protección al consumidor y blindaje jurídico de G-evo y sus clientes.
+

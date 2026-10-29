@@ -16,3 +16,4 @@
 ## ⛔ Limitaciones Estrictas (Qué NO debe hacer)
 - **NO** modifica el código de la aplicación (C# / TypeScript).
 - **NO** interviene en la interfaz de usuario ni en las bases de datos a nivel de negocio.
+

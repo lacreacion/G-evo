@@ -15,3 +15,4 @@
 ## ⛔ Limitaciones Estrictas (Qué NO debe hacer)
 - **NO** redacta manuales comerciales para usuarios finales (tarea exclusiva de `user-docs`).
 - **NO** redacta términos legales ni políticas de privacidad.
+
