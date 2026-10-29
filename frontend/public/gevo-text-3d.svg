@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 90" fill="none" className="w-auto h-full">
+  <defs>
+    {/* 3D Gold Metallic Gradients */}
+    <linearGradient id="gold3dSurface" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stopColor="#FFF2A3" />
+      <stop offset="15%" stopColor="#F7CE46" />
+      <stop offset="50%" stopColor="#DCA81A" />
+      <stop offset="85%" stopColor="#AD7504" />
+      <stop offset="100%" stopColor="#784C00" />
+    </linearGradient>
+
+    <linearGradient id="gold3dBevel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.8" />
+      <stop offset="40%" stopColor="#F7CE46" stopOpacity="0.4" />
+      <stop offset="100%" stopColor="#4A3000" stopOpacity="0.8" />
+    </linearGradient>
+
+    {/* 3D Vibrant Green Gradients */}
+    <linearGradient id="green3dSurface" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stopColor="#6EE7B7" />
+      <stop offset="20%" stopColor="#22C55E" />
+      <stop offset="60%" stopColor="#10B981" />
+      <stop offset="90%" stopColor="#047857" />
+      <stop offset="100%" stopColor="#064E3B" />
+    </linearGradient>
+
+    <linearGradient id="green3dBevel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.7" />
+      <stop offset="50%" stopColor="#10B981" stopOpacity="0.2" />
+      <stop offset="100%" stopColor="#022C22" stopOpacity="0.8" />
+    </linearGradient>
+
+    {/* Neon Green Dot Gradient */}
+    <linearGradient id="neonDotGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stopColor="#A7F3D0" />
+      <stop offset="30%" stopColor="#00FF66" />
+      <stop offset="100%" stopColor="#00C853" />
+    </linearGradient>
+
+    {/* Volumetric Drop Shadow */}
+    <filter id="volumetricShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="3" floodColor="#000000" floodOpacity="0.4" />
+      <feDropShadow dx="0" dy="1" stdDeviation="1" floodColor="#000000" floodOpacity="0.2" />
+    </filter>
+  </defs>
+
+  {/* Group with 3D Volumetric Filter */}
+  <g filter="url(#volumetricShadow)">
+    
+    {/* 3D Extruded Embossed 'G' */}
+    {/* G Shadow extrusion */}
+    <path
+      d="M50 48C50 33 62 21 78 21C89 21 98 27 103 35L90 42C87 37 83 33 78 33C69 33 63 40 63 48C63 56 69 63 78 63C84 63 88 59 90 56V52H78V42H103V60C96 70 87 75 77 75C62 75 50 63 50 48Z"
+      fill="#664000"
+      transform="translate(0, 3)"
+    />
+    {/* G Base Metallic Surface */}
+    <path
+      d="M50 48C50 33 62 21 78 21C89 21 98 27 103 35L90 42C87 37 83 33 78 33C69 33 63 40 63 48C63 56 69 63 78 63C84 63 88 59 90 56V52H78V42H103V60C96 70 87 75 77 75C62 75 50 63 50 48Z"
+      fill="url(#gold3dSurface)"
+    />
+    {/* G Bevel stroke highlight */}
+    <path
+      d="M50 48C50 33 62 21 78 21C89 21 98 27 103 35L90 42C87 37 83 33 78 33C69 33 63 40 63 48C63 56 69 63 78 63C84 63 88 59 90 56V52H78V42H103V60C96 70 87 75 77 75C62 75 50 63 50 48Z"
+      stroke="url(#gold3dBevel)"
+      strokeWidth="1.5"
+    />
+
+    {/* Hyphen '-' */}
+    <rect x="110" y="47" width="22" height="10" rx="4" fill="#022C22" transform="translate(0, 3)" />
+    <rect x="110" y="47" width="22" height="10" rx="4" fill="url(#green3dSurface)" />
+    <rect x="110" y="47" width="22" height="10" rx="4" stroke="url(#green3dBevel)" strokeWidth="1" />
+
+    {/* Letter 'e' */}
+    <g transform="translate(138, 30)">
+      <path
+        d="M18 20C18 10 26 3 36 3C46 3 53 10 53 22V25H27C27 30 31 34 37 34C42 34 45 32 47 29L53 33C49 39 44 43 36 43C25 43 18 34 18 20ZM44 19C44 14 41 11 36 11C31 11 28 14 27 19H44Z"
+        fill="#022C22"
+        transform="translate(0, 3)"
+      />
+      <path
+        d="M18 20C18 10 26 3 36 3C46 3 53 10 53 22V25H27C27 30 31 34 37 34C42 34 45 32 47 29L53 33C49 39 44 43 36 43C25 43 18 34 18 20ZM44 19C44 14 41 11 36 11C31 11 28 14 27 19H44Z"
+        fill="url(#green3dSurface)"
+      />
+      <path
+        d="M18 20C18 10 26 3 36 3C46 3 53 10 53 22V25H27C27 30 31 34 37 34C42 34 45 32 47 29L53 33C49 39 44 43 36 43C25 43 18 34 18 20ZM44 19C44 14 41 11 36 11C31 11 28 14 27 19H44Z"
+        stroke="url(#green3dBevel)"
+        strokeWidth="1.2"
+      />
+    </g>
+
+    {/* Letter 'v' */}
+    <g transform="translate(195, 30)">
+      <path
+        d="M15 5H24L32 30L40 5H49L36 41H28L15 5Z"
+        fill="#022C22"
+        transform="translate(0, 3)"
+      />
+      <path
+        d="M15 5H24L32 30L40 5H49L36 41H28L15 5Z"
+        fill="url(#green3dSurface)"
+      />
+      <path
+        d="M15 5H24L32 30L40 5H49L36 41H28L15 5Z"
+        stroke="url(#green3dBevel)"
+        strokeWidth="1.2"
+      />
+    </g>
+
+    {/* Letter 'o' */}
+    <g transform="translate(242, 30)">
+      <path
+        d="M15 22C15 10 24 3 36 3C48 3 57 10 57 22C57 34 48 42 36 42C24 42 15 34 15 22ZM48 22C48 14 43 11 36 11C29 11 24 14 24 22C24 30 29 34 36 34C43 34 48 30 48 22Z"
+        fill="#022C22"
+        transform="translate(0, 3)"
+      />
+      <path
+        d="M15 22C15 10 24 3 36 3C48 3 57 10 57 22C57 34 48 42 36 42C24 42 15 34 15 22ZM48 22C48 14 43 11 36 11C29 11 24 14 24 22C24 30 29 34 36 34C43 34 48 30 48 22Z"
+        fill="url(#green3dSurface)"
+      />
+      <path
+        d="M15 22C15 10 24 3 36 3C48 3 57 10 57 22C57 34 48 42 36 42C24 42 15 34 15 22ZM48 22C48 14 43 11 36 11C29 11 24 14 24 22C24 30 29 34 36 34C43 34 48 30 48 22Z"
+        stroke="url(#green3dBevel)"
+        strokeWidth="1.2"
+      />
+    </g>
+
+    {/* Dot '.' */}
+    <rect x="303" y="62" width="11" height="11" rx="3" fill="#022C22" transform="translate(0, 3)" />
+    <rect x="303" y="62" width="11" height="11" rx="3" fill="url(#neonDotGrad)" />
+    <rect x="303" y="62" width="11" height="11" rx="3" stroke="#A7F3D0" strokeWidth="1" />
+
+  </g>
+</svg>

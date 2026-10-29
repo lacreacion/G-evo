@@ -50,7 +50,7 @@ export const HeroSection: React.FC = () => {
             {/* Titular Principal con Identidad Tipográfica Oficial G-evo */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] text-white">
               Tu negocio merece <br className="hidden sm:inline" />
-              evolucionar con <GevoText className="text-4xl sm:text-5xl md:text-6xl" />
+              evolucionar con <GevoText className="inline-flex align-middle ml-1" />
             </h1>
 
             <p className="text-base sm:text-lg text-gray-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
@@ -168,7 +168,7 @@ export const HeroSection: React.FC = () => {
                   </div>
 
                   <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-[11px]">
-                    <span className="text-gray-400">Verificado G-evo</span>
+                    <span className="text-gray-400 inline-flex items-center gap-1">Verificado <GevoText /></span>
                     <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-semibold">
                       NFC Activo
                     </span>
