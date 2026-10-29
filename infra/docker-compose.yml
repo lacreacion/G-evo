@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # 1. Base de Datos Relacional PostgreSQL Multi-Tenant
+  db:
+    image: postgres:16-alpine
+    container_name: gevo-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: gevo_db
+      POSTGRES_USER: gevo_admin
+      POSTGRES_PASSWORD: GevoSecurePostgres2026!
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../database/01_init_schema.sql:/docker-entrypoint-initdb.d/01_init_schema.sql
+      - ../database/02_seed_data.sql:/docker-entrypoint-initdb.d/02_seed_data.sql
+    networks:
+      - gevo-network
+
+  # 2. Backend API (.NET 8/9 ASP.NET Core)
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: gevo-api
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=gevo_db;Username=gevo_admin;Password=GevoSecurePostgres2026!"
+      Jwt__Secret: "G_EVO_SUPER_SECRET_KEY_FOR_SIGNING_TOKENS_2026_JWT_MIN_32_CHARS!"
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    networks:
+      - gevo-network
+
+  # 3. Frontend Next.js 15
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: gevo-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: "http://backend:5000/api"
+    ports:
+      - "3000:3000"
+    networks:
+      - gevo-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  gevo-network:
+    driver: bridge
+
