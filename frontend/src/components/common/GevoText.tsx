@@ -6,24 +6,25 @@ interface GevoTextProps {
 }
 
 /**
- * GevoText: Componente de Identidad Visual Oficial G-evo.
- * Renderiza el wordmark vectorial SVG de ultra-alta resolución (definición Retina nítida),
- * con 'G' en gradiente dorado metálico 3D, '-evo' en verde esmeralda vibrante y '.' neón.
- * Escala automáticamente al tamaño exacto de la tipografía circundante mediante 'em'.
+ * GevoText: Componente Tipográfico Oficial G-evo.
+ * 1. 'G' con gradiente dorado metalizado en CSS (bg-clip-text text-transparent).
+ * 2. '-evo.' en verde esmeralda vibrante (text-emerald-500).
+ * 3. Cero iconos extraños o sombras difusas que causen borrosidad.
+ * 4. Nitidez vectorial nativa escalable en pantallas Retina.
  */
 export const GevoText: React.FC<GevoTextProps> = ({ 
   className = '', 
   withDot = true 
 }) => {
   return (
-    <span className={`inline-flex items-center align-middle select-none ${className}`}>
-      <img
-        src="/gevo-wordmark.svg"
-        alt="G-evo."
-        className="inline-block object-contain h-[1.12em] w-auto align-middle -translate-y-[0.06em] pointer-events-none"
-        loading="eager"
-        decoding="sync"
-      />
+    <span className={`inline-flex items-baseline font-black tracking-tight select-none ${className}`}>
+      <span className="bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent">
+        G
+      </span>
+      <span className="text-emerald-500">
+        -evo
+      </span>
+      {withDot && <span className="text-emerald-400">.</span>}
     </span>
   );
 };
