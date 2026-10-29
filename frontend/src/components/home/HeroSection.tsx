@@ -42,15 +42,15 @@ export const HeroSection: React.FC = () => {
           <div className="lg:col-span-7 text-center lg:text-left space-y-5">
             
             {/* Tagline de la Imagen de Referencia */}
-            <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-[#DCA81A]">
-              <span className="w-6 h-0.5 bg-[#DCA81A] rounded-full" />
+            <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-[#D8A01A]">
+              <span className="w-6 h-0.5 bg-[#D8A01A] rounded-full" />
               <span>El Siguiente Paso de tu Negocio</span>
             </div>
 
             {/* Titular Principal con Identidad Tipográfica Oficial G-evo */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] text-white">
               Tu negocio merece <br className="hidden sm:inline" />
-              evolucionar con <GevoText className="inline-flex align-middle ml-1" />
+              evolucionar con <GevoText />
             </h1>
 
             <p className="text-base sm:text-lg text-gray-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
@@ -60,15 +60,15 @@ export const HeroSection: React.FC = () => {
             {/* Badges de Autoridad */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs text-gray-300 pt-1">
               <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
-                <Wifi className="w-4 h-4 text-[#DCA81A]" />
+                <Wifi className="w-4 h-4 text-[#D8A01A]" />
                 <span className="font-medium">NFC &amp; QR Dinámico</span>
               </div>
               <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
-                <ShoppingBag className="w-4 h-4 text-[#0E8A54]" />
+                <ShoppingBag className="w-4 h-4 text-[#15A658]" />
                 <span className="font-medium">Pedidos a WhatsApp</span>
               </div>
               <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
-                <Bot className="w-4 h-4 text-[#0E8A54]" />
+                <Bot className="w-4 h-4 text-[#15A658]" />
                 <span className="font-medium">Agente IA 24/7 Disponible</span>
               </div>
             </div>

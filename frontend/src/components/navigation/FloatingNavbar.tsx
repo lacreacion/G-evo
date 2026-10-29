@@ -54,7 +54,7 @@ export const FloatingNavbar: React.FC = () => {
             {/* Inicio */}
             <Link
               href="/"
-              className="px-3 py-1.5 rounded-lg text-[#374151] hover:text-[#0E8A54] transition-colors"
+              className="px-3 py-1.5 rounded-lg text-[#374151] hover:text-[#15A658] transition-colors"
             >
               Inicio
             </Link>
@@ -69,12 +69,12 @@ export const FloatingNavbar: React.FC = () => {
                 onClick={() => setServicesDropdownOpen(!servicesDropdownOpen)}
                 className={`px-3 py-1.5 rounded-full flex items-center gap-1 transition-all cursor-pointer ${
                   servicesDropdownOpen
-                    ? 'bg-white text-[#0E8A54] font-bold shadow-[0_4px_14px_rgba(0,0,0,0.08)]'
-                    : 'text-[#374151] hover:text-[#0E8A54]'
+                    ? 'bg-white text-[#15A658] font-bold shadow-[0_4px_14px_rgba(0,0,0,0.08)]'
+                    : 'text-[#374151] hover:text-[#15A658]'
                 }`}
               >
                 <span>Servicios</span>
-                <span className={`text-[10px] ml-0.5 transition-transform ${servicesDropdownOpen ? 'rotate-180 text-[#DCA81A]' : 'text-gray-500'}`}>
+                <span className={`text-[10px] ml-0.5 transition-transform ${servicesDropdownOpen ? 'rotate-180 text-[#D8A01A]' : 'text-gray-500'}`}>
                   ▼
                 </span>
               </button>
@@ -90,11 +90,11 @@ export const FloatingNavbar: React.FC = () => {
                       className="w-full p-2.5 rounded-xl hover:bg-[#E6F9F0] flex items-center justify-between text-left transition-colors group cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-[#D1FAE5] text-[#0E8A54] flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-lg bg-[#D1FAE5] text-[#15A658] flex items-center justify-center shrink-0">
                           <CreditCard className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#0E8A54]">
+                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#15A658]">
                             Tarjetas Digitales (NFC &amp; QR)
                           </div>
                           <div className="text-[11px] text-[#6B7280]">
@@ -102,7 +102,7 @@ export const FloatingNavbar: React.FC = () => {
                           </div>
                         </div>
                       </div>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#0E8A54] shrink-0" />
+                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#15A658] shrink-0" />
                     </button>
 
                     {/* Servicio 2 */}
@@ -111,11 +111,11 @@ export const FloatingNavbar: React.FC = () => {
                       className="w-full p-2.5 rounded-xl hover:bg-[#E6F9F0] flex items-center justify-between text-left transition-colors group cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-[#D1FAE5] text-[#0E8A54] flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-lg bg-[#D1FAE5] text-[#15A658] flex items-center justify-center shrink-0">
                           <ShoppingBag className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#0E8A54]">
+                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#15A658]">
                             Catálogos E-commerce
                           </div>
                           <div className="text-[11px] text-[#6B7280]">
@@ -123,7 +123,7 @@ export const FloatingNavbar: React.FC = () => {
                           </div>
                         </div>
                       </div>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#0E8A54] shrink-0" />
+                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#15A658] shrink-0" />
                     </button>
 
                     {/* Servicio 3 */}
@@ -132,11 +132,11 @@ export const FloatingNavbar: React.FC = () => {
                       className="w-full p-2.5 rounded-xl hover:bg-[#E6F9F0] flex items-center justify-between text-left transition-colors group cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-[#D1FAE5] text-[#0E8A54] flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-lg bg-[#D1FAE5] text-[#15A658] flex items-center justify-center shrink-0">
                           <UtensilsCrossed className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#0E8A54]">
+                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#15A658]">
                             Menús y Vitrinas Digitales
                           </div>
                           <div className="text-[11px] text-[#6B7280]">
@@ -144,7 +144,7 @@ export const FloatingNavbar: React.FC = () => {
                           </div>
                         </div>
                       </div>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#0E8A54] shrink-0" />
+                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#15A658] shrink-0" />
                     </button>
 
                     {/* Servicio 4 */}
@@ -153,11 +153,11 @@ export const FloatingNavbar: React.FC = () => {
                       className="w-full p-2.5 rounded-xl hover:bg-[#E6F9F0] flex items-center justify-between text-left transition-colors group cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-[#D1FAE5] text-[#0E8A54] flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-lg bg-[#D1FAE5] text-[#15A658] flex items-center justify-center shrink-0">
                           <Bot className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#0E8A54]">
+                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#15A658]">
                             Agente de Soporte IA 24/7
                           </div>
                           <div className="text-[11px] text-[#6B7280]">
@@ -165,7 +165,7 @@ export const FloatingNavbar: React.FC = () => {
                           </div>
                         </div>
                       </div>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#0E8A54] shrink-0" />
+                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#15A658] shrink-0" />
                     </button>
 
                   </div>
@@ -176,7 +176,7 @@ export const FloatingNavbar: React.FC = () => {
             {/* Agente de IA */}
             <Link
               href="#ai-demo"
-              className="px-3 py-1.5 rounded-lg text-[#374151] hover:text-[#0E8A54] transition-colors"
+              className="px-3 py-1.5 rounded-lg text-[#374151] hover:text-[#15A658] transition-colors"
             >
               Agente de IA
             </Link>
@@ -189,10 +189,10 @@ export const FloatingNavbar: React.FC = () => {
             >
               <button
                 onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
-                className="px-4 py-2 rounded-full bg-white text-[#0E8A54] font-bold text-sm shadow-[0_4px_16px_rgba(255,255,255,0.9),0_2px_8px_rgba(0,0,0,0.08)] flex items-center gap-1.5 cursor-pointer border border-white"
+                className="px-4 py-2 rounded-full bg-white text-[#15A658] font-bold text-sm shadow-[0_4px_16px_rgba(255,255,255,0.9),0_2px_8px_rgba(0,0,0,0.08)] flex items-center gap-1.5 cursor-pointer border border-white"
               >
                 <span>Quiénes somos</span>
-                <span className="text-[10px] text-[#DCA81A] font-extrabold ml-0.5">
+                <span className="text-[10px] text-[#D8A01A] font-extrabold ml-0.5">
                   ▲
                 </span>
               </button>
@@ -208,7 +208,7 @@ export const FloatingNavbar: React.FC = () => {
                       className="w-full p-2.5 rounded-2xl bg-gradient-to-r from-[#E6F9F0] via-[#F4FBF0] to-[#FFFBEB] border border-emerald-200/50 flex items-center justify-between text-left transition-all hover:scale-[1.01] cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-xl bg-[#D1FAE5] text-[#0E8A54] flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-xl bg-[#D1FAE5] text-[#15A658] flex items-center justify-center shrink-0">
                           <Compass className="w-4 h-4" />
                         </div>
                         <div>
@@ -233,7 +233,7 @@ export const FloatingNavbar: React.FC = () => {
                           <Target className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#0E8A54]">
+                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#15A658]">
                             Misión
                           </div>
                           <div className="text-[11px] text-[#6B7280]">
@@ -241,7 +241,7 @@ export const FloatingNavbar: React.FC = () => {
                           </div>
                         </div>
                       </div>
-                      <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-[#0E8A54] shrink-0" />
+                      <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-[#15A658] shrink-0" />
                     </button>
 
                     {/* Historia */}
@@ -254,7 +254,7 @@ export const FloatingNavbar: React.FC = () => {
                           <BookOpen className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#0E8A54]">
+                          <div className="text-xs font-bold text-[#111827] group-hover:text-[#15A658]">
                             Historia
                           </div>
                           <div className="text-[11px] text-[#6B7280]">
@@ -262,7 +262,7 @@ export const FloatingNavbar: React.FC = () => {
                           </div>
                         </div>
                       </div>
-                      <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-[#0E8A54] shrink-0" />
+                      <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-[#15A658] shrink-0" />
                     </button>
 
                   </div>
@@ -300,10 +300,10 @@ export const FloatingNavbar: React.FC = () => {
             {/* Botón Portal Clientes */}
             <Link
               href="/login"
-              className="px-4 py-2 rounded-full bg-white shadow-[0_3px_12px_rgba(0,0,0,0.08),0_0_10px_rgba(255,255,255,0.9)] text-xs sm:text-sm font-semibold text-[#1E293B] hover:text-[#0E8A54] flex items-center gap-1.5 hover:scale-[1.02] transition-all cursor-pointer border border-white group"
+              className="px-4 py-2 rounded-full bg-white shadow-[0_3px_12px_rgba(0,0,0,0.08),0_0_10px_rgba(255,255,255,0.9)] text-xs sm:text-sm font-semibold text-[#1E293B] hover:text-[#15A658] flex items-center gap-1.5 hover:scale-[1.02] transition-all cursor-pointer border border-white group"
             >
               <span>Portal clientes</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#0E8A54] transition-colors" />
+              <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#15A658] transition-colors" />
             </Link>
 
           </div>
@@ -332,31 +332,31 @@ export const FloatingNavbar: React.FC = () => {
               </Link>
 
               <div className="p-2 border-t border-gray-100">
-                <div className="text-xs uppercase font-bold text-[#0E8A54] mb-1">
+                <div className="text-xs uppercase font-bold text-[#15A658] mb-1">
                   Servicios
                 </div>
                 <div className="space-y-1 pl-2">
                   <button
                     onClick={() => handleServiceClick('servicios-tarjetas')}
-                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-[#0E8A54]"
+                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-[#15A658]"
                   >
                     • Tarjetas Digitales (NFC &amp; QR)
                   </button>
                   <button
                     onClick={() => handleServiceClick('servicios-catalogos')}
-                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-[#0E8A54]"
+                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-[#15A658]"
                   >
                     • Catálogos E-commerce Autónomos
                   </button>
                   <button
                     onClick={() => handleServiceClick('servicios-menus')}
-                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-[#0E8A54]"
+                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-[#15A658]"
                   >
                     • Menús y Vitrinas Digitales
                   </button>
                   <button
                     onClick={() => handleServiceClick('servicios-ia')}
-                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-[#0E8A54]"
+                    className="w-full text-left py-1 text-xs text-gray-600 hover:text-[#15A658]"
                   >
                     • Agente de Soporte IA 24/7
                   </button>
@@ -372,7 +372,7 @@ export const FloatingNavbar: React.FC = () => {
               </Link>
 
               <div className="p-2 border-t border-gray-100">
-                <div className="text-xs uppercase font-bold text-[#0E8A54] mb-2">
+                <div className="text-xs uppercase font-bold text-[#15A658] mb-2">
                   Quiénes somos
                 </div>
                 <div className="grid grid-cols-3 gap-2">
@@ -421,7 +421,7 @@ export const FloatingNavbar: React.FC = () => {
               <Link
                 href="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-4 py-2 rounded-full bg-[#0E8A54] text-white font-bold text-xs flex items-center gap-1.5"
+                className="px-4 py-2 rounded-full bg-[#15A658] text-white font-bold text-xs flex items-center gap-1.5"
               >
                 <span>Portal clientes</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />

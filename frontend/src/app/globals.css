@@ -2,10 +2,10 @@
 
 @layer base {
   :root {
-    --gevo-gold: #D97706;
-    --gevo-green: #10B981;
-    --gevo-green-dark: #047857;
-    --nav-bg: #E7EAEE;
+    --gevo-gold: #D8A01A;
+    --gevo-green: #15A658;
+    --gevo-green-neon: #00D928;
+    --nav-bg: #CCD1D5;
   }
 
   body {
