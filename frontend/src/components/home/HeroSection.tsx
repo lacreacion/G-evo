@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { GevoText } from '@/components/common/GevoText';
 import { 
   Sparkles, 
   ArrowRight, 
@@ -16,18 +17,22 @@ import {
 
 export const HeroSection: React.FC = () => {
   return (
-    <section className="relative min-h-[92vh] pt-32 pb-16 md:pt-40 md:pb-24 flex items-center justify-center overflow-hidden">
-      {/* Background Grid Pattern Matching Reference Screenshot */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden bg-[#F8F9FA]">
+    <section className="relative min-h-[92vh] pt-32 pb-16 md:pt-40 md:pb-24 flex items-center justify-center overflow-hidden bg-[#090D14]">
+      {/* Background Animated Dynamic Video-Inspired Glows & Mesh (Dark Theme Original) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Animated Orbs */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] md:w-[900px] h-[350px] md:h-[500px] bg-gradient-to-tr from-amber-500/15 via-emerald-500/15 to-transparent rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute top-1/3 -left-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-10 -right-20 w-96 h-96 bg-amber-500/10 rounded-full blur-[100px]" />
+
+        {/* Dynamic Grid / Cyber Mesh */}
         <div 
-          className="absolute inset-0 opacity-[0.4]"
+          className="absolute inset-0 opacity-[0.04]"
           style={{
-            backgroundImage: `linear-gradient(to right, #E2E8F0 1px, transparent 1px), linear-gradient(to bottom, #E2E8F0 1px, transparent 1px)`,
-            backgroundSize: '40px 40px'
+            backgroundImage: `radial-gradient(circle at 1px 1px, #ffffff 1px, transparent 0)`,
+            backgroundSize: '36px 36px'
           }}
         />
-        {/* Soft Ambient Light Glows */}
-        <div className="absolute top-1/4 right-1/4 w-[500px] h-[350px] bg-gradient-to-tr from-amber-400/10 via-emerald-400/10 to-transparent rounded-full blur-[100px]" />
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6 w-full">
@@ -37,32 +42,32 @@ export const HeroSection: React.FC = () => {
           <div className="lg:col-span-7 text-center lg:text-left space-y-5">
             
             {/* Tagline de la Imagen de Referencia */}
-            <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-[#D97706]">
-              <span className="w-6 h-0.5 bg-[#D97706] rounded-full" />
+            <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-[#DCA81A]">
+              <span className="w-6 h-0.5 bg-[#DCA81A] rounded-full" />
               <span>El Siguiente Paso de tu Negocio</span>
             </div>
 
-            {/* Titular Principal Fiel a la Imagen */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] text-[#111827]">
+            {/* Titular Principal con Identidad Tipográfica Oficial G-evo */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] text-white">
               Tu negocio merece <br className="hidden sm:inline" />
-              evolucionar con <span className="text-[#D97706]">G-</span><span className="text-[#0E8A54]">evo.</span>
+              evolucionar con <GevoText className="text-4xl sm:text-5xl md:text-6xl" />
             </h1>
 
-            <p className="text-base sm:text-lg text-[#4B5563] max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
-              Diseñamos y desplegamos tus <span className="text-[#D97706] font-semibold">Tarjetas Digitales Inteligentes (NFC/QR)</span> y <span className="text-[#0E8A54] font-semibold">Catálogos E-commerce Autónomos</span>. Una vez creados por nosotros, tú gestionas tus productos, fotos y precios con total libertad.
+            <p className="text-base sm:text-lg text-gray-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
+              Diseñamos y desplegamos tus <span className="text-amber-300 font-semibold">Tarjetas Digitales Inteligentes (NFC/QR)</span> y <span className="text-emerald-400 font-semibold">Catálogos E-commerce Autónomos</span>. Una vez creados por nosotros, tú gestionas tus productos, fotos y precios con total libertad.
             </p>
 
             {/* Badges de Autoridad */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs text-[#4B5563] pt-1">
-              <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-gray-200 shadow-sm">
-                <Wifi className="w-4 h-4 text-[#D97706]" />
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs text-gray-300 pt-1">
+              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
+                <Wifi className="w-4 h-4 text-[#DCA81A]" />
                 <span className="font-medium">NFC &amp; QR Dinámico</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-gray-200 shadow-sm">
+              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
                 <ShoppingBag className="w-4 h-4 text-[#0E8A54]" />
                 <span className="font-medium">Pedidos a WhatsApp</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-gray-200 shadow-sm">
+              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
                 <Bot className="w-4 h-4 text-[#0E8A54]" />
                 <span className="font-medium">Agente IA 24/7 Disponible</span>
               </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { GevoText } from '@/components/common/GevoText';
 import { MOCK_SHOWCASE, ShowcaseItem } from '@/lib/mockData';
 import { 
   Sparkles, 
@@ -36,7 +37,7 @@ export const PublicShowcase: React.FC = () => {
               Mostrario Público de <span className="text-gold-metallic">Ejemplos Reales</span>
             </h2>
             <p className="text-gray-400 text-sm max-w-xl">
-              Explora proyectos implementados con la tecnología G-evo. Cada tarjeta y catálogo es creado centralmente por nosotros y gestionado con total autonomía por sus propietarios.
+              Explora proyectos implementados con la tecnología <GevoText withDot={false} />. Cada tarjeta y catálogo es creado centralmente por nosotros y gestionado con total autonomía por sus propietarios.
             </p>
           </div>
 

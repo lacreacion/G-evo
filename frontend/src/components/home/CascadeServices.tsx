@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { GevoText } from '@/components/common/GevoText';
 import { CASCADE_SERVICES, ServiceItem } from '@/lib/mockData';
 import { 
   Play, 
@@ -144,7 +145,7 @@ export const CascadeServices: React.FC = () => {
                     <div className="p-4 rounded-2xl bg-amber-950/20 border border-amber-500/20">
                       <h4 className="text-xs uppercase font-bold tracking-wider text-amber-300 mb-2 flex items-center gap-2">
                         <Award className="w-4 h-4 text-amber-400" />
-                        <span>Ventajas Competitivas de G-evo</span>
+                        <span>Ventajas Competitivas de <GevoText withDot={false} /></span>
                       </h4>
                       <ul className="space-y-1.5">
                         {service.competitiveAdvantages.map((adv, i) => (
@@ -165,7 +166,7 @@ export const CascadeServices: React.FC = () => {
                         href="#contacto"
                         className="inline-flex items-center gap-2 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors group/link"
                       >
-                        <span>Solicitar este servicio con G-evo</span>
+                        <span className="flex items-center gap-1.5">Solicitar este servicio con <GevoText withDot={false} /></span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
                       </a>
                     </div>

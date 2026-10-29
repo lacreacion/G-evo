@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { GevoText } from '@/components/common/GevoText';
 import { 
   Bot, 
   Sparkles, 
@@ -121,7 +122,7 @@ export const AiSupportDemo: React.FC = () => {
                 </div>
                 <div>
                   <div className="text-sm font-bold text-white flex items-center gap-2">
-                    <span>Agente IA G-evo</span>
+                    <span className="flex items-center gap-1.5">Agente IA <GevoText withDot={false} /></span>
                     <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold">
                       Demo en Vivo
                     </span>
@@ -266,7 +267,8 @@ export const AiSupportDemo: React.FC = () => {
               <div className="p-3.5 rounded-2xl bg-black/50 border border-emerald-500/40 text-center space-y-1.5">
                 <div className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold flex items-center justify-center gap-1.5">
                   <Key className="w-3.5 h-3.5 text-amber-400" />
-                  Estructura de Código de Licencia G-evo
+                  <span>Estructura de Código de Licencia</span>
+                  <GevoText withDot={false} />
                 </div>
                 <div className="font-mono text-sm sm:text-base font-black text-emerald-300 tracking-wider">
                   GEVO-LAUR-AI24-8F92A1
