@@ -6,25 +6,56 @@ interface GevoTextProps {
 }
 
 /**
- * GevoText: Componente Oficial G-evo.
- * Renderiza el wordmark vectorial SVG de ultra-alta definición con los colores oficiales de la marca:
- * - 'G' en degradado dorado metalizado.
- * - '-evo.' en verde vibrante característico.
- * - Sin sombras difusas ni desenfoque, nítido en pantallas Retina.
+ * GevoText: Componente Oficial G-evo para Titulares y Textos.
+ * 1. Sin espacios incorrectos: 'G-evo.' continuo.
+ * 2. 'G' con degradado dorado metalizado corporativo.
+ * 3. '-evo' con degradado verde esmeralda vibrante.
+ * 4. '.' en verde neón brillante.
  */
 export const GevoText: React.FC<GevoTextProps> = ({ 
   className = '', 
   withDot = true 
 }) => {
   return (
-    <span className={`inline-flex items-center align-middle select-none ${className}`}>
-      <img
-        src="/gevo-wordmark.svg"
-        alt="G-evo."
-        className="inline-block object-contain h-[1.12em] w-auto align-middle -translate-y-[0.06em] pointer-events-none"
-        loading="eager"
-        decoding="sync"
-      />
+    <span className={`inline-flex items-baseline font-black tracking-tight select-none ${className}`}>
+      {/* 'G' con degradado dorado metalizado corporativo */}
+      <span 
+        className="bg-clip-text text-transparent inline-block leading-none"
+        style={{
+          backgroundImage: 'linear-gradient(135deg, #FFF6BD 0%, #F5C226 25%, #D8A01A 60%, #9E6E00 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.12))'
+        }}
+      >
+        G
+      </span>
+
+      {/* '-evo' con degradado verde vibrante continuo (sin espacios) */}
+      <span 
+        className="bg-clip-text text-transparent inline-block leading-none"
+        style={{
+          backgroundImage: 'linear-gradient(135deg, #6EE7B7 0%, #22C55E 30%, #15A658 70%, #0B733B 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.12))'
+        }}
+      >
+        -evo
+      </span>
+
+      {/* '.' Punto verde neón brillante */}
+      {withDot && (
+        <span 
+          className="inline-block leading-none"
+          style={{
+            color: '#00D928',
+            textShadow: '0 0 8px rgba(0, 217, 40, 0.4)'
+          }}
+        >
+          .
+        </span>
+      )}
     </span>
   );
 };
