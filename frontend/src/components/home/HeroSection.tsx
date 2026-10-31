@@ -6,7 +6,6 @@ import { GevoText } from '@/components/common/GevoText';
 import { 
   Sparkles, 
   ArrowRight, 
-  Smartphone, 
   ShoppingBag, 
   ShieldCheck, 
   Bot, 
@@ -59,7 +58,7 @@ export const HeroSection: React.FC = () => {
             </h1>
 
             <p className="text-base sm:text-lg text-gray-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
-              Diseñamos y desplegamos tus <span className="text-amber-300 font-semibold">Tarjetas Digitales Inteligentes (NFC/QR)</span> y <span className="text-emerald-400 font-semibold">Catálogos E-commerce Autónomos</span>. Una vez creados por nosotros, tú gestionas tus productos, fotos y precios con total libertad.
+              Diseñamos y desplegamos tus <span className="text-amber-300 font-semibold">tarjetas digitales inteligentes (NFC/QR)</span>, <span className="text-emerald-400 font-semibold">catálogos digitales, tiendas E-commerce y páginas web</span>. Soluciones tecnológicas de alto impacto diseñadas para destacar tu marca, conectar con más clientes y potenciar tus ventas.
             </p>
 
             {/* Badges de Autoridad */}
@@ -265,4 +264,3 @@ export const HeroSection: React.FC = () => {
     </section>
   );
 };
-
