@@ -1,6 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { GevoText } from '@/components/common/GevoText';
 import { CASCADE_SERVICES, ServiceItem } from '@/lib/mockData';
 import { 
   Play, 
@@ -8,9 +11,9 @@ import {
   Award, 
   Zap, 
   X, 
-  ArrowRight,
-  Sparkles,
-  Layers
+  ArrowRight, 
+  Sparkles, 
+  Layers 
 } from 'lucide-react';
 
 export const CascadeServices: React.FC = () => {
@@ -22,8 +25,8 @@ export const CascadeServices: React.FC = () => {
   return (
     <section id="servicios" className="py-20 md:py-28 relative overflow-hidden">
       {/* Background ambient lighting */}
-      <div className="absolute top-1/2 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-10 right-0 w-96 h-96 bg-amber-500/5 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/2 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 right-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
         
@@ -36,7 +39,17 @@ export const CascadeServices: React.FC = () => {
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight">
             Servicios diseñados para la{' '}
-            <span className="text-gold-metallic">Evolución</span> de tu Negocio
+            <span 
+              className="inline-block bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-600 bg-clip-text text-transparent font-black"
+              style={{
+                backgroundImage: 'linear-gradient(135deg, #FEF08A 0%, #FDE047 25%, #F59E0B 60%, #B45309 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}
+            >
+              Evolución
+            </span>{' '}
+            de tu Negocio
           </h2>
 
           <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
@@ -52,16 +65,15 @@ export const CascadeServices: React.FC = () => {
             return (
               <div
                 key={service.id}
-                className="group relative rounded-3xl bg-gradient-to-b from-[#111827]/90 to-[#0A0E17]/90 border border-white/10 hover:border-emerald-500/40 p-6 md:p-10 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/10"
+                className="group relative rounded-3xl bg-gradient-to-b from-gray-900/90 to-gray-950/90 border border-white/10 hover:border-emerald-500/40 p-6 md:p-10 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/10"
                 style={{
-                  // Simulación de efecto cascada progresivo
                   animationDelay: `${index * 150}ms`
                 }}
               >
                 {/* Badge Numerado de Cascada */}
                 <div className="absolute -top-4 left-8 px-4 py-1 rounded-full bg-[#0E1524] border border-amber-500/40 text-amber-300 font-extrabold text-xs shadow-md flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                  <span>0{service.id} // {service.badge}</span>
+                  <span>0{service.id} {'//'} {service.badge}</span>
                 </div>
 
                 <div className={`grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center ${
@@ -71,12 +83,15 @@ export const CascadeServices: React.FC = () => {
                   {/* Columna de Video Explicativo / Player Preview */}
                   <div className={`lg:col-span-5 ${isEven ? '' : 'lg:col-start-8'}`}>
                     <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl group/video">
-                      <img
+                      <Image
                         src={service.videoThumbnail}
                         alt={service.title}
+                        width={600}
+                        height={350}
+                        unoptimized
                         className="w-full h-56 sm:h-64 object-cover filter brightness-90 group-hover/video:scale-105 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center">
+                      <div className="absolute inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center">
                         <button
                           onClick={() =>
                             setActiveVideo({
@@ -84,7 +99,7 @@ export const CascadeServices: React.FC = () => {
                               videoUrl: service.videoPreviewUrl
                             })
                           }
-                          className="relative p-4 rounded-full bg-gradient-to-r from-amber-400 to-emerald-400 text-black shadow-xl hover:scale-110 transition-all duration-300 group/btn"
+                          className="relative p-4 rounded-full bg-gradient-to-r from-amber-400 to-emerald-400 text-black shadow-xl hover:scale-110 transition-all duration-300 group/btn cursor-pointer"
                           aria-label={`Ver video explicativo de ${service.title}`}
                         >
                           <Play className="w-6 h-6 fill-black ml-0.5" />
@@ -126,7 +141,7 @@ export const CascadeServices: React.FC = () => {
                         {service.features.map((feat, i) => (
                           <li
                             key={i}
-                            className="flex items-start gap-2 text-xs text-gray-300 bg-white/[0.02] p-2.5 rounded-xl border border-white/5"
+                            className="flex items-start gap-2 text-xs text-gray-300 bg-white/5 p-2.5 rounded-xl border border-white/5"
                           >
                             <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                             <span>{feat}</span>
@@ -139,7 +154,7 @@ export const CascadeServices: React.FC = () => {
                     <div className="p-4 rounded-2xl bg-amber-950/20 border border-amber-500/20">
                       <h4 className="text-xs uppercase font-bold tracking-wider text-amber-300 mb-2 flex items-center gap-2">
                         <Award className="w-4 h-4 text-amber-400" />
-                        <span>Ventajas Competitivas de G-evo</span>
+                        <span>Ventajas Competitivas de <GevoText withDot={false} /></span>
                       </h4>
                       <ul className="space-y-1.5">
                         {service.competitiveAdvantages.map((adv, i) => (
@@ -156,13 +171,13 @@ export const CascadeServices: React.FC = () => {
 
                     {/* CTA a contacto / cotización */}
                     <div className="pt-2">
-                      <a
+                      <Link
                         href="#contacto"
                         className="inline-flex items-center gap-2 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors group/link"
                       >
-                        <span>Solicitar este servicio con G-evo</span>
+                        <span className="flex items-center gap-1">Solicitar este servicio con <GevoText withDot={false} /></span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
-                      </a>
+                      </Link>
                     </div>
 
                   </div>
@@ -177,7 +192,7 @@ export const CascadeServices: React.FC = () => {
 
       {/* Modal Reproductor de Video Explicativo */}
       {activeVideo && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl animate-fadeIn">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl transition-opacity duration-300">
           <div
             className="absolute inset-0"
             onClick={() => setActiveVideo(null)}
@@ -193,7 +208,7 @@ export const CascadeServices: React.FC = () => {
               </div>
               <button
                 onClick={() => setActiveVideo(null)}
-                className="p-1.5 rounded-lg text-gray-400 hover:text-white bg-white/5"
+                className="p-1.5 rounded-lg text-gray-400 hover:text-white bg-white/5 cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -206,19 +221,20 @@ export const CascadeServices: React.FC = () => {
                 autoPlay
                 className="w-full h-full object-cover"
               >
+                <track kind="captions" />
                 Tu navegador no soporta el formato de video.
               </video>
             </div>
 
             <div className="text-center pt-2">
-              <a
+              <Link
                 href="#contacto"
                 onClick={() => setActiveVideo(null)}
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-xs text-black bg-gradient-to-r from-amber-400 to-emerald-400 shadow-md"
               >
                 <span>Cotizar esta solución ahora</span>
                 <ArrowRight className="w-4 h-4" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -227,4 +243,3 @@ export const CascadeServices: React.FC = () => {
     </section>
   );
 };
-

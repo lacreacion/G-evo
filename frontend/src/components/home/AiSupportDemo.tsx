@@ -1,18 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   Bot, 
   Sparkles, 
   Send, 
   Key, 
-  CheckCircle2, 
-  ShieldAlert, 
   Clock, 
   Coins, 
-  HelpCircle,
-  MessageSquare
-} from 'lucide-react';
+  } from 'lucide-react';
 
 interface ChatMessage {
   id: string;
@@ -22,6 +18,7 @@ interface ChatMessage {
 }
 
 export const AiSupportDemo: React.FC = () => {
+  const messageCounterRef = useRef(10);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: '1',
@@ -45,7 +42,7 @@ export const AiSupportDemo: React.FC = () => {
     if (!textToSend.trim()) return;
 
     const userMsg: ChatMessage = {
-      id: Date.now().toString(),
+      id: 'msg-' + (messageCounterRef.current++),
       sender: 'user',
       text: textToSend,
       time: 'Ahora'
@@ -71,7 +68,7 @@ export const AiSupportDemo: React.FC = () => {
       }
 
       const aiMsg: ChatMessage = {
-        id: (Date.now() + 1).toString(),
+        id: 'msg-' + (messageCounterRef.current++),
         sender: 'ai',
         text: botReply,
         time: 'Ahora'

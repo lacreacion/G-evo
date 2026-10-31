@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { MOCK_STORIES, StoryItem } from '@/lib/mockData';
 import { 
   Sparkles, 
@@ -19,7 +20,6 @@ export const StoriesSection: React.FC = () => {
   // Auto-progress timer for active story in modal
   useEffect(() => {
     if (selectedStoryIndex === null) {
-      setProgress(0);
       return;
     }
 
@@ -46,12 +46,17 @@ export const StoriesSection: React.FC = () => {
     return () => clearInterval(timer);
   }, [selectedStoryIndex]);
 
+  const handleClose = () => {
+    setSelectedStoryIndex(null);
+    setProgress(0);
+  };
+
   const handleNextStory = () => {
     if (selectedStoryIndex !== null && selectedStoryIndex < MOCK_STORIES.length - 1) {
       setSelectedStoryIndex(selectedStoryIndex + 1);
       setProgress(0);
     } else {
-      setSelectedStoryIndex(null);
+      handleClose();
     }
   };
 
@@ -118,9 +123,12 @@ export const StoriesSection: React.FC = () => {
                 {/* Anillo de Historia con Gradiente Oficial Dorado & Verde */}
                 <div className="relative p-[3px] rounded-full bg-gradient-to-tr from-amber-400 via-emerald-400 to-amber-200 transition-transform duration-300 group-hover:scale-105 shadow-md group-hover:shadow-emerald-500/30">
                   <div className="p-[2px] bg-[#090D14] rounded-full">
-                    <img
+                    <Image
                       src={story.mediaUrl}
                       alt={story.caption}
+                      width={80}
+                      height={80}
+                      unoptimized
                       className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover filter brightness-95 group-hover:brightness-110 transition-all"
                     />
                   </div>
@@ -163,7 +171,7 @@ export const StoriesSection: React.FC = () => {
           {/* Backdrop Click to Close */}
           <div
             className="absolute inset-0"
-            onClick={() => setSelectedStoryIndex(null)}
+            onClick={handleClose}
           />
 
           {/* Story Container Card */}
@@ -171,9 +179,11 @@ export const StoriesSection: React.FC = () => {
             
             {/* Story Background Image */}
             <div className="absolute inset-0 z-0">
-              <img
+              <Image
                 src={currentStory.mediaUrl}
                 alt="Historia corporativa"
+                fill
+                unoptimized
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/90" />
@@ -203,12 +213,15 @@ export const StoriesSection: React.FC = () => {
                 ))}
               </div>
 
-              {/* Profile Header */}
+            {/* Profile Header */}
               <div className="flex items-center justify-between text-white">
                 <div className="flex items-center gap-2.5">
-                  <img
+                  <Image
                     src={currentStory.avatarUrl}
                     alt={currentStory.userName}
+                    width={36}
+                    height={36}
+                    unoptimized
                     className="w-9 h-9 rounded-full object-cover border border-white/20"
                   />
                   <div>
@@ -223,7 +236,7 @@ export const StoriesSection: React.FC = () => {
                 </div>
 
                 <button
-                  onClick={() => setSelectedStoryIndex(null)}
+                  onClick={handleClose}
                   className="p-1.5 rounded-full bg-black/40 hover:bg-black/60 text-white transition-colors"
                   aria-label="Cerrar historia"
                 >
@@ -261,7 +274,7 @@ export const StoriesSection: React.FC = () => {
               {currentStory.actionUrl && (
                 <a
                   href={currentStory.actionUrl}
-                  onClick={() => setSelectedStoryIndex(null)}
+                  onClick={handleClose}
                   className="w-full py-3 px-4 rounded-xl font-bold text-xs text-black bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-400 shadow-lg hover:shadow-emerald-500/30 transition-all flex items-center justify-center gap-2"
                 >
                   <span>{currentStory.actionText || 'Conoce más'}</span>
