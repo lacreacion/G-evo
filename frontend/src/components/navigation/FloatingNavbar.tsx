@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/common/Logo';
+import { FacebookIcon, InstagramIcon } from '@/components/common/SocialIcons';
 import { 
   ChevronDown, 
   Sparkles, 
@@ -156,8 +157,33 @@ export const FloatingNavbar: React.FC = () => {
             </Link>
           </div>
 
-          {/* Botón de Acción (Portal Clientes con Diseño Gradiente Dorado-Verde) */}
-          <div className="hidden md:flex items-center gap-3">
+          {/* Redes Sociales + Botón Portal Clientes */}
+          <div className="hidden md:flex items-center gap-2.5">
+            {/* Botón Oficial de Facebook con efecto glow y elevación */}
+            <a
+              href="https://www.facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visitar Facebook oficial de G-evo"
+              title="Síguenos en Facebook"
+              className="w-8 h-8 rounded-full flex items-center justify-center bg-white/5 border border-white/10 text-gray-300 transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 hover:bg-[#1877F2] hover:border-[#1877F2] hover:text-white hover:shadow-[0_0_16px_rgba(24,119,242,0.55)] group/fb"
+            >
+              <FacebookIcon className="w-3.5 h-3.5 transition-transform duration-300 group-hover/fb:scale-110" />
+            </a>
+
+            {/* Botón Oficial de Instagram con efecto gradiente, giro y glow */}
+            <a
+              href="https://www.instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visitar Instagram oficial de G-evo"
+              title="Síguenos en Instagram"
+              className="w-8 h-8 rounded-full flex items-center justify-center bg-white/5 border border-white/10 text-gray-300 transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 hover:bg-gradient-to-tr hover:from-amber-500 hover:via-pink-500 hover:to-purple-600 hover:border-pink-500/60 hover:text-white hover:shadow-[0_0_16px_rgba(236,72,153,0.55)] group/ig"
+            >
+              <InstagramIcon className="w-3.5 h-3.5 transition-transform duration-300 group-hover/ig:scale-110 group-hover/ig:rotate-6" />
+            </a>
+
+            {/* Botón Portal Clientes */}
             <Link
               href="/login"
               className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-black rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 transition-all transform hover:scale-[1.02]"
@@ -241,7 +267,29 @@ export const FloatingNavbar: React.FC = () => {
               </Link>
             </div>
 
-            <div className="pt-3 border-t border-white/10 flex flex-col gap-2">
+            <div className="pt-3 border-t border-white/10 flex flex-col gap-3">
+              {/* Redes Sociales antes de Portal Clientes en Mobile */}
+              <div className="flex items-center justify-center gap-3">
+                <a
+                  href="https://www.facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Visitar Facebook oficial de G-evo"
+                  className="w-9 h-9 rounded-full flex items-center justify-center bg-white/5 border border-white/10 text-gray-300 transition-all duration-300 hover:scale-110 hover:bg-[#1877F2] hover:border-[#1877F2] hover:text-white hover:shadow-[0_0_16px_rgba(24,119,242,0.55)]"
+                >
+                  <FacebookIcon className="w-4 h-4" />
+                </a>
+                <a
+                  href="https://www.instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Visitar Instagram oficial de G-evo"
+                  className="w-9 h-9 rounded-full flex items-center justify-center bg-white/5 border border-white/10 text-gray-300 transition-all duration-300 hover:scale-110 hover:bg-gradient-to-tr hover:from-amber-500 hover:via-pink-500 hover:to-purple-600 hover:border-pink-500/60 hover:text-white hover:shadow-[0_0_16px_rgba(236,72,153,0.55)]"
+                >
+                  <InstagramIcon className="w-4 h-4" />
+                </a>
+              </div>
+
               <Link
                 href="/login"
                 onClick={() => setMobileMenuOpen(false)}
