@@ -86,9 +86,8 @@ export const Logo: React.FC<LogoProps> = ({
 
       {/* Tipografía Oficial: 'G-' dorado metalizado y '-evo.' en verde vibrante */}
       <div className="flex flex-col">
-        <div className={`font-black tracking-tight leading-none ${currentSize.text}`}>
-          <span className="text-gold-metallic">G-</span>
-          <span className="text-green-vibrant">evo.</span>
+        <div className={`font-black tracking-tight leading-none inline-flex items-baseline flex-nowrap ${currentSize.text}`}>
+          <span className="text-gold-metallic">G-</span><span className="text-green-vibrant">evo.</span>
         </div>
         {showTagline && (
           <span className={`text-gray-400 font-medium tracking-wider uppercase mt-1 ${currentSize.badge}`}>
