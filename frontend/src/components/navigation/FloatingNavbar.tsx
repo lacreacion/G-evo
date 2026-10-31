@@ -67,16 +67,6 @@ export const FloatingNavbar: React.FC = () => {
             </Link>
 
             <Link
-              href="#mostrario"
-              className="hover:text-amber-400 transition-colors flex items-center gap-1.5"
-            >
-              <span>Mostrario</span>
-              <span className="px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30">
-                Ejemplos
-              </span>
-            </Link>
-
-            <Link
               href="#ai-demo"
               className="hover:text-emerald-400 transition-colors flex items-center gap-1.5"
             >
@@ -107,7 +97,7 @@ export const FloatingNavbar: React.FC = () => {
 
                   <button
                     onClick={() => openCorporateModal('vision')}
-                    className="w-full mt-1 p-2.5 rounded-xl hover:bg-white/5 flex items-start gap-3 text-left transition-colors group/item"
+                    className="w-full mt-1 p-2.5 rounded-xl hover:bg-white/5 flex items-start gap-3 text-left transition-colors group/item cursor-pointer"
                   >
                     <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 group-hover/item:border-emerald-400">
                       <Compass className="w-4 h-4" />
@@ -124,7 +114,7 @@ export const FloatingNavbar: React.FC = () => {
 
                   <button
                     onClick={() => openCorporateModal('mision')}
-                    className="w-full p-2.5 rounded-xl hover:bg-white/5 flex items-start gap-3 text-left transition-colors group/item"
+                    className="w-full p-2.5 rounded-xl hover:bg-white/5 flex items-start gap-3 text-left transition-colors group/item cursor-pointer"
                   >
                     <div className="p-2 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 group-hover/item:border-amber-400">
                       <Target className="w-4 h-4" />
@@ -141,7 +131,7 @@ export const FloatingNavbar: React.FC = () => {
 
                   <button
                     onClick={() => openCorporateModal('historia')}
-                    className="w-full p-2.5 rounded-xl hover:bg-white/5 flex items-start gap-3 text-left transition-colors group/item"
+                    className="w-full p-2.5 rounded-xl hover:bg-white/5 flex items-start gap-3 text-left transition-colors group/item cursor-pointer"
                   >
                     <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 group-hover/item:border-emerald-400">
                       <BookOpen className="w-4 h-4" />
@@ -218,16 +208,6 @@ export const FloatingNavbar: React.FC = () => {
                 Servicios
               </Link>
               <Link
-                href="#mostrario"
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2 hover:bg-white/5 rounded-lg flex items-center justify-between"
-              >
-                <span>Mostrario de Ejemplos</span>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                  Casos Reales
-                </span>
-              </Link>
-              <Link
                 href="#ai-demo"
                 onClick={() => setMobileMenuOpen(false)}
                 className="p-2 hover:bg-white/5 rounded-lg flex items-center gap-2"
@@ -301,4 +281,3 @@ export const FloatingNavbar: React.FC = () => {
     </>
   );
 };
-
