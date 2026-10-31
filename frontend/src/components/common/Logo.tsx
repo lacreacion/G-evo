@@ -9,11 +9,11 @@ interface LogoProps {
 
 /**
  * Logotipo Oficial G-evo.
- * - Estrictamente tipográfico y limpio (sin iconos, lazos, símbolos o mariposas a los lados).
- * - "G": Amarillo/dorado metalizado líquido con gradiente (from-yellow-300 via-amber-400 to-yellow-600 bg-clip-text text-transparent).
- * - "-evo.": Verde esmeralda brillante y sedoso (text-[#00B050] / satén verde vibrante).
- * - Cero espacios erróneos: texto estrictamente continuo "G-evo.".
- * - Alta definición vectorial en pantallas Retina sin filtros de desenfoque (blur).
+ * Calibrado al 100% con las referencias fotográficas:
+ * 1. Letra "G": Oro líquido metalizado fluido (#FFFF55 -> #FBFA00 -> #E4AE03 -> #9E7200).
+ * 2. Texto "-evo.": Satén verde esmeralda lustroso (#2AE67A -> #00B050 -> #058226).
+ * 3. Estrictamente continuo "G-evo." sin separaciones.
+ * 4. 100% tipográfico y limpio (sin iconos ni filtros de desenfoque).
  */
 export const Logo: React.FC<LogoProps> = ({
   className = '',
@@ -36,20 +36,24 @@ export const Logo: React.FC<LogoProps> = ({
     >
       <div className="flex flex-col">
         <div className={`font-black tracking-tight leading-none inline-flex items-baseline flex-nowrap ${currentSize.text} transition-transform duration-200 group-hover:scale-[1.02]`}>
+          {/* "G": Textura de Oro Líquido Brillante (Referencia 1) */}
           <span 
-            className="bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-600 bg-clip-text text-transparent inline-block"
+            className="inline-block bg-clip-text text-transparent"
             style={{
-              backgroundImage: 'linear-gradient(135deg, #FEF08A 0%, #FDE047 25%, #F59E0B 60%, #B45309 100%)',
+              backgroundImage: 'linear-gradient(135deg, #FFFF66 0%, #FBFA00 25%, #E4AE03 65%, #9E7200 100%)',
               WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
+              WebkitTextFillColor: 'transparent',
+              filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2))'
             }}
           >
             G
-          </span><span 
-            className="text-[#00B050] inline-block font-black"
+          </span>{/* "-evo.": Textura de Satén Verde Esmeralda Sedoso (Referencia 2) */}<span 
+            className="inline-block font-black bg-clip-text text-transparent"
             style={{
-              color: '#00B050',
-              textShadow: '0 0 10px rgba(0, 176, 80, 0.28)'
+              backgroundImage: 'linear-gradient(135deg, #2AE67A 0%, #00B050 45%, #058226 80%, #025209 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25))'
             }}
           >-evo.</span>
         </div>

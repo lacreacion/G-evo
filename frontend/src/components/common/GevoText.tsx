@@ -7,10 +7,10 @@ interface GevoTextProps {
 
 /**
  * GevoText: Componente Oficial Tipográfico G-evo.
- * 1. 'G': Amarillo/dorado metalizado líquido con gradiente (from-yellow-300 via-amber-400 to-yellow-600 bg-clip-text text-transparent).
- * 2. '-evo.': Verde esmeralda brillante y sedoso (#00B050 / satén verde vibrante).
- * 3. Estrictamente continuo sin espacios erróneos ("G-evo.").
- * 4. Sin iconos ni filtros de desenfoque, ultra-nítido en pantallas Retina.
+ * Calibrado con las referencias fotográficas de satén y oro líquido:
+ * - 'G': Oro líquido reflectante (#FFFF66 -> #FBFA00 -> #E4AE03 -> #9E7200).
+ * - '-evo.': Satén verde esmeralda lustroso (#2AE67A -> #00B050 -> #058226).
+ * - Continuo, sin espacios ("G-evo.").
  */
 export const GevoText: React.FC<GevoTextProps> = ({ 
   className = '', 
@@ -18,20 +18,24 @@ export const GevoText: React.FC<GevoTextProps> = ({
 }) => {
   return (
     <span className={`inline-flex items-baseline flex-nowrap font-black tracking-tight select-none ${className}`}>
+      {/* "G" Oro Líquido Metalizado */}
       <span 
-        className="bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-600 bg-clip-text text-transparent inline-block"
+        className="inline-block bg-clip-text text-transparent"
         style={{
-          backgroundImage: 'linear-gradient(135deg, #FEF08A 0%, #FDE047 25%, #F59E0B 60%, #B45309 100%)',
+          backgroundImage: 'linear-gradient(135deg, #FFFF66 0%, #FBFA00 25%, #E4AE03 65%, #9E7200 100%)',
           WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent'
+          WebkitTextFillColor: 'transparent',
+          filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2))'
         }}
       >
         G
-      </span><span 
-        className="text-[#00B050] inline-block font-black"
+      </span>{/* "-evo." Satén Verde Esmeralda */}<span 
+        className="inline-block font-black bg-clip-text text-transparent"
         style={{
-          color: '#00B050',
-          textShadow: '0 0 10px rgba(0, 176, 80, 0.28)'
+          backgroundImage: 'linear-gradient(135deg, #2AE67A 0%, #00B050 45%, #058226 80%, #025209 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25))'
         }}
       >-evo{withDot ? '.' : ''}</span>
     </span>
