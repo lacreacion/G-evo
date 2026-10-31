@@ -9,30 +9,34 @@ interface GevoTextProps {
 
 /**
  * GevoText: Componente Tipográfico Oficial G-evo.
- * Calibrado con fidelidad 1:1 a la identidad corporativa:
- * - 'G': Oro cálido metalizado (#FDE68A -> #FBBF24 -> #D97706 -> #92400E).
- * - '-': Guion verde esmeralda vibrante (#00BA4E).
- * - 'evo': Verde esmeralda satinado (#34D399 -> #059669 -> #047857 -> #064E3B).
- * - '.': Punto verde lima neón (#00E63D).
+ * Calibrado 1:1 con la imagen maestra de alta resolución:
+ * - 'G': Oro metálico con reflejo especular diagonal (#C6860A -> #F9E46E -> #B87B07 -> #F3D55D).
+ * - '-': Guion verde vibrante (#00B84C).
+ * - 'evo': Verde esmeralda con reflejo satinado (#00823A -> #15C15D -> #007D37 -> #2CE474).
+ * - '.': Punto cuadrado en verde neón brillante (#00DA26).
  */
-export const GevoText: React.FC<GevoTextProps> = ({ 
-  className = '', 
+export const GevoText: React.FC<GevoTextProps> = ({
+  className = '',
   withDot = true,
   showIcon = false
 }) => {
   return (
-    <span className={`inline-flex items-baseline flex-nowrap font-black tracking-tight select-none ${className}`}>
+    <span
+      className={`inline-flex items-baseline flex-nowrap font-black tracking-tight select-none ${className}`}
+      style={{ fontFamily: 'Arial, Montserrat, Inter, sans-serif' }}
+    >
       {showIcon && (
         <span className="self-center mr-1.5 inline-flex">
-          <GevoIsotype size="xs" className="w-[0.9em] h-[0.9em]" />
+          <GevoIsotype size="xs" className="w-[0.95em] h-[0.95em]" />
         </span>
       )}
 
-      {/* "G" Oro Cálido Metalizado */}
-      <span 
-        className="inline-block bg-clip-text text-transparent"
+      {/* Letra "G" con Reflejo Metálico Diagonal Dorado */}
+      <span
+        className="inline-block bg-clip-text text-transparent font-black"
         style={{
-          backgroundImage: 'linear-gradient(135deg, #FDE68A 0%, #FBBF24 35%, #D97706 70%, #92400E 100%)',
+          backgroundImage:
+            'linear-gradient(125deg, #C6860A 0%, #E5B435 24%, #F9E46E 46%, #B87B07 64%, #F3D55D 82%, #C89015 100%)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2))'
@@ -41,21 +45,22 @@ export const GevoText: React.FC<GevoTextProps> = ({
         G
       </span>
 
-      {/* "-" Guion Verde Esmeralda */}
-      <span 
-        className="inline-block font-black text-[#00BA4E]"
+      {/* Guion "-" en Verde Vibrante Sólido */}
+      <span
+        className="inline-block font-black text-[#00B84C] mx-[0.5px]"
         style={{
-          filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2))'
+          filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.18))'
         }}
       >
         -
       </span>
 
-      {/* "evo" Verde Esmeralda Satinado */}
-      <span 
+      {/* Letras "evo" con Satén Esmeralda y Reflejo Brillante */}
+      <span
         className="inline-block font-black bg-clip-text text-transparent"
         style={{
-          backgroundImage: 'linear-gradient(135deg, #34D399 0%, #059669 40%, #047857 80%, #064E3B 100%)',
+          backgroundImage:
+            'linear-gradient(120deg, #00823A 0%, #15C15D 26%, #007D37 54%, #2CE474 82%, #007F39 100%)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2))'
@@ -64,16 +69,15 @@ export const GevoText: React.FC<GevoTextProps> = ({
         evo
       </span>
 
-      {/* "." Punto Verde Neón Brillante */}
+      {/* Punto Cuadrado "." en Verde Neón Puro */}
       {withDot && (
-        <span 
-          className="inline-block font-black text-[#00E63D] ml-[0.5px]"
+        <span
+          className="inline-block bg-[#00DA26] w-[0.17em] h-[0.17em] ml-[0.04em] mb-[0.02em] shrink-0"
           style={{
-            textShadow: '0 0 6px rgba(0, 230, 61, 0.5)'
+            boxShadow: '0 0 5px rgba(0, 218, 38, 0.45)'
           }}
-        >
-          .
-        </span>
+          aria-label="."
+        />
       )}
     </span>
   );
