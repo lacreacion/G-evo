@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { GevoText } from '@/components/common/GevoText';
 import { 
   Sparkles, 
   ArrowRight, 
@@ -54,7 +55,7 @@ export const HeroSection: React.FC = () => {
             {/* Titular Principal con Identidad Tipográfica Oficial */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] text-white">
               Haz que tu negocio evolucione con{' '}
-              <span className="inline-flex items-baseline flex-nowrap"><span className="text-gold-metallic">G-</span><span className="text-green-vibrant">evo.</span></span>
+              <GevoText />
             </h1>
 
             <p className="text-base sm:text-lg text-gray-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
