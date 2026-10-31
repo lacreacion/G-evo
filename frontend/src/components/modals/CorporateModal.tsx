@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { GevoText } from '@/components/common/GevoText';
 import { X, Sparkles, Target, Compass, BookOpen, ShieldCheck } from 'lucide-react';
 import { CORPORATE_INFO } from '@/lib/mockData';
 
@@ -119,8 +118,7 @@ export const CorporateModal: React.FC<CorporateModalProps> = ({
         <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-gray-400">
           <span className="flex items-center gap-1.5 text-emerald-400/90 font-medium">
             <ShieldCheck className="w-4 h-4" />
-            <span>Ecosistema Tecnológico Certificado</span>
-            <GevoText withDot={false} />
+            Ecosistema Tecnológico Certificado G-evo
           </span>
           <button
             onClick={onClose}

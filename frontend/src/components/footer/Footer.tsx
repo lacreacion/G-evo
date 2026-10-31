@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/common/Logo';
-import { GevoText } from '@/components/common/GevoText';
 import { 
   Phone, 
   Mail, 
@@ -299,7 +298,7 @@ export const Footer: React.FC = () => {
         {/* Sección Inferior: Derechos, Ley y Cumplimiento Normativo */}
         <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-[11px] text-gray-500">
           <div>
-            © 2026 <GevoText /> Todos los derechos reservados. Tecnología y Diseño Patentado.
+            © 2026 <span className="text-gray-300 font-semibold">G-evo.</span> Todos los derechos reservados. Tecnología y Diseño Patentado.
           </div>
 
           <div className="flex items-center gap-4 text-gray-400">

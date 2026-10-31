@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { GevoText } from '@/components/common/GevoText';
 import { 
   Sparkles, 
   ArrowRight, 
@@ -17,8 +16,8 @@ import {
 
 export const HeroSection: React.FC = () => {
   return (
-    <section className="relative min-h-[92vh] pt-32 pb-16 md:pt-40 md:pb-24 flex items-center justify-center overflow-hidden bg-[#090D14]">
-      {/* Background Animated Dynamic Video-Inspired Glows & Mesh (Dark Theme Original) */}
+    <section className="relative min-h-[92vh] pt-32 pb-16 md:pt-40 md:pb-24 flex items-center justify-center overflow-hidden">
+      {/* Background Animated Dynamic Video-Inspired Glows & Mesh */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Animated Orbs */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] md:w-[900px] h-[350px] md:h-[500px] bg-gradient-to-tr from-amber-500/15 via-emerald-500/15 to-transparent rounded-full blur-[120px] animate-pulse" />
@@ -27,7 +26,7 @@ export const HeroSection: React.FC = () => {
 
         {/* Dynamic Grid / Cyber Mesh */}
         <div 
-          className="absolute inset-0 opacity-[0.04]"
+          className="absolute inset-0 opacity-[0.03]"
           style={{
             backgroundImage: `radial-gradient(circle at 1px 1px, #ffffff 1px, transparent 0)`,
             backgroundSize: '36px 36px'
@@ -39,18 +38,24 @@ export const HeroSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
           {/* Columna Izquierda: Mensaje Central & Propuesta de Valor */}
-          <div className="lg:col-span-7 text-center lg:text-left space-y-5">
+          <div className="lg:col-span-7 text-center lg:text-left space-y-6">
             
-            {/* Tagline de la Imagen de Referencia */}
-            <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-[#D8A01A]">
-              <span className="w-6 h-0.5 bg-[#D8A01A] rounded-full" />
-              <span>El Siguiente Paso de tu Negocio</span>
+            {/* Pill Flotante de Estado */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-amber-500/30 backdrop-blur-md shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              <span className="text-xs font-semibold tracking-wide text-gray-200">
+                Ecosistema Comercial de Nueva Generación
+              </span>
+              <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300">
+                G-evo 2.0
+              </span>
             </div>
 
-            {/* Titular Principal con Identidad Tipográfica Oficial G-evo */}
+            {/* Titular Principal con Identidad Tipográfica Oficial */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] text-white">
-              Tu negocio merece <br className="hidden sm:inline" />
-              evolucionar con <GevoText />
+              Haz que tu negocio evolucione con{' '}
+              <span className="text-gold-metallic">G-</span>
+              <span className="text-green-vibrant">evo.</span>
             </h1>
 
             <p className="text-base sm:text-lg text-gray-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
@@ -58,18 +63,18 @@ export const HeroSection: React.FC = () => {
             </p>
 
             {/* Badges de Autoridad */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs text-gray-300 pt-1">
-              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
-                <Wifi className="w-4 h-4 text-[#D8A01A]" />
-                <span className="font-medium">NFC &amp; QR Dinámico</span>
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-gray-400 pt-2">
+              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+                <Wifi className="w-4 h-4 text-amber-400" />
+                <span>NFC &amp; QR Dinámico</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
-                <ShoppingBag className="w-4 h-4 text-[#15A658]" />
-                <span className="font-medium">Pedidos a WhatsApp</span>
+              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+                <ShoppingBag className="w-4 h-4 text-emerald-400" />
+                <span>Pedidos a WhatsApp</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
-                <Bot className="w-4 h-4 text-[#15A658]" />
-                <span className="font-medium">Agente IA 24/7 Disponible</span>
+              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+                <Bot className="w-4 h-4 text-emerald-400" />
+                <span>Agente IA 24/7 Disponible</span>
               </div>
             </div>
 
@@ -168,7 +173,7 @@ export const HeroSection: React.FC = () => {
                   </div>
 
                   <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-[11px]">
-                    <span className="text-gray-400 inline-flex items-center gap-1">Verificado <GevoText /></span>
+                    <span className="text-gray-400">Verificado G-evo</span>
                     <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-semibold">
                       NFC Activo
                     </span>

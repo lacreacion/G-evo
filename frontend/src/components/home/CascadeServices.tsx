@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { GevoText } from '@/components/common/GevoText';
 import { CASCADE_SERVICES, ServiceItem } from '@/lib/mockData';
 import { 
   Play, 
@@ -49,16 +48,11 @@ export const CascadeServices: React.FC = () => {
         <div className="space-y-12">
           {CASCADE_SERVICES.map((service: ServiceItem, index: number) => {
             const isEven = index % 2 === 0;
-            const serviceAnchorId = 
-              service.id === 1 ? 'servicios-tarjetas' :
-              service.id === 2 ? 'servicios-catalogos' :
-              service.id === 3 ? 'servicios-menus' : 'servicios-ia';
 
             return (
               <div
                 key={service.id}
-                id={serviceAnchorId}
-                className="group relative rounded-3xl bg-gradient-to-b from-[#111827]/90 to-[#0A0E17]/90 border border-white/10 hover:border-emerald-500/40 p-6 md:p-10 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/10 scroll-mt-24"
+                className="group relative rounded-3xl bg-gradient-to-b from-[#111827]/90 to-[#0A0E17]/90 border border-white/10 hover:border-emerald-500/40 p-6 md:p-10 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/10"
                 style={{
                   // Simulación de efecto cascada progresivo
                   animationDelay: `${index * 150}ms`
@@ -145,7 +139,7 @@ export const CascadeServices: React.FC = () => {
                     <div className="p-4 rounded-2xl bg-amber-950/20 border border-amber-500/20">
                       <h4 className="text-xs uppercase font-bold tracking-wider text-amber-300 mb-2 flex items-center gap-2">
                         <Award className="w-4 h-4 text-amber-400" />
-                        <span>Ventajas Competitivas de <GevoText withDot={false} /></span>
+                        <span>Ventajas Competitivas de G-evo</span>
                       </h4>
                       <ul className="space-y-1.5">
                         {service.competitiveAdvantages.map((adv, i) => (
@@ -166,7 +160,7 @@ export const CascadeServices: React.FC = () => {
                         href="#contacto"
                         className="inline-flex items-center gap-2 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors group/link"
                       >
-                        <span className="flex items-center gap-1.5">Solicitar este servicio con <GevoText withDot={false} /></span>
+                        <span>Solicitar este servicio con G-evo</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
                       </a>
                     </div>
