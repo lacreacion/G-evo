@@ -11,7 +11,6 @@ import {
   BookOpen, 
   Menu, 
   X, 
-  ArrowUpRight,
   LogIn
 } from 'lucide-react';
 import { CorporateModal, CorporateTab } from '@/components/modals/CorporateModal';
@@ -157,25 +156,15 @@ export const FloatingNavbar: React.FC = () => {
             </Link>
           </div>
 
-          {/* Botones de Acción (Acceso de Cliente & Cotización) */}
+          {/* Botón de Acción (Portal Clientes con Diseño Gradiente Dorado-Verde) */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Acceso para Clientes Finales */}
             <Link
               href="/login"
-              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium text-gray-300 hover:text-white rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
+              className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-black rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 transition-all transform hover:scale-[1.02]"
               title="Portal de Gestión para Clientes"
             >
-              <LogIn className="w-3.5 h-3.5 text-emerald-400" />
+              <LogIn className="w-3.5 h-3.5 text-black" />
               <span>Portal Clientes</span>
-            </Link>
-
-            {/* CTA Principal de Cotización */}
-            <Link
-              href="#contacto"
-              className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-black rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 transition-all transform hover:scale-[1.02]"
-            >
-              <span>Cotizar Ahora</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
@@ -256,16 +245,10 @@ export const FloatingNavbar: React.FC = () => {
               <Link
                 href="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-gray-200"
+                className="w-full text-center py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-400 text-xs font-bold text-black flex items-center justify-center gap-1.5"
               >
-                Ingreso Portal Clientes
-              </Link>
-              <Link
-                href="#contacto"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-emerald-400 text-xs font-bold text-black"
-              >
-                Cotizar Tarjeta o Catálogo
+                <LogIn className="w-3.5 h-3.5 text-black" />
+                <span>Portal Clientes</span>
               </Link>
             </div>
           </div>
