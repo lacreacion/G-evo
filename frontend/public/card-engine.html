@@ -968,7 +968,7 @@
     </div>
 
     <p class="text-xs text-zinc-400 mb-4">
-      Ingresa tu PIN de propietario para habilitar el botón <strong class="text-zinc-200">Editar</strong> en la tarjeta. <span class="text-emerald-400 font-mono">(PIN demo: 1234)</span>
+      Ingresa la <strong class="text-emerald-400">Clave / PIN de Propietario</strong> que te entregó <strong class="text-zinc-200">G-evo.</strong> para habilitar el botón <strong class="text-zinc-200">Editar</strong> desde tu celular o computador.
     </p>
 
     <form id="owner-auth-form" class="space-y-3">
@@ -1509,9 +1509,31 @@
       }
     })();
 
+    const IS_AUTHORIZED_CARD = Boolean(
+      savedProfile ||
+      CURRENT_SLUG === "elena-vance" ||
+      Object.prototype.hasOwnProperty.call(PRESET_PROFILES, CURRENT_SLUG)
+    );
     const presetForSlug = PRESET_PROFILES[CURRENT_SLUG] || {};
     const PROFILE_CONFIG = { ...DEFAULT_PROFILE, ...presetForSlug, ...(savedProfile || {}) };
     PROFILE_CONFIG.url = window.location.origin + "/t/" + CURRENT_SLUG;
+
+    if (!IS_AUTHORIZED_CARD) {
+      document.addEventListener("DOMContentLoaded", () => {
+        document.body.innerHTML = `
+          <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:#090a0f;color:#f4f4f5;font-family:'Plus Jakarta Sans',sans-serif;text-align:center;">
+            <div style="max-width:420px;background:#12141d;border:1px solid rgba(212,175,55,0.35);border-radius:24px;padding:32px 24px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.8);">
+              <div style="width:56px;height:56px;margin:0 auto 16px;border-radius:16px;background:rgba(212,175,55,0.12);border:1px solid rgba(212,175,55,0.4);display:flex;align-items:center;justify-content:center;font-size:24px;">🔒</div>
+              <h1 style="font-size:20px;font-weight:800;margin-bottom:8px;color:#ffffff;">Tarjeta Digital No Emitida</h1>
+              <p style="font-size:13px;line-height:1.6;color:#a1a1aa;margin-bottom:20px;">
+                El identificador <code style="color:#f6d365;background:#1c1f2e;padding:2px 6px;border-radius:6px;">/t/${CURRENT_SLUG}</code> no existe. En <strong style="color:#fff;">G-evo.</strong> únicamente el Administrador Maestro puede crear y habilitar una tarjeta digital por primera vez.
+              </p>
+              <a href="/" style="display:inline-block;padding:12px 20px;border-radius:12px;background:linear-gradient(135deg,#FFCC00 0%,#00E676 100%);color:#060913;font-weight:800;font-size:13px;text-decoration:none;">Volver a G-evo.</a>
+            </div>
+          </div>
+        `;
+      });
+    }
 
     // PIN de propietario configurable por tarjeta
     let OWNER_DEMO_PIN = PROFILE_CONFIG.ownerPin || "1234";
@@ -1976,8 +1998,8 @@
       const modalEditProfile = document.getElementById("modal-edit-profile");
 
       const checkIsOwner = () => {
-        if (params.get("owner") === "1" || params.get("edit") === "1") {
-          localStorage.setItem(OWNER_STORAGE_KEY, "true");
+        if (params.get("admin_preview") === "1") {
+          return true;
         }
         return (
           localStorage.getItem(OWNER_STORAGE_KEY) === "true" ||
@@ -2002,6 +2024,13 @@
       };
 
       updateOwnerUI();
+      if ((params.get("owner") === "1" || params.get("edit") === "1") && !checkIsOwner()) {
+        setTimeout(() => {
+          const pinInput = document.getElementById("owner-pin-input");
+          if (pinInput) pinInput.value = "";
+          modalOwnerAuth?.showModal();
+        }, 250);
+      }
 
       const openEditModalWithCurrentData = () => {
         document.getElementById("edit-first-name").value = PROFILE_CONFIG.firstName || "";
@@ -2056,7 +2085,7 @@
           showToast("Modo Dueño activado. Ahora ves el botón Editar.");
           setTimeout(openEditModalWithCurrentData, 200);
         } else {
-          showToast("PIN incorrecto. Usa 1234 para la prueba.");
+          showToast("Clave / PIN incorrecto. Verifica la clave asignada por G-evo.");
         }
       });
 
