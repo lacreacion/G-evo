@@ -22,6 +22,7 @@ public class GevoDbContext : DbContext
     public DbSet<Product> Products => Set<Product>();
     public DbSet<ProductMedia> ProductMedia => Set<ProductMedia>();
     public DbSet<SocialStory> SocialStories => Set<SocialStory>();
+    public DbSet<DigitalCard> DigitalCards => Set<DigitalCard>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -44,11 +45,16 @@ public class GevoDbContext : DbContext
         modelBuilder.Entity<License>()
             .HasQueryFilter(l => _tenantContext.IsSuperAdmin || l.TenantId == _tenantContext.TenantId);
 
+        modelBuilder.Entity<DigitalCard>()
+            .HasQueryFilter(d => _tenantContext.IsSuperAdmin || d.TenantId == _tenantContext.TenantId);
+
         // Index configurations
         modelBuilder.Entity<Tenant>().HasIndex(t => t.Slug).IsUnique();
         modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
         modelBuilder.Entity<License>().HasIndex(l => l.LicenseKey).IsUnique();
         modelBuilder.Entity<Product>().HasIndex(p => new { p.TenantId, p.Sku });
+        modelBuilder.Entity<DigitalCard>().HasIndex(d => d.Slug).IsUnique();
+        modelBuilder.Entity<DigitalCard>().HasIndex(d => d.TenantId);
     }
 }
 

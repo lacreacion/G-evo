@@ -50,6 +50,61 @@ export default function ClientPortalPage() {
   const [whatsappPhone, setWhatsappPhone] = useState('+57 312 456 7890');
   const [infoSaved, setInfoSaved] = useState(false);
 
+  // Digital Card Profile & Legal Consent (v1.1) States
+  const [cardFullName, setCardFullName] = useState('Laura Restrepo');
+  const [cardJobTitle, setCardJobTitle] = useState('Directora de Branding & Estrategia Comercial');
+  const [cardOrganization, setCardOrganization] = useState('Laura Restrepo Studio');
+  const [cardWhatsapp, setCardWhatsapp] = useState('+573124567890');
+  const [cardEmail, setCardEmail] = useState('hola@laurarestrepo.com');
+  const [cardTheme, setCardTheme] = useState('gold_metallic');
+  const [cardInstagram, setCardInstagram] = useState('https://instagram.com/laurarestrepo');
+  const [cardPortfolio, setCardPortfolio] = useState('https://g-evo.com');
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [cardSaveSuccess, setCardSaveSuccess] = useState(false);
+  const [cardAuditTimestamp, setCardAuditTimestamp] = useState<string | null>(null);
+  const [iframeKey, setIframeKey] = useState(0);
+
+  const handleSaveDigitalCardProfile = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!termsAccepted) return;
+
+    const acceptedAtUtc = new Date().toISOString();
+    const parts = cardFullName.trim().split(' ');
+    const firstName = parts[0] || cardFullName;
+    const lastName = parts.slice(1).join(' ') || '';
+
+    try {
+      const storageKey = 'gevo_card_profile_laura-restrepo';
+      const existingRaw = localStorage.getItem(storageKey);
+      const existing = existingRaw ? JSON.parse(existingRaw) : {};
+      const updatedProfile = {
+        ...existing,
+        id: 'laura-restrepo',
+        firstName,
+        lastName,
+        fullName: cardFullName.trim(),
+        title: cardJobTitle.trim(),
+        organization: cardOrganization.trim(),
+        phone: cardWhatsapp.trim(),
+        email: cardEmail.trim(),
+        theme: cardTheme,
+        instagram: cardInstagram.trim(),
+        portfolio: cardPortfolio.trim(),
+        terms_accepted: true,
+        terms_accepted_at: acceptedAtUtc,
+        terms_version: '1.1',
+      };
+      localStorage.setItem(storageKey, JSON.stringify(updatedProfile));
+    } catch {
+      // Ignore storage errors
+    }
+
+    setCardAuditTimestamp(acceptedAtUtc);
+    setCardSaveSuccess(true);
+    setIframeKey((prev) => prev + 1);
+    setTimeout(() => setCardSaveSuccess(false), 5000);
+  };
+
   const handleOpenCreateProduct = () => {
     setEditingProduct(null);
     setProdName('');
@@ -263,7 +318,7 @@ export default function ClientPortalPage() {
         {/* PESTAÑA 0: MI TARJETA DIGITAL INTERACTIVA (EN VIVO Y EDITABLE) */}
         {/* ------------------------------------------------------------- */}
         {activeTab === 'digital-card' && (
-          <div className="space-y-4 animate-fadeIn">
+          <div className="space-y-6 animate-fadeIn">
             <div className="p-4 sm:p-5 rounded-2xl bg-[#0E1524] border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="space-y-1">
                 <div className="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-2">
@@ -271,7 +326,7 @@ export default function ClientPortalPage() {
                   <span>Modo Propietario Activado • Edita tu Tarjeta en Vivo</span>
                 </div>
                 <p className="text-xs text-gray-300">
-                  Haz clic en el botón <strong className="text-emerald-400">&quot;Editar&quot;</strong> arriba a la derecha dentro de tu tarjeta para cambiar tu foto, logo de fondo, colores metalizados (Oro 24K, Plata, Oro Rosa, Titanio), redes sociales y teléfono.
+                  Actualiza los datos, enlaces externos y acabado de tu Tarjeta Digital Inteligente (NFC/QR) o usa el botón <strong className="text-emerald-400">&quot;Editar&quot;</strong> dentro de la vista interactiva.
                 </p>
               </div>
 
@@ -295,13 +350,204 @@ export default function ClientPortalPage() {
               </div>
             </div>
 
-            <div className="rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-[#070709] h-[780px]">
-              <iframe
-                src="/card-engine.html?slug=laura-restrepo&owner=1"
-                title="Editor en Vivo de Mi Tarjeta Digital"
-                className="w-full h-full border-0 block"
-                allow="clipboard-write; web-share"
-              />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              {/* Formulario de Edición de Perfil de Tarjeta Digital + Autorización Legal Obligatoria */}
+              <form
+                onSubmit={handleSaveDigitalCardProfile}
+                data-testid="digital-card-profile-form"
+                className="lg:col-span-5 p-6 rounded-3xl bg-[#0E1524] border border-white/10 shadow-xl space-y-4"
+              >
+                <div className="border-b border-white/10 pb-3">
+                  <h2 className="text-base font-extrabold text-white flex items-center gap-2">
+                    <Edit3 className="w-4 h-4 text-amber-400" />
+                    <span>Configuración de Perfil &amp; Enlaces</span>
+                  </h2>
+                  <p className="text-[11px] text-gray-400 mt-0.5">
+                    Personaliza tu Tarjeta Digital Inteligente y gestiona tus enlaces oficiales.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div>
+                    <label htmlFor="card-full-name" className="block text-gray-300 font-semibold mb-1">
+                      Nombre Completo *
+                    </label>
+                    <input
+                      id="card-full-name"
+                      type="text"
+                      required
+                      value={cardFullName}
+                      onChange={(e) => setCardFullName(e.target.value)}
+                      className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="card-organization" className="block text-gray-300 font-semibold mb-1">
+                      Empresa / Marca *
+                    </label>
+                    <input
+                      id="card-organization"
+                      type="text"
+                      required
+                      value={cardOrganization}
+                      onChange={(e) => setCardOrganization(e.target.value)}
+                      className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+                </div>
+
+                <div className="text-xs">
+                  <label htmlFor="card-job-title" className="block text-gray-300 font-semibold mb-1">
+                    Cargo / Especialidad Profesional *
+                  </label>
+                  <input
+                    id="card-job-title"
+                    type="text"
+                    required
+                    value={cardJobTitle}
+                    onChange={(e) => setCardJobTitle(e.target.value)}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div>
+                    <label htmlFor="card-whatsapp" className="block text-gray-300 font-semibold mb-1">
+                      WhatsApp Comercial *
+                    </label>
+                    <input
+                      id="card-whatsapp"
+                      type="text"
+                      required
+                      value={cardWhatsapp}
+                      onChange={(e) => setCardWhatsapp(e.target.value)}
+                      className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-emerald-400 font-semibold focus:outline-none focus:border-emerald-400"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="card-email" className="block text-gray-300 font-semibold mb-1">
+                      Correo Electrónico *
+                    </label>
+                    <input
+                      id="card-email"
+                      type="email"
+                      required
+                      value={cardEmail}
+                      onChange={(e) => setCardEmail(e.target.value)}
+                      className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div>
+                    <label htmlFor="card-instagram" className="block text-gray-300 font-semibold mb-1">
+                      Enlace Instagram
+                    </label>
+                    <input
+                      id="card-instagram"
+                      type="url"
+                      value={cardInstagram}
+                      onChange={(e) => setCardInstagram(e.target.value)}
+                      className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="card-theme" className="block text-gray-300 font-semibold mb-1">
+                      Acabado / Tema Visual
+                    </label>
+                    <select
+                      id="card-theme"
+                      value={cardTheme}
+                      onChange={(e) => setCardTheme(e.target.value)}
+                      className="w-full bg-[#0A0F1D] border border-white/10 rounded-xl px-3 py-2 text-amber-300 font-semibold focus:outline-none focus:border-amber-400"
+                    >
+                      <option value="gold_metallic">✨ Oro 24K Metalizado</option>
+                      <option value="emerald">Esmeralda G-evo</option>
+                      <option value="silver_chrome">✨ Plata Cromo Metalizado</option>
+                      <option value="rose_gold">✨ Oro Rosa Metalizado</option>
+                      <option value="titanium_cyan">✨ Titanio Azul Metalizado</option>
+                      <option value="cobalt">Cobalto</option>
+                      <option value="violet">Violeta</option>
+                      <option value="crimson">Carmesí</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Bloque de Autorización Legal Obligatoria (Habeas Data / GDPR - Versión 1.1) */}
+                <div className="p-3.5 rounded-2xl bg-black/50 border border-amber-500/30 space-y-2">
+                  <div className="flex items-start gap-2.5">
+                    <input
+                      id="terms-accepted-checkbox"
+                      name="terms_accepted"
+                      type="checkbox"
+                      checked={termsAccepted}
+                      onChange={(e) => setTermsAccepted(e.target.checked)}
+                      className="mt-0.5 w-4 h-4 rounded accent-emerald-500 cursor-pointer shrink-0"
+                    />
+                    <label
+                      htmlFor="terms-accepted-checkbox"
+                      className="text-[11px] text-gray-200 leading-relaxed cursor-pointer select-none"
+                    >
+                      Sí autorizo el tratamiento de mis datos personales y acepto los términos de manejo de enlaces y uso de la Tarjeta Digital.
+                    </label>
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-between gap-2 pl-6 pt-1">
+                    <a
+                      href="/docs/terminos-y-autorizacion-tarjeta-digital.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 underline underline-offset-2"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      <span>Ver documento legal (PDF)</span>
+                    </a>
+                    <Link
+                      href="/legal/autorizacion-tarjeta-digital"
+                      target="_blank"
+                      className="text-[10px] text-emerald-400 hover:text-emerald-300 underline"
+                    >
+                      Vista lectura web (v1.1)
+                    </Link>
+                  </div>
+                </div>
+
+                {cardSaveSuccess && (
+                  <div
+                    role="status"
+                    data-testid="card-save-success-toast"
+                    className="p-3 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-bold text-center space-y-0.5"
+                  >
+                    <div>✓ ¡Tarjeta Digital actualizada con éxito!</div>
+                    {cardAuditTimestamp && (
+                      <div className="text-[10px] font-mono text-emerald-200/80">
+                        Auditoría legal v1.1 registrada: {cardAuditTimestamp}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  data-testid="btn-save-digital-card"
+                  disabled={!termsAccepted}
+                  className="w-full py-3 px-4 rounded-xl font-extrabold text-xs text-black bg-gradient-to-r from-amber-400 to-emerald-400 hover:shadow-lg transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none cursor-pointer"
+                >
+                  Guardar / Actualizar Tarjeta
+                </button>
+              </form>
+
+              {/* Vista Previa Interactiva en Vivo */}
+              <div className="lg:col-span-7 rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-[#070709] h-[780px]">
+                <iframe
+                  key={iframeKey}
+                  src="/card-engine.html?slug=laura-restrepo&admin_preview=1"
+                  title="Editor en Vivo de Mi Tarjeta Digital"
+                  className="w-full h-full border-0 block"
+                  allow="clipboard-write; web-share"
+                />
+              </div>
             </div>
           </div>
         )}

@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Gevo.Application.DTOs;
 using Gevo.Application.Services;
+using Gevo.Domain.Entities;
 using Gevo.Infrastructure.Middleware;
+using Gevo.Infrastructure.Persistence;
 
 namespace Gevo.Api.Controllers;
 
@@ -173,4 +176,168 @@ public class AiSupportController : ControllerBase
         return Ok(new AiChatResponse(reply, true, new List<string> { "LR-CONS-01" }));
     }
 }
+
+[ApiController]
+[Route("api/tenant/profile")]
+[Authorize(Roles = "BusinessOwner,SuperAdmin")]
+public class TenantProfileController : ControllerBase
+{
+    private readonly GevoDbContext _dbContext;
+    private readonly ITenantContext _tenantContext;
+
+    public TenantProfileController(GevoDbContext dbContext, ITenantContext tenantContext)
+    {
+        _dbContext = dbContext;
+        _tenantContext = tenantContext;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetProfile([FromQuery] string? slug = null)
+    {
+        var query = _dbContext.DigitalCards.AsNoTracking();
+        if (!string.IsNullOrWhiteSpace(slug))
+        {
+            query = query.Where(c => c.Slug == slug);
+        }
+
+        var card = await query.FirstOrDefaultAsync();
+        if (card == null)
+        {
+            return NotFound(new { error = "Perfil de Tarjeta Digital no encontrado para el inquilino actual." });
+        }
+
+        return Ok(new DigitalCardProfileResponse(
+            card.Id,
+            card.TenantId,
+            card.Slug,
+            card.FullName,
+            card.JobTitle,
+            card.Organization,
+            card.Location,
+            card.Bio,
+            card.PhoneWhatsapp,
+            card.Email,
+            card.Theme,
+            card.TermsAccepted,
+            card.TermsAcceptedAt ?? card.UpdatedAt,
+            card.TermsVersion
+        ));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateProfile([FromBody] UpsertTenantProfileRequest req)
+    {
+        return await UpsertInternalAsync(req);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateProfile([FromBody] UpsertTenantProfileRequest req)
+    {
+        return await UpsertInternalAsync(req);
+    }
+
+    private async Task<IActionResult> UpsertInternalAsync(UpsertTenantProfileRequest req)
+    {
+        // Validación estricta de consentimiento legal (Habeas Data / GDPR - Versión 1.1)
+        if (req == null || !req.IsTermsAccepted)
+        {
+            return BadRequest(new
+            {
+                error = "Debe aceptar obligatoriamente la Autorización de Tratamiento de Datos Personales y Términos de Uso de la Tarjeta Digital (Sí autorizo) antes de guardar o actualizar su perfil.",
+                code = "TERMS_ACCEPTANCE_REQUIRED",
+                requiredVersion = "1.1"
+            });
+        }
+
+        var resolvedTenantId = _tenantContext.TenantId ?? Guid.Parse("11111111-1111-1111-1111-111111111111");
+        var nowUtc = DateTime.UtcNow;
+
+        // Buscar tarjeta únicamente dentro del aislamiento del tenant actual (Global Query Filter activo)
+        var existingCard = await _dbContext.DigitalCards
+            .FirstOrDefaultAsync(c => c.Slug == req.Slug && c.TenantId == resolvedTenantId);
+
+        // Verificar si el slug pertenece a otro tenant distinto para impedir colisión/modificación cruzada
+        var crossTenantCollision = await _dbContext.DigitalCards
+            .IgnoreQueryFilters()
+            .AnyAsync(c => c.Slug == req.Slug && c.TenantId != resolvedTenantId);
+
+        if (crossTenantCollision && !_tenantContext.IsSuperAdmin)
+        {
+            return StatusCode(StatusCodes.Status403Forbidden, new
+            {
+                error = "Violación de aislamiento multi-tenant: No tiene permisos para modificar la tarjeta digital de otro cliente."
+            });
+        }
+
+        if (existingCard == null)
+        {
+            existingCard = new DigitalCard
+            {
+                Id = Guid.NewGuid(),
+                TenantId = resolvedTenantId,
+                Slug = req.Slug,
+                FullName = req.FullName,
+                JobTitle = req.JobTitle,
+                Organization = req.Organization,
+                Location = req.Location,
+                Bio = req.Bio,
+                PhoneWhatsapp = req.PhoneWhatsapp,
+                Email = req.Email,
+                Theme = string.IsNullOrWhiteSpace(req.Theme) ? "gold_metallic" : req.Theme!,
+                InstagramUrl = req.InstagramUrl,
+                FacebookUrl = req.FacebookUrl,
+                LinkedinUrl = req.LinkedinUrl,
+                PortfolioUrl = req.PortfolioUrl,
+                TermsAccepted = true,
+                TermsAcceptedAt = nowUtc,
+                TermsVersion = "1.1",
+                CreatedAt = nowUtc,
+                UpdatedAt = nowUtc
+            };
+            _dbContext.DigitalCards.Add(existingCard);
+        }
+        else
+        {
+            existingCard.FullName = req.FullName;
+            existingCard.JobTitle = req.JobTitle;
+            existingCard.Organization = req.Organization;
+            existingCard.Location = req.Location;
+            existingCard.Bio = req.Bio;
+            existingCard.PhoneWhatsapp = req.PhoneWhatsapp;
+            existingCard.Email = req.Email;
+            if (!string.IsNullOrWhiteSpace(req.Theme))
+            {
+                existingCard.Theme = req.Theme!;
+            }
+            existingCard.InstagramUrl = req.InstagramUrl;
+            existingCard.FacebookUrl = req.FacebookUrl;
+            existingCard.LinkedinUrl = req.LinkedinUrl;
+            existingCard.PortfolioUrl = req.PortfolioUrl;
+            existingCard.TermsAccepted = true;
+            existingCard.TermsAcceptedAt = nowUtc;
+            existingCard.TermsVersion = "1.1";
+            existingCard.UpdatedAt = nowUtc;
+        }
+
+        await _dbContext.SaveChangesAsync();
+
+        return Ok(new DigitalCardProfileResponse(
+            existingCard.Id,
+            existingCard.TenantId,
+            existingCard.Slug,
+            existingCard.FullName,
+            existingCard.JobTitle,
+            existingCard.Organization,
+            existingCard.Location,
+            existingCard.Bio,
+            existingCard.PhoneWhatsapp,
+            existingCard.Email,
+            existingCard.Theme,
+            existingCard.TermsAccepted,
+            existingCard.TermsAcceptedAt!.Value,
+            existingCard.TermsVersion
+        ));
+    }
+}
+
 

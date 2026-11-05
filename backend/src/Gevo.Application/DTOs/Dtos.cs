@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Gevo.Application.DTOs;
 
 // --- Auth DTOs ---
@@ -15,7 +17,52 @@ public record CreateTenantRequest(
     string PhoneWhatsapp,
     string? PrimaryColor,
     string? SecondaryColor,
-    string? Category
+    string? Category,
+    bool TermsAccepted = false,
+    [property: JsonPropertyName("terms_accepted")] bool? TermsAcceptedSnake = null
+)
+{
+    public bool IsTermsAccepted => TermsAccepted || (TermsAcceptedSnake == true);
+}
+
+// --- Digital Card & Tenant Profile Legal Audit DTOs ---
+public record UpsertTenantProfileRequest(
+    string Slug,
+    string FullName,
+    string? JobTitle,
+    string? Organization,
+    string? Location,
+    string? Bio,
+    string? PhoneWhatsapp,
+    string? Email,
+    string? Theme = "gold_metallic",
+    string? InstagramUrl = null,
+    string? FacebookUrl = null,
+    string? LinkedinUrl = null,
+    string? PortfolioUrl = null,
+    bool TermsAccepted = false,
+    [property: JsonPropertyName("terms_accepted")] bool? TermsAcceptedSnake = null,
+    string? TermsVersion = "1.1"
+)
+{
+    public bool IsTermsAccepted => TermsAccepted || (TermsAcceptedSnake == true);
+}
+
+public record DigitalCardProfileResponse(
+    Guid Id,
+    Guid TenantId,
+    string Slug,
+    string FullName,
+    string? JobTitle,
+    string? Organization,
+    string? Location,
+    string? Bio,
+    string? PhoneWhatsapp,
+    string? Email,
+    string Theme,
+    [property: JsonPropertyName("terms_accepted")] bool TermsAccepted,
+    [property: JsonPropertyName("terms_accepted_at")] DateTime TermsAcceptedAt,
+    [property: JsonPropertyName("terms_version")] string TermsVersion
 );
 
 public record TenantResponse(

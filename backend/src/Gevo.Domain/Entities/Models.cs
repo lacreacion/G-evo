@@ -20,6 +20,9 @@ public class Tenant
     public string? FacebookPage { get; set; }
     public string? TikTokHandle { get; set; }
     public string? WebsiteUrl { get; set; }
+    public bool TermsAccepted { get; set; } = false;
+    public DateTime? TermsAcceptedAt { get; set; }
+    public string TermsVersion { get; set; } = "1.1";
     public bool IsActive { get; set; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
@@ -27,6 +30,36 @@ public class Tenant
     public ICollection<User> Users { get; set; } = new List<User>();
     public ICollection<Catalog> Catalogs { get; set; } = new List<Catalog>();
     public ICollection<License> Licenses { get; set; } = new List<License>();
+    public ICollection<DigitalCard> DigitalCards { get; set; } = new List<DigitalCard>();
+}
+
+public class DigitalCard
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid TenantId { get; set; }
+    public string Slug { get; set; } = string.Empty;
+    public string FullName { get; set; } = string.Empty;
+    public string? JobTitle { get; set; }
+    public string? Organization { get; set; }
+    public string? Location { get; set; }
+    public string? Bio { get; set; }
+    public string? AvatarUrl { get; set; }
+    public string? CoverBgUrl { get; set; }
+    public string? PhoneWhatsapp { get; set; }
+    public string? Email { get; set; }
+    public string Theme { get; set; } = "gold_metallic";
+    public string OwnerPin { get; set; } = "1234";
+    public string? InstagramUrl { get; set; }
+    public string? FacebookUrl { get; set; }
+    public string? LinkedinUrl { get; set; }
+    public string? PortfolioUrl { get; set; }
+    public bool TermsAccepted { get; set; } = false;
+    public DateTime? TermsAcceptedAt { get; set; }
+    public string TermsVersion { get; set; } = "1.1";
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    public Tenant? Tenant { get; set; }
 }
 
 public class User

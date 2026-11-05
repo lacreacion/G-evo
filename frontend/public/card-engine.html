@@ -1266,6 +1266,31 @@
         </div>
       </div>
 
+      <!-- Autorización Legal Obligatoria (Habeas Data / GDPR - Versión 1.1) -->
+      <div class="pt-2 border-t border-zinc-800/80 space-y-1.5">
+        <label class="flex items-start gap-2 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            id="edit-terms-accepted"
+            name="terms_accepted"
+            class="mt-0.5 w-4 h-4 rounded accent-emerald-500 cursor-pointer shrink-0"
+          />
+          <span class="text-[11px] text-zinc-200 leading-relaxed">
+            Sí autorizo el tratamiento de mis datos personales y acepto los términos de manejo de enlaces y uso de la Tarjeta Digital.
+          </span>
+        </label>
+        <div class="pl-6">
+          <a
+            href="/docs/terminos-y-autorizacion-tarjeta-digital.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-400 hover:text-amber-300 underline"
+          >
+            <span>Ver documento legal (PDF)</span>
+          </a>
+        </div>
+      </div>
+
       <div class="pt-2 flex items-center justify-between gap-2">
         <button
           type="button"
@@ -1276,9 +1301,11 @@
         </button>
         <button
           type="submit"
-          class="flex-1 py-2.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold text-xs shadow-lg shadow-emerald-500/20 transition"
+          id="btn-submit-edit-card"
+          disabled
+          class="flex-1 py-2.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold text-xs shadow-lg shadow-emerald-500/20 transition disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          Guardar Cambios
+          Guardar / Actualizar Tarjeta
         </button>
       </div>
     </form>
@@ -2048,8 +2075,21 @@
           ? ""
           : PROFILE_CONFIG.coverBg || "";
         applyCardTheme(PROFILE_CONFIG.theme || "emerald");
+        const termsCheckbox = document.getElementById("edit-terms-accepted");
+        const submitBtn = document.getElementById("btn-submit-edit-card");
+        if (termsCheckbox && submitBtn) {
+          termsCheckbox.checked = false;
+          submitBtn.disabled = true;
+        }
         modalEditProfile?.showModal();
       };
+
+      document.getElementById("edit-terms-accepted")?.addEventListener("change", (e) => {
+        const submitBtn = document.getElementById("btn-submit-edit-card");
+        if (submitBtn) {
+          submitBtn.disabled = !e.target.checked;
+        }
+      });
 
       // Selector interactivo en tiempo real de temas (Normales y Metalizados)
       document.querySelectorAll(".theme-swatch-btn").forEach((btn) => {
@@ -2164,6 +2204,15 @@
         if (coverBgUrlInput) {
           PROFILE_CONFIG.coverBg = coverBgUrlInput;
         }
+
+        const termsCheckbox = document.getElementById("edit-terms-accepted");
+        if (termsCheckbox && !termsCheckbox.checked) {
+          showToast("Debes marcar 'Sí autorizo' los términos legales (v1.1) para guardar.");
+          return;
+        }
+        PROFILE_CONFIG.terms_accepted = true;
+        PROFILE_CONFIG.terms_accepted_at = new Date().toISOString();
+        PROFILE_CONFIG.terms_version = "1.1";
 
         try {
           localStorage.setItem(STORAGE_KEY, JSON.stringify(PROFILE_CONFIG));
