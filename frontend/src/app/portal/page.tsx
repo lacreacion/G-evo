@@ -58,7 +58,7 @@ export default function ClientPortalPage() {
   const [cardEmail, setCardEmail] = useState('hola@laurarestrepo.com');
   const [cardTheme, setCardTheme] = useState('gold_metallic');
   const [cardInstagram, setCardInstagram] = useState('https://instagram.com/laurarestrepo');
-  const [cardPortfolio, setCardPortfolio] = useState('https://g-evo.com');
+  const cardPortfolio = 'https://g-evo.com';
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [cardSaveSuccess, setCardSaveSuccess] = useState(false);
   const [cardAuditTimestamp, setCardAuditTimestamp] = useState<string | null>(null);

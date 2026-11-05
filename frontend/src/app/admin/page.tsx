@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/common/Logo';
 import { INITIAL_TENANTS, TenantData } from '@/lib/mockData';
@@ -8,7 +8,6 @@ import {
   ShieldCheck, 
   PlusCircle, 
   Key, 
-  Store, 
   Users, 
   Bot, 
   ExternalLink, 
@@ -22,7 +21,22 @@ import {
 } from 'lucide-react';
 
 export default function AdminMasterPage() {
-  const [tenants, setTenants] = useState<TenantData[]>(INITIAL_TENANTS);
+  const [tenants, setTenants] = useState<TenantData[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('gevo_tenants_registry_v1');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed;
+          }
+        }
+      } catch {
+        // Fallback to initial tenants
+      }
+    }
+    return INITIAL_TENANTS;
+  });
   const [searchTerm, setSearchTerm] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showCredentialsModal, setShowCredentialsModal] = useState<{
@@ -42,7 +56,7 @@ export default function AdminMasterPage() {
   const [newClientBio, setNewClientBio] = useState('Conecta conmigo, descarga mi contacto directo o agenda una reunión desde mi tarjeta digital inteligente.');
   const [newClientEmail, setNewClientEmail] = useState('');
   const [newPhoneWhatsapp, setNewPhoneWhatsapp] = useState('');
-  const [newCategory, setNewCategory] = useState('Consultoría');
+  const newCategory = 'Consultoría';
   const [newCardTheme, setNewCardTheme] = useState('gold_metallic');
   const [newOwnerPin, setNewOwnerPin] = useState('1234');
   const [newSlug, setNewSlug] = useState('');
@@ -54,24 +68,13 @@ export default function AdminMasterPage() {
   const [licenseCopied, setLicenseCopied] = useState(false);
   const [kitCopied, setKitCopied] = useState(false);
 
-  // Load persisted tenants from localStorage on mount
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem('gevo_tenants_registry_v1');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setTenants(parsed);
-        }
-      }
-    } catch (_) {}
-  }, []);
-
   const saveTenantsList = (updated: TenantData[]) => {
     setTenants(updated);
     try {
       localStorage.setItem('gevo_tenants_registry_v1', JSON.stringify(updated));
-    } catch (_) {}
+    } catch {
+      // Ignore storage errors
+    }
   };
 
   const handleCreateStore = (e: React.FormEvent) => {
@@ -115,7 +118,9 @@ export default function AdminMasterPage() {
 
     try {
       localStorage.setItem(`gevo_card_profile_${generatedSlug}`, JSON.stringify(cardProfileData));
-    } catch (_) {}
+    } catch {
+      // Ignore storage errors
+    }
 
     const newTenant: TenantData = {
       id: `t-${Date.now()}`,
