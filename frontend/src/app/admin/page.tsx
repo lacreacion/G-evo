@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/common/Logo';
 import { INITIAL_TENANTS, TenantData } from '@/lib/mockData';
@@ -17,11 +17,8 @@ import {
   Search, 
   Sparkles, 
   LogOut, 
-  Lock,
-  Layers,
-  ArrowRight,
-  TrendingUp,
-  CreditCard
+  CreditCard,
+  Edit3
 } from 'lucide-react';
 
 export default function AdminMasterPage() {
@@ -30,30 +27,91 @@ export default function AdminMasterPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showCredentialsModal, setShowCredentialsModal] = useState<{
     businessName: string;
+    clientName: string;
     email: string;
     temporaryPassword: string;
+    ownerPin: string;
     slug: string;
   } | null>(null);
 
   // Form states for creating a new store/card
   const [newBusinessName, setNewBusinessName] = useState('');
   const [newClientName, setNewClientName] = useState('');
+  const [newClientRole, setNewClientRole] = useState('Director General & Fundador');
+  const [newClientLocation, setNewClientLocation] = useState('Medellín / Colombia');
+  const [newClientBio, setNewClientBio] = useState('Conecta conmigo, descarga mi contacto directo o agenda una reunión desde mi tarjeta digital inteligente.');
   const [newClientEmail, setNewClientEmail] = useState('');
   const [newPhoneWhatsapp, setNewPhoneWhatsapp] = useState('');
   const [newCategory, setNewCategory] = useState('Consultoría');
+  const [newCardTheme, setNewCardTheme] = useState('gold_metallic');
+  const [newOwnerPin, setNewOwnerPin] = useState('1234');
   const [newSlug, setNewSlug] = useState('');
 
   // Licensing Generator states
   const [selectedTenantForLicense, setSelectedTenantForLicense] = useState<string>('');
   const [generatedLicenseKey, setGeneratedLicenseKey] = useState<string | null>(null);
   const [licenseCopied, setLicenseCopied] = useState(false);
+  const [kitCopied, setKitCopied] = useState(false);
+
+  // Load persisted tenants from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('gevo_tenants_registry_v1');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setTenants(parsed);
+        }
+      }
+    } catch (_) {}
+  }, []);
+
+  const saveTenantsList = (updated: TenantData[]) => {
+    setTenants(updated);
+    try {
+      localStorage.setItem('gevo_tenants_registry_v1', JSON.stringify(updated));
+    } catch (_) {}
+  };
 
   const handleCreateStore = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newBusinessName || !newClientEmail) return;
 
-    const generatedSlug = newSlug || newBusinessName.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    const generatedSlug = (newSlug || newBusinessName)
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
     const tempPassword = `Gevo${Math.floor(1000 + Math.random() * 9000)}!`;
+    const pinToSave = newOwnerPin.trim() || '1234';
+
+    // Split client name into firstName and lastName for the digital card (.vcf & UI)
+    const nameParts = newClientName.trim().split(/\s+/);
+    const firstName = nameParts[0] || 'Cliente';
+    const lastName = nameParts.slice(1).join(' ') || 'G-evo';
+
+    // Save the digital card profile in localStorage so /t/[slug] loads it immediately
+    const cardProfileData = {
+      id: generatedSlug,
+      firstName,
+      lastName,
+      fullName: newClientName.trim(),
+      title: newClientRole.trim() || 'Director Comercial',
+      organization: newBusinessName.trim(),
+      location: newClientLocation.trim() || 'Colombia',
+      bio: newClientBio.trim(),
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=320&q=80',
+      coverBg: '',
+      phone: newPhoneWhatsapp.trim() || '+573000000000',
+      email: newClientEmail.trim(),
+      theme: newCardTheme,
+      ownerPin: pinToSave,
+      note: `Contacto guardado desde Tarjeta Digital G-evo (${newBusinessName.trim()}).`
+    };
+
+    try {
+      localStorage.setItem(`gevo_card_profile_${generatedSlug}`, JSON.stringify(cardProfileData));
+    } catch (_) {}
 
     const newTenant: TenantData = {
       id: `t-${Date.now()}`,
@@ -69,14 +127,16 @@ export default function AdminMasterPage() {
       createdAt: new Date().toISOString().split('T')[0]
     };
 
-    setTenants([newTenant, ...tenants]);
+    saveTenantsList([newTenant, ...tenants]);
     setShowCreateModal(false);
 
-    // Open Credentials Delivery Modal
+    // Open Credentials & Card Delivery Kit Modal
     setShowCredentialsModal({
       businessName: newBusinessName,
+      clientName: newClientName,
       email: newClientEmail,
       temporaryPassword: tempPassword,
+      ownerPin: pinToSave,
       slug: generatedSlug
     });
 
@@ -101,7 +161,7 @@ export default function AdminMasterPage() {
     setGeneratedLicenseKey(newKey);
 
     // Mark tenant as having AI support
-    setTenants(
+    saveTenantsList(
       tenants.map((t) =>
         t.id === selectedTenantForLicense
           ? { ...t, hasAiSupport: true, aiLicenseKey: newKey }
@@ -123,6 +183,8 @@ export default function AdminMasterPage() {
       t.slug.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const originUrl = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
+
   return (
     <div className="min-h-screen bg-[#070B14] text-white">
       
@@ -138,6 +200,14 @@ export default function AdminMasterPage() {
         </div>
 
         <div className="flex items-center gap-3">
+          <Link
+            href="/t/elena-vance?owner=1"
+            target="_blank"
+            className="px-3 py-1.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-1.5 transition-colors"
+          >
+            <CreditCard className="w-3.5 h-3.5" />
+            <span>Ver Tarjeta Base (Demo)</span>
+          </Link>
           <Link
             href="/"
             className="text-xs text-gray-400 hover:text-white transition-colors"
@@ -161,10 +231,10 @@ export default function AdminMasterPage() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-              Gestión Centralizada de Ecosistemas
+              Gestión Centralizada de Tarjetas &amp; Ecosistemas
             </h1>
             <p className="text-xs sm:text-sm text-gray-400 mt-1">
-              Solo tú puedes crear y activar nuevas tiendas y tarjetas digitales para tus clientes de negocio.
+              Crea tarjetas digitales interactivas (NFC/QR) y tiendas para tus clientes, y envíales su enlace y PIN de edición con un clic.
             </p>
           </div>
 
@@ -173,7 +243,7 @@ export default function AdminMasterPage() {
             className="self-start md:self-auto px-5 py-2.5 rounded-xl font-bold text-xs text-black bg-gradient-to-r from-amber-400 to-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 transition-all flex items-center gap-2 cursor-pointer"
           >
             <PlusCircle className="w-4 h-4 text-black" />
-            <span>Crear Nueva Tienda / Tarjeta</span>
+            <span>Crear Nueva Tarjeta Digital / Tienda</span>
           </button>
         </div>
 
@@ -181,11 +251,11 @@ export default function AdminMasterPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="p-5 rounded-2xl bg-[#0E1524] border border-white/10 space-y-1">
             <div className="flex items-center justify-between text-xs text-gray-400">
-              <span>Tiendas Creadas</span>
-              <Store className="w-4 h-4 text-emerald-400" />
+              <span>Tarjetas &amp; Tiendas</span>
+              <CreditCard className="w-4 h-4 text-emerald-400" />
             </div>
             <div className="text-2xl font-black text-white">{tenants.length}</div>
-            <div className="text-[10px] text-emerald-400 font-semibold">100% Operativas</div>
+            <div className="text-[10px] text-emerald-400 font-semibold">100% Operativas con QR &amp; NFC</div>
           </div>
 
           <div className="p-5 rounded-2xl bg-[#0E1524] border border-white/10 space-y-1">
@@ -205,7 +275,7 @@ export default function AdminMasterPage() {
               <Users className="w-4 h-4 text-blue-400" />
             </div>
             <div className="text-2xl font-black text-white">{tenants.length}</div>
-            <div className="text-[10px] text-gray-400 font-medium">Gestión Autónoma</div>
+            <div className="text-[10px] text-gray-400 font-medium">Autonomía con PIN de Dueño</div>
           </div>
 
           <div className="p-5 rounded-2xl bg-[#0E1524] border border-white/10 space-y-1">
@@ -214,7 +284,7 @@ export default function AdminMasterPage() {
               <ShieldCheck className="w-4 h-4 text-emerald-400" />
             </div>
             <div className="text-2xl font-black text-emerald-400">Activa</div>
-            <div className="text-[10px] text-gray-400 font-medium">Aislamiento por TenantId</div>
+            <div className="text-[10px] text-gray-400 font-medium">Aislamiento por Ruta /t/[slug]</div>
           </div>
         </div>
 
@@ -274,7 +344,7 @@ export default function AdminMasterPage() {
 
               <button
                 onClick={() => copyToClipboard(generatedLicenseKey)}
-                className="px-4 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 text-xs font-bold flex items-center gap-1.5 transition-colors"
+                className="px-4 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 {licenseCopied ? (
                   <>
@@ -296,7 +366,7 @@ export default function AdminMasterPage() {
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <h2 className="text-base font-bold text-white flex items-center gap-2">
-              <span>Listado de Tiendas / Tarjetas Activas</span>
+              <span>Listado de Tarjetas Digitales &amp; Tiendas Activas</span>
               <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-gray-300 font-semibold">
                 {tenants.length}
               </span>
@@ -320,11 +390,10 @@ export default function AdminMasterPage() {
                 <thead className="bg-[#0E1524] text-[11px] font-bold text-gray-400 uppercase tracking-wider border-b border-white/10">
                   <tr>
                     <th className="py-3.5 px-4">Negocio / Tarjeta</th>
-                    <th className="py-3.5 px-4">Slug / Enlace</th>
+                    <th className="py-3.5 px-4">Enlace Tarjeta NFC/QR</th>
                     <th className="py-3.5 px-4">Cliente Responsable</th>
                     <th className="py-3.5 px-4">Agente IA</th>
-                    <th className="py-3.5 px-4">Estado</th>
-                    <th className="py-3.5 px-4 text-right">Acciones</th>
+                    <th className="py-3.5 px-4 text-right">Acciones de Tarjeta &amp; Entrega</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">
@@ -335,9 +404,14 @@ export default function AdminMasterPage() {
                         <div className="text-[11px] text-gray-400">{t.category}</div>
                       </td>
                       <td className="py-3.5 px-4">
-                        <span className="font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                          /{t.slug}
-                        </span>
+                        <Link
+                          href={`/t/${t.slug}`}
+                          target="_blank"
+                          className="inline-flex items-center gap-1 font-mono text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 px-2.5 py-1 rounded-lg border border-emerald-500/20 transition-colors"
+                        >
+                          <span>/t/{t.slug}</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </Link>
                       </td>
                       <td className="py-3.5 px-4">
                         <div className="text-white font-medium">{t.clientName}</div>
@@ -353,31 +427,40 @@ export default function AdminMasterPage() {
                           <span className="text-[11px] text-gray-500">Demostración</span>
                         )}
                       </td>
-                      <td className="py-3.5 px-4">
-                        <span className="text-[11px] px-2 py-0.5 rounded-full font-semibold bg-emerald-500/20 text-emerald-300">
-                          {t.status}
-                        </span>
-                      </td>
-                      <td className="py-3.5 px-4 text-right space-x-2">
-                        <button
-                          onClick={() => {
-                            setShowCredentialsModal({
-                              businessName: t.businessName,
-                              email: t.clientEmail,
-                              temporaryPassword: 'Cliente@2026',
-                              slug: t.slug
-                            });
-                          }}
-                          className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-amber-300 font-medium text-[11px] transition-colors"
-                        >
-                          Ver Credenciales
-                        </button>
-                        <Link
-                          href="/portal"
-                          className="px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 font-medium text-[11px] transition-colors"
-                        >
-                          Entrar a Portal
-                        </Link>
+                      <td className="py-3.5 px-4 text-right">
+                        <div className="inline-flex items-center justify-end gap-2 flex-wrap">
+                          <Link
+                            href={`/t/${t.slug}`}
+                            target="_blank"
+                            className="px-2.5 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 font-semibold text-[11px] inline-flex items-center gap-1 transition-colors"
+                          >
+                            <CreditCard className="w-3.5 h-3.5" />
+                            <span>Ver Tarjeta</span>
+                          </Link>
+                          <Link
+                            href={`/t/${t.slug}?owner=1`}
+                            target="_blank"
+                            className="px-2.5 py-1.5 rounded-lg bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-300 border border-indigo-500/30 font-semibold text-[11px] inline-flex items-center gap-1 transition-colors"
+                          >
+                            <Edit3 className="w-3.5 h-3.5" />
+                            <span>Editar Tarjeta</span>
+                          </Link>
+                          <button
+                            onClick={() => {
+                              setShowCredentialsModal({
+                                businessName: t.businessName,
+                                clientName: t.clientName,
+                                email: t.clientEmail,
+                                temporaryPassword: 'Cliente@2026',
+                                ownerPin: '1234',
+                                slug: t.slug
+                              });
+                            }}
+                            className="px-2.5 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 font-semibold text-[11px] transition-colors cursor-pointer"
+                          >
+                            Enviar Kit al Cliente
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -389,7 +472,7 @@ export default function AdminMasterPage() {
 
       </main>
 
-      {/* Modal: Crear Nueva Tienda / Tarjeta */}
+      {/* Modal: Crear Nueva Tarjeta Digital / Tienda */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
           <div
@@ -397,113 +480,171 @@ export default function AdminMasterPage() {
             onClick={() => setShowCreateModal(false)}
           />
 
-          <div className="relative w-full max-w-lg bg-[#0E1524] rounded-3xl border border-amber-500/40 p-6 md:p-8 z-10 shadow-2xl space-y-6">
+          <div className="relative w-full max-w-xl bg-[#0E1524] rounded-3xl border border-amber-500/40 p-6 md:p-7 z-10 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <div className="flex items-center gap-2">
-                <Store className="w-5 h-5 text-emerald-400" />
-                <h3 className="text-lg font-bold text-white">
-                  Crear Nueva Tienda / Tarjeta Digital
+                <CreditCard className="w-5 h-5 text-emerald-400" />
+                <h3 className="text-base md:text-lg font-bold text-white">
+                  Crear Nueva Tarjeta Digital Interactiva (NFC/QR)
                 </h3>
               </div>
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="text-gray-400 hover:text-white"
+                className="text-gray-400 hover:text-white cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
-            <form onSubmit={handleCreateStore} className="space-y-4 text-xs">
-              <div>
-                <label className="block text-gray-300 font-semibold mb-1">
-                  Nombre Comercial del Negocio *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={newBusinessName}
-                  onChange={(e) => {
-                    setNewBusinessName(e.target.value);
-                    if (!newSlug) {
-                      setNewSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]/g, '-'));
-                    }
-                  }}
-                  placeholder="Ej. Joyería Amatista"
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
+            <form onSubmit={handleCreateStore} className="space-y-3.5 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-gray-300 font-semibold mb-1">
-                    Slug / Subdirectorio Único *
+                    Nombre del Cliente (En la Tarjeta) *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={newClientName}
+                    onChange={(e) => {
+                      setNewClientName(e.target.value);
+                      if (!newSlug) {
+                        setNewSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''));
+                      }
+                    }}
+                    placeholder="Ej. Carlos Mendoza"
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-300 font-semibold mb-1">
+                    Empresa / Negocio *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={newBusinessName}
+                    onChange={(e) => setNewBusinessName(e.target.value)}
+                    placeholder="Ej. Kinetix Digital Studio"
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-gray-300 font-semibold mb-1">
+                    Cargo / Profesión en la Tarjeta *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={newClientRole}
+                    onChange={(e) => setNewClientRole(e.target.value)}
+                    placeholder="Ej. Director Comercial & CEO"
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-300 font-semibold mb-1">
+                    Ciudad / Ubicación
+                  </label>
+                  <input
+                    type="text"
+                    value={newClientLocation}
+                    onChange={(e) => setNewClientLocation(e.target.value)}
+                    placeholder="Ej. Medellín / Remoto"
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-gray-300 font-semibold mb-1">
+                    Enlace Único (/t/slug) *
                   </label>
                   <input
                     type="text"
                     required
                     value={newSlug}
                     onChange={(e) => setNewSlug(e.target.value)}
-                    placeholder="joyeria-amatista"
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2.5 text-emerald-400 font-mono placeholder-gray-500 focus:outline-none focus:border-emerald-500"
+                    placeholder="carlos-mendoza"
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2 text-emerald-400 font-mono placeholder-gray-500 focus:outline-none focus:border-emerald-500"
                   />
                 </div>
                 <div>
                   <label className="block text-gray-300 font-semibold mb-1">
-                    Categoría de Negocio
+                    Acabado / Tema Inicial de la Tarjeta
                   </label>
                   <select
-                    value={newCategory}
-                    onChange={(e) => setNewCategory(e.target.value)}
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-emerald-500"
+                    value={newCardTheme}
+                    onChange={(e) => setNewCardTheme(e.target.value)}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-emerald-500"
                   >
-                    <option value="Consultoría">Consultoría</option>
-                    <option value="Gastronomía & Café">Gastronomía &amp; Café</option>
-                    <option value="Moda y Calzado">Moda y Calzado</option>
-                    <option value="Salud y Belleza">Salud y Belleza</option>
-                    <option value="Servicios Profesionales">Servicios Profesionales</option>
+                    <option value="gold_metallic">✨ Oro 24K Metalizado (Luxury)</option>
+                    <option value="emerald">Esmeralda G-evo</option>
+                    <option value="silver_chrome">✨ Plata Cromo Metalizado</option>
+                    <option value="rose_gold">✨ Oro Rosa Metalizado</option>
+                    <option value="titanium_cyan">✨ Titanio Azul Metalizado</option>
+                    <option value="cobalt">Azul Cobalto</option>
+                    <option value="violet">Violeta Real</option>
+                    <option value="crimson">Carmesí</option>
                   </select>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label className="block text-gray-300 font-semibold mb-1">
-                    Nombre del Cliente / Dueño *
+                    WhatsApp del Cliente *
                   </label>
                   <input
-                    type="text"
+                    type="tel"
                     required
-                    value={newClientName}
-                    onChange={(e) => setNewClientName(e.target.value)}
-                    placeholder="Ej. Andrés Gómez"
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
+                    value={newPhoneWhatsapp}
+                    onChange={(e) => setNewPhoneWhatsapp(e.target.value)}
+                    placeholder="+573001234567"
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
                   />
                 </div>
                 <div>
                   <label className="block text-gray-300 font-semibold mb-1">
-                    WhatsApp para Pedidos
+                    Correo del Cliente *
                   </label>
                   <input
-                    type="tel"
-                    value={newPhoneWhatsapp}
-                    onChange={(e) => setNewPhoneWhatsapp(e.target.value)}
-                    placeholder="+57 300 123 4567"
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
+                    type="email"
+                    required
+                    value={newClientEmail}
+                    onChange={(e) => setNewClientEmail(e.target.value)}
+                    placeholder="cliente@empresa.com"
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-amber-300 font-semibold mb-1">
+                    PIN de Edición Dueño *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={newOwnerPin}
+                    onChange={(e) => setNewOwnerPin(e.target.value)}
+                    placeholder="1234"
+                    className="w-full bg-black/40 border border-amber-500/30 rounded-xl px-3.5 py-2 text-amber-300 font-mono placeholder-gray-500 focus:outline-none focus:border-amber-400"
                   />
                 </div>
               </div>
 
               <div>
                 <label className="block text-gray-300 font-semibold mb-1">
-                  Correo Electrónico del Cliente (Login de Acceso) *
+                  Biografía breve inicial (el cliente podrá editarla después)
                 </label>
-                <input
-                  type="email"
-                  required
-                  value={newClientEmail}
-                  onChange={(e) => setNewClientEmail(e.target.value)}
-                  placeholder="cliente@joyeriaamatista.com"
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
+                <textarea
+                  rows={2}
+                  value={newClientBio}
+                  onChange={(e) => setNewClientBio(e.target.value)}
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 resize-none"
                 />
               </div>
 
@@ -513,7 +654,7 @@ export default function AdminMasterPage() {
                   className="w-full py-3 rounded-xl font-bold text-xs text-black bg-gradient-to-r from-amber-400 to-emerald-400 shadow-lg hover:shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <PlusCircle className="w-4 h-4 text-black" />
-                  <span>Crear Tienda y Generar Credenciales</span>
+                  <span>Crear Tarjeta Digital y Generar Kit para el Cliente</span>
                 </button>
               </div>
             </form>
@@ -521,7 +662,7 @@ export default function AdminMasterPage() {
         </div>
       )}
 
-      {/* Modal: Entregar Credenciales al Cliente */}
+      {/* Modal: Kit de Entrega para el Cliente */}
       {showCredentialsModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn">
           <div
@@ -529,62 +670,94 @@ export default function AdminMasterPage() {
             onClick={() => setShowCredentialsModal(null)}
           />
 
-          <div className="relative w-full max-w-md bg-[#0E1524] rounded-3xl border border-emerald-500/40 p-6 md:p-8 z-10 shadow-2xl space-y-5 text-center">
+          <div className="relative w-full max-w-md bg-[#0E1524] rounded-3xl border border-emerald-500/40 p-6 md:p-7 z-10 shadow-2xl space-y-4 text-center">
             <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center mx-auto text-emerald-400">
               <CheckCircle2 className="w-6 h-6" />
             </div>
 
             <div>
               <h3 className="text-lg font-bold text-white">
-                ¡Tienda Creada Exitosamente!
+                ¡Kit de Tarjeta Digital Listo!
               </h3>
               <p className="text-xs text-gray-400 mt-1">
-                Entrega estas credenciales a tu cliente para que ingrese a su portal y gestione sus productos con total autonomía.
+                Envía estos datos a <strong className="text-white">{showCredentialsModal.clientName}</strong> para que abra su tarjeta, la comparta por QR/NFC y la edite cuando quiera.
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-black/50 border border-white/10 text-left text-xs space-y-2.5">
+            <div className="p-4 rounded-2xl bg-black/50 border border-white/10 text-left text-xs space-y-3">
               <div>
                 <span className="text-gray-400 block text-[10px] uppercase font-semibold">
-                  Negocio
+                  1. Enlace Público de su Tarjeta (Para NFC, QR y Redes)
                 </span>
-                <span className="text-white font-bold">{showCredentialsModal.businessName}</span>
+                <a
+                  href={`${originUrl}/t/${showCredentialsModal.slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-emerald-400 hover:underline break-all flex items-center gap-1 mt-0.5"
+                >
+                  <span>{originUrl}/t/{showCredentialsModal.slug}</span>
+                  <ExternalLink className="w-3 h-3 shrink-0" />
+                </a>
               </div>
+
               <div>
                 <span className="text-gray-400 block text-[10px] uppercase font-semibold">
-                  Enlace de Catálogo
+                  2. Enlace Directo Modo Dueño (Para que el cliente la edite)
                 </span>
-                <span className="font-mono text-emerald-400">
-                  https://g-evo.com/{showCredentialsModal.slug}
-                </span>
+                <a
+                  href={`${originUrl}/t/${showCredentialsModal.slug}?owner=1`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-indigo-300 hover:underline break-all flex items-center gap-1 mt-0.5"
+                >
+                  <span>{originUrl}/t/${showCredentialsModal.slug}?owner=1</span>
+                  <ExternalLink className="w-3 h-3 shrink-0" />
+                </a>
               </div>
-              <div>
-                <span className="text-gray-400 block text-[10px] uppercase font-semibold">
-                  Usuario / Correo
-                </span>
-                <span className="font-mono text-amber-300">{showCredentialsModal.email}</span>
-              </div>
-              <div>
-                <span className="text-gray-400 block text-[10px] uppercase font-semibold">
-                  Contraseña Temporal
-                </span>
-                <span className="font-mono text-amber-300 font-bold">
-                  {showCredentialsModal.temporaryPassword}
-                </span>
+
+              <div className="grid grid-cols-2 gap-2 pt-1 border-t border-white/10">
+                <div>
+                  <span className="text-gray-400 block text-[10px] uppercase font-semibold">
+                    PIN de Edición en Tarjeta
+                  </span>
+                  <span className="font-mono text-amber-300 font-bold text-sm">
+                    {showCredentialsModal.ownerPin}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-gray-400 block text-[10px] uppercase font-semibold">
+                    Clave Portal (/login)
+                  </span>
+                  <span className="font-mono text-amber-300 font-bold">
+                    {showCredentialsModal.temporaryPassword}
+                  </span>
+                </div>
               </div>
             </div>
 
-            <button
-              onClick={() => {
-                const text = `¡Hola! Tu tienda en G-evo ha sido creada.\n\nEnlace: https://g-evo.com/${showCredentialsModal.slug}\nPortal de Gestión: https://g-evo.com/login\nUsuario: ${showCredentialsModal.email}\nContraseña Temporal: ${showCredentialsModal.temporaryPassword}`;
-                navigator.clipboard.writeText(text);
-                setShowCredentialsModal(null);
-              }}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-400 to-emerald-400 text-black font-bold text-xs flex items-center justify-center gap-2"
-            >
-              <Copy className="w-4 h-4 text-black" />
-              <span>Copiar Mensaje para WhatsApp del Cliente</span>
-            </button>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => {
+                  const text = `¡Hola ${showCredentialsModal.clientName}! 🚀 Tu Tarjeta Digital Interactiva (NFC & QR) de G-evo. ya está activa.\n\n🔗 1. Tu Enlace Público (para compartir, QR y chip NFC):\n${originUrl}/t/${showCredentialsModal.slug}\n\n✏️ 2. Tu Enlace para Editar tu Tarjeta (cambiar fotos, colores metalizados, teléfono, redes y ver estadísticas):\n${originUrl}/t/${showCredentialsModal.slug}?owner=1\n🔑 PIN de Propietario: ${showCredentialsModal.ownerPin}\n\n💻 3. Acceso a tu Portal Clientes (${originUrl}/login):\nUsuario: ${showCredentialsModal.email}\nContraseña: ${showCredentialsModal.temporaryPassword}`;
+                  navigator.clipboard.writeText(text);
+                  setKitCopied(true);
+                  setTimeout(() => setKitCopied(false), 2500);
+                }}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-400 to-emerald-400 text-black font-bold text-xs flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Copy className="w-4 h-4 text-black" />
+                <span>{kitCopied ? '¡Mensaje Copiado al Portapapeles!' : 'Copiar Mensaje Completo para WhatsApp del Cliente'}</span>
+              </button>
+
+              <Link
+                href={`/t/${showCredentialsModal.slug}?owner=1`}
+                target="_blank"
+                className="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200 font-semibold text-xs flex items-center justify-center gap-1.5"
+              >
+                <ExternalLink className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Abrir y Probar la Tarjeta Ahora</span>
+              </Link>
+            </div>
           </div>
         </div>
       )}
@@ -592,4 +765,3 @@ export default function AdminMasterPage() {
     </div>
   );
 }
-

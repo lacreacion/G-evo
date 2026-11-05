@@ -5,31 +5,25 @@ import Link from 'next/link';
 import { Logo } from '@/components/common/Logo';
 import { INITIAL_PRODUCTS, ProductItem } from '@/lib/mockData';
 import { 
-  Store, 
   Package, 
   Plus, 
   Edit3, 
   Trash2, 
   Bot, 
   Key, 
-  CheckCircle2, 
-  Sparkles, 
-  Upload, 
   ExternalLink, 
   LogOut, 
-  DollarSign, 
-  Layers, 
   Search, 
   AlertCircle,
   Eye,
   Settings,
-  Phone
+  CreditCard
 } from 'lucide-react';
 
 export default function ClientPortalPage() {
   const [products, setProducts] = useState<ProductItem[]>(INITIAL_PRODUCTS);
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeTab, setActiveTab] = useState<'products' | 'branding' | 'ai-module'>('products');
+  const [activeTab, setActiveTab] = useState<'digital-card' | 'products' | 'branding' | 'ai-module'>('digital-card');
   
   // Product Modal (Create or Edit)
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
@@ -45,7 +39,7 @@ export default function ClientPortalPage() {
   const [prodImageUrl, setProdImageUrl] = useState('');
 
   // AI Support Bot Activation State
-  const [hasAiActive, setHasAiActive] = useState(true); // Laura Restrepo starts active
+  const [hasAiActive, setHasAiActive] = useState(true);
   const [licenseKeyInput, setLicenseKeyInput] = useState('');
   const [licenseSuccess, setLicenseSuccess] = useState(false);
   const [licenseError, setLicenseError] = useState('');
@@ -85,7 +79,6 @@ export default function ClientPortalPage() {
     if (!prodName) return;
 
     if (editingProduct) {
-      // Update
       setProducts(
         products.map((p) =>
           p.id === editingProduct.id
@@ -103,7 +96,6 @@ export default function ClientPortalPage() {
         )
       );
     } else {
-      // Create
       const newProduct: ProductItem = {
         id: `prod-${Date.now()}`,
         tenantSlug: 'laura-restrepo',
@@ -139,7 +131,6 @@ export default function ClientPortalPage() {
     e.preventDefault();
     setLicenseError('');
 
-    // Validates pattern: GEVO-XXXX-AI24-XXXXXX
     if (licenseKeyInput.trim().toUpperCase().startsWith('GEVO-')) {
       setHasAiActive(true);
       setLicenseSuccess(true);
@@ -182,17 +173,14 @@ export default function ClientPortalPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <a
-            href="#preview"
-            onClick={(e) => {
-              e.preventDefault();
-              alert('Vista previa del catálogo público vinculado: https://g-evo.com/laura-restrepo');
-            }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-semibold text-emerald-400 transition-colors"
+          <Link
+            href="/t/laura-restrepo"
+            target="_blank"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-xs font-semibold text-emerald-300 transition-colors"
           >
             <Eye className="w-3.5 h-3.5" />
-            <span>Ver mi Catálogo Público</span>
-          </a>
+            <span>Ver mi Tarjeta Pública</span>
+          </Link>
 
           <Link
             href="/login"
@@ -208,21 +196,33 @@ export default function ClientPortalPage() {
       <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 space-y-8">
         
         {/* Banner de Bienvenida y Pestañas */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-              Administración de tu Catálogo
+              Administración de tu Tarjeta &amp; Catálogo
             </h1>
             <p className="text-xs sm:text-sm text-gray-400 mt-1">
-              Modifica productos, precios, fotos y pedidos a WhatsApp con total autonomía.
+              Edita tu tarjeta digital interactiva (NFC/QR), tus productos, fotos y precios en tiempo real.
             </p>
           </div>
 
           {/* Tab Selector */}
-          <div className="flex items-center gap-2 p-1.5 bg-[#0E1524] rounded-2xl border border-white/10 self-start md:self-auto">
+          <div className="flex flex-wrap items-center gap-1.5 p-1.5 bg-[#0E1524] rounded-2xl border border-white/10 self-start lg:self-auto">
+            <button
+              onClick={() => setActiveTab('digital-card')}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                activeTab === 'digital-card'
+                  ? 'bg-gradient-to-r from-amber-500/30 to-emerald-500/30 text-amber-300 border border-amber-500/40'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              <CreditCard className="w-3.5 h-3.5" />
+              <span>Mi Tarjeta Digital (NFC/QR)</span>
+            </button>
+
             <button
               onClick={() => setActiveTab('products')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeTab === 'products'
                   ? 'bg-gradient-to-r from-emerald-500/30 to-teal-500/30 text-emerald-300 border border-emerald-500/40'
                   : 'text-gray-400 hover:text-white'
@@ -234,7 +234,7 @@ export default function ClientPortalPage() {
 
             <button
               onClick={() => setActiveTab('branding')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeTab === 'branding'
                   ? 'bg-gradient-to-r from-amber-500/30 to-yellow-500/30 text-amber-300 border border-amber-500/40'
                   : 'text-gray-400 hover:text-white'
@@ -246,7 +246,7 @@ export default function ClientPortalPage() {
 
             <button
               onClick={() => setActiveTab('ai-module')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeTab === 'ai-module'
                   ? 'bg-gradient-to-r from-emerald-500/30 to-emerald-600/30 text-emerald-300 border border-emerald-500/40'
                   : 'text-gray-400 hover:text-white'
@@ -258,6 +258,53 @@ export default function ClientPortalPage() {
             </button>
           </div>
         </div>
+
+        {/* ------------------------------------------------------------- */}
+        {/* PESTAÑA 0: MI TARJETA DIGITAL INTERACTIVA (EN VIVO Y EDITABLE) */}
+        {/* ------------------------------------------------------------- */}
+        {activeTab === 'digital-card' && (
+          <div className="space-y-4 animate-fadeIn">
+            <div className="p-4 sm:p-5 rounded-2xl bg-[#0E1524] border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <div className="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-2">
+                  <CreditCard className="w-4 h-4 text-emerald-400" />
+                  <span>Modo Propietario Activado • Edita tu Tarjeta en Vivo</span>
+                </div>
+                <p className="text-xs text-gray-300">
+                  Haz clic en el botón <strong className="text-emerald-400">&quot;Editar&quot;</strong> arriba a la derecha dentro de tu tarjeta para cambiar tu foto, logo de fondo, colores metalizados (Oro 24K, Plata, Oro Rosa, Titanio), redes sociales y teléfono.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <Link
+                  href="/t/laura-restrepo"
+                  target="_blank"
+                  className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-gray-200 flex items-center gap-1.5 transition-colors"
+                >
+                  <ExternalLink className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Vista Pública</span>
+                </Link>
+                <Link
+                  href="/t/laura-restrepo?owner=1"
+                  target="_blank"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-emerald-400 text-xs font-bold text-black flex items-center gap-1.5 transition-all"
+                >
+                  <Edit3 className="w-3.5 h-3.5 text-black" />
+                  <span>Abrir en Pantalla Completa</span>
+                </Link>
+              </div>
+            </div>
+
+            <div className="rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-[#070709] h-[780px]">
+              <iframe
+                src="/card-engine.html?slug=laura-restrepo&owner=1"
+                title="Editor en Vivo de Mi Tarjeta Digital"
+                className="w-full h-full border-0 block"
+                allow="clipboard-write; web-share"
+              />
+            </div>
+          </div>
+        )}
 
         {/* ------------------------------------------------------------- */}
         {/* PESTAÑA 1: GESTIÓN DE PRODUCTOS / INVENTARIO */}
@@ -675,4 +722,3 @@ export default function ClientPortalPage() {
     </div>
   );
 }
-
