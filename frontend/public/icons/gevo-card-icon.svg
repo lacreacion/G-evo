@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d111c" />
+      <stop offset="100%" stop-color="#06080f" />
+    </linearGradient>
+    <linearGradient id="goldLeaf" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE169" />
+      <stop offset="48%" stop-color="#DFAC22" />
+      <stop offset="100%" stop-color="#9A6B10" />
+    </linearGradient>
+    <linearGradient id="emeraldLeaf" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2AE88A" />
+      <stop offset="55%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#065F46" />
+    </linearGradient>
+    <linearGradient id="silverLeaf" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="55%" stop-color="#D4D8DF" />
+      <stop offset="100%" stop-color="#8C939E" />
+    </linearGradient>
+    <linearGradient id="charcoalLeaf" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7D8490" />
+      <stop offset="55%" stop-color="#4A505A" />
+      <stop offset="100%" stop-color="#262A32" />
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+  <rect x="12" y="12" width="488" height="488" rx="100" fill="none" stroke="#D4AF37" stroke-opacity="0.35" stroke-width="6" />
+
+  <g transform="translate(256, 256) rotate(-11) translate(-256, -256)">
+    <!-- Hoja Superior Izquierda: Oro -->
+    <path d="M 110 110 L 185 110 A 56 56 0 0 1 241 166 L 241 241 L 166 241 A 56 56 0 0 1 110 185 Z" fill="url(#goldLeaf)" />
+    <!-- Hoja Superior Derecha: Esmeralda -->
+    <path d="M 327 110 L 402 110 L 402 185 A 56 56 0 0 1 346 241 L 271 241 L 271 166 A 56 56 0 0 1 327 110 Z" fill="url(#emeraldLeaf)" />
+    <!-- Hoja Inferior Izquierda: Plata -->
+    <path d="M 166 271 L 241 271 L 241 346 A 56 56 0 0 1 185 402 L 110 402 L 110 327 A 56 56 0 0 1 166 271 Z" fill="url(#silverLeaf)" />
+    <!-- Hoja Inferior Derecha: Gris Carbón -->
+    <path d="M 271 271 L 346 271 A 56 56 0 0 1 402 327 L 402 402 L 327 402 A 56 56 0 0 1 271 346 Z" fill="url(#charcoalLeaf)" />
+  </g>
+</svg>

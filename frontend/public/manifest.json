@@ -1,0 +1,18 @@
+{
+  "name": "Tarjeta Digital Inteligente | G-evo.",
+  "short_name": "Mi Tarjeta G-evo",
+  "description": "Tarjeta Digital Inteligente NFC & QR Dinámico con contacto directo y catálogo.",
+  "start_url": "/t/elena-vance",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#070709",
+  "theme_color": "#10b981",
+  "icons": [
+    {
+      "src": "/icons/gevo-card-icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>Carlos Mendoza | Tarjeta Digital Interactiva (NFC & QR)</title>
   <meta name="description" content="Product Design Director & Frontend Architect — Conecta, agenda o guarda mi contacto al instante vía NFC y QR dinámico." />
+  <meta name="theme-color" content="#070709" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Mi Tarjeta G-evo" />
+  <link id="dynamic-pwa-manifest" rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="/icons/gevo-card-icon.svg" />
+  <link rel="apple-touch-icon" href="/icons/gevo-card-icon.svg" />
 
   <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -333,14 +341,14 @@
             <span>Guardar en contactos</span>
           </button>
 
-          <!-- Botón Secundario: Apple Wallet / Google Wallet -->
+          <!-- Botón Secundario: Instalar App (PWA) / Wallet -->
           <button
             type="button"
             id="btn-open-wallet"
-            class="sm:col-span-5 w-full inline-flex items-center justify-center gap-2 px-3.5 py-3 rounded-2xl bg-zinc-900/90 hover:bg-zinc-800/90 border border-zinc-700/80 text-zinc-100 font-medium text-xs transition active:scale-[0.98]"
+            class="sm:col-span-5 w-full inline-flex items-center justify-center gap-2 px-3.5 py-3 rounded-2xl bg-zinc-900/90 hover:bg-zinc-800/90 border border-amber-500/40 text-zinc-100 font-semibold text-xs transition active:scale-[0.98]"
           >
-            <i data-lucide="wallet-cards" class="w-4 h-4 text-indigo-400"></i>
-            <span>Añadir a Wallet</span>
+            <i data-lucide="smartphone" class="w-4 h-4 text-amber-400"></i>
+            <span>Instalar App / Wallet</span>
           </button>
         </div>
       </div>
@@ -869,11 +877,31 @@
       </div>
     </div>
 
-    <p class="text-xs text-zinc-400 leading-relaxed mb-4">
-      En tu aplicación <strong class="text-zinc-200">Next.js</strong>, estos botones apuntan a los endpoints firmados <code class="text-indigo-300 font-mono">/api/wallet/apple</code> (<code class="font-mono">.pkpass</code>) y <code class="text-indigo-300 font-mono">/api/wallet/google</code> (JWT Save Link).
-    </p>
+    <div class="space-y-2.5 mb-3">
+      <button
+        type="button"
+        id="btn-install-pwa-now"
+        class="w-full py-3 px-4 rounded-xl font-bold text-xs text-zinc-950 flex items-center justify-center gap-2 shadow-lg transition active:scale-95"
+        style="background: linear-gradient(135deg, #FFCC00 0%, #10B981 100%);"
+      >
+        <i data-lucide="download" class="w-4 h-4"></i>
+        <span>📲 Instalar App en Pantalla de Inicio</span>
+      </button>
 
-    <div class="space-y-2">
+      <div id="pwa-install-guide" class="rounded-2xl bg-surface-950/90 border border-emerald-500/30 p-3 text-left text-[11px] text-zinc-300 space-y-1.5">
+        <p class="font-bold text-emerald-400 flex items-center gap-1.5">
+          <span>✨ ¿Cómo fijarla como App en tu celular?</span>
+        </p>
+        <p class="leading-relaxed">
+          • <strong class="text-white">En Android (Chrome):</strong> Toca el botón dorado de arriba o abre el menú <strong class="text-amber-300">⋮</strong> (arriba a la derecha) y elige <strong class="text-white">&ldquo;Instalar aplicación&rdquo;</strong> o <strong class="text-white">&ldquo;Agregar a pantalla principal&rdquo;</strong>.
+        </p>
+        <p class="leading-relaxed">
+          • <strong class="text-white">En iPhone (Safari):</strong> Toca el icono <strong class="text-amber-300">Compartir [↑]</strong> en la barra inferior y selecciona <strong class="text-white">&ldquo;Agregar a inicio&rdquo;</strong>.
+        </p>
+      </div>
+    </div>
+
+    <div class="space-y-2 pt-2 border-t border-zinc-800/80">
       <button
         type="button"
         data-wallet-provider="apple_wallet"
@@ -2260,10 +2288,43 @@
       // Botón Principal: Descargar vCard (.vcf)
       document.getElementById("btn-save-vcard")?.addEventListener("click", generateAndDownloadVCard);
 
-      // Botón Secundario: Abrir Modal Wallet
+      // Configurar Manifest Dinámico por Cliente y Service Worker PWA
+      const manifestEl = document.getElementById("dynamic-pwa-manifest");
+      if (manifestEl) {
+        manifestEl.href = `/api/manifest/${encodeURIComponent(CURRENT_SLUG)}?name=${encodeURIComponent(PROFILE_CONFIG.fullName + " | G-evo")}`;
+      }
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/sw.js").catch(() => {});
+      }
+
+      let deferredCardPwaPrompt = null;
+      window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredCardPwaPrompt = e;
+      });
+
+      // Botón Secundario: Abrir Modal Instalar App / Wallet
       const modalWallet = document.getElementById("modal-wallet");
       document.getElementById("btn-open-wallet")?.addEventListener("click", () => {
         modalWallet?.showModal();
+      });
+
+      document.getElementById("btn-install-pwa-now")?.addEventListener("click", async () => {
+        CardAnalytics.track("pwa_install_clicked", { slug: CURRENT_SLUG });
+        if (deferredCardPwaPrompt) {
+          deferredCardPwaPrompt.prompt();
+          const choice = await deferredCardPwaPrompt.userChoice.catch(() => null);
+          deferredCardPwaPrompt = null;
+          if (choice?.outcome === "accepted") {
+            modalWallet?.close();
+            showToast("¡Tarjeta instalada como App en tu pantalla de inicio!");
+          }
+          return;
+        }
+        try {
+          window.parent?.postMessage({ type: "GEVO_TRIGGER_PWA_INSTALL", slug: CURRENT_SLUG }, "*");
+        } catch (_) {}
+        showToast("Sigue los 2 pasos en pantalla según tu celular (Android o iPhone) para fijar el icono.");
       });
 
       document.querySelectorAll(".wallet-provider-btn").forEach((btn) => {
