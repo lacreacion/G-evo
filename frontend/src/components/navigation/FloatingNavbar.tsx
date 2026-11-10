@@ -40,9 +40,9 @@ export const FloatingNavbar: React.FC = () => {
   return (
     <>
       {/* Floating Navbar Container */}
-      <header className="fixed top-0 left-0 right-0 z-40 flex justify-center px-4 pt-4 md:pt-6 transition-all duration-300">
+      <header className="fixed top-0 left-0 right-0 z-40 flex justify-center px-3 sm:px-5 pt-4 md:pt-6 transition-all duration-300">
         <nav
-          className={`w-full max-w-6xl rounded-2xl px-5 py-3 md:px-7 md:py-3.5 transition-all duration-300 flex items-center justify-between gevo-header-bar ${
+          className={`w-[96%] max-w-[1480px] rounded-2xl px-6 py-3 md:px-10 md:py-3.5 transition-all duration-300 flex items-center justify-between gevo-header-bar ${
             isScrolled
               ? 'shadow-[0_20px_50px_rgba(0,0,0,0.85)]'
               : 'shadow-lg'
@@ -52,7 +52,7 @@ export const FloatingNavbar: React.FC = () => {
           <Logo size="md" />
 
           {/* Menú de Navegación Desktop Minimalista con Pastilla Blanca Luminosa + Punto Dorado en Hover */}
-          <div className="hidden lg:flex items-center gap-3 xl:gap-5 text-sm font-semibold text-[#555E5A]">
+          <div className="hidden lg:flex items-center gap-7 xl:gap-12 text-sm font-semibold text-[#555E5A]">
             <Link
               href="/"
               className="group/item relative inline-flex flex-col items-center justify-center px-5 pt-2 pb-1.5 rounded-2xl border-[1.5px] border-transparent text-[#555E5A] transition-all duration-200 hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]"
