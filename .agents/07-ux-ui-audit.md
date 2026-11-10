@@ -11,7 +11,7 @@
 - Auditar que el efecto `:hover` proyecte fielmente la **Sombra Resplandeciente Verde Satén / Seda Esmeralda** (`#007A53`, `#17A575` y `#22C58B`) con elevación táctil (`hover:-translate-y-0.5`) y rotación sutil del ícono (`group-hover:-rotate-6`).
 - Auditar que la tipografía principal sea **`Plus Jakarta Sans`** o **`Inter`** en pesos `font-semibold` (`600`) y `font-bold` (`700`).
 - **Regla de Oro de Identidad de Marca:** Auditar y garantizar que la estética Verde Bosque Profundo + Soft UI Blanco Luminoso conviva en total armonía con el logotipo oficial **"G-evo."**, el cual mantiene **siempre** sus 4 hojas, su **"G-"** en dorado metalizado y **"evo."** en verde esmeralda vibrante, sin ser alterado jamás.
-- Auditar que la barra de navegación (`FloatingNavbar.tsx`) conserve el estilo minimalista gris-salvia claro (`#C5CDC8`) con enlaces de texto limpios (`#555E5A`), chevron dorado (`#B5892E`) y botones de redes sociales *squircle* blancos (`#F2F6F3`) con íconos en verde esmeralda (`#146343`).
+- Auditar que la barra de navegación (`FloatingNavbar.tsx`) conserve el estilo minimalista gris-salvia claro (`#C5CDC8`) con enlaces de texto limpios (`#555E5A`) que al pasar el mouse (`:hover`) despliegan una pastilla blanca marfil (`#F3F6F4`, borde blanco `#FFFFFF` y halo luminoso), texto en verde esmeralda (`#147A50`) y punto dorado inferior (`#C59B27`), además de botones de redes sociales *squircle* blancos (`#F2F6F3`) con íconos en verde esmeralda (`#146343`).
 - Verificar la navegación accesible por teclado (focus visible, roles ARIA, semántica HTML5).
 - Validar la ergonomía de uso táctil en dispositivos móviles (tap targets mínimos de 44x44px y micro-interacciones físicas fluidas).
 

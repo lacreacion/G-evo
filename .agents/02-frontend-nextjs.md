@@ -45,7 +45,9 @@
 
 ### 2.4 Barra de Navegación Superior Minimalista (`FloatingNavbar.tsx` / `.gevo-header-bar`)
 - **Superficie de la Barra:** Tono claro gris-salvia / piedra suave esmerilada (`rgba(196, 204, 199, 0.94)` a `rgba(205, 212, 207, 0.96)`) con `backdrop-filter: blur(18px)` y borde blanco sutil.
-- **Enlaces del Menú (`Inicio`, `Servicios`, `Agente IA`, `Quiénes somos`, `Contacto`):** Texto limpio y plano (sin cajas ni bordes 3D) en color gris carbón/pizarra suave (`#555E5A`, `font-semibold`), con transición a verde esmeralda (`#146343`) en `:hover`, y chevron desplegable (`▾`) en tono dorado (`#B5892E`).
+- **Enlaces del Menú (`Inicio`, `Servicios`, `Agente IA`, `Quiénes somos`, `Contacto`):**
+  - En reposo: texto limpio y plano en color gris carbón/pizarra suave (`#555E5A`, `font-semibold`), con chevron desplegable (`▾`) en tono dorado (`#B5892E`).
+  - En `:hover`: aparece una pastilla blanca marfil redondeada (`rounded-2xl`, `bg-[#F3F6F4]`, `border-[1.5px] border-white`) con halo blanco superior-izquierdo y sombra suave (`shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]`), el texto cambia a verde esmeralda (`#147A50`) y se muestra un punto dorado centrado debajo de la palabra (`w-1.5 h-1.5 rounded-full bg-[#C59B27]`).
 - **Botones de Redes Sociales (Facebook e Instagram):** Botones *squircle* (`w-10 h-10 rounded-2xl`) en blanco marfil luminoso (`#F2F6F3`), borde blanco (`border-[1.5px] border-white`), resplandor exterior suave e ícono interno en verde esmeralda oscuro (`#146343`).
 
 ---

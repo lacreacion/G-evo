@@ -51,27 +51,30 @@ export const FloatingNavbar: React.FC = () => {
           {/* Logo Principal con colores oficiales G-evo (Regla de Oro intacta) */}
           <Logo size="md" />
 
-          {/* Menú de Navegación Desktop Minimalista Limpio (Exacto a Segunda Imagen) */}
-          <div className="hidden lg:flex items-center gap-8 xl:gap-10 text-sm font-semibold text-[#555E5A]">
+          {/* Menú de Navegación Desktop Minimalista con Pastilla Blanca Luminosa + Punto Dorado en Hover */}
+          <div className="hidden lg:flex items-center gap-3 xl:gap-5 text-sm font-semibold text-[#555E5A]">
             <Link
               href="/"
-              className="text-[#555E5A] hover:text-[#146343] transition-colors duration-200 py-1"
+              className="group/item relative inline-flex flex-col items-center justify-center px-5 pt-2 pb-1.5 rounded-2xl border-[1.5px] border-transparent text-[#555E5A] transition-all duration-200 hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]"
             >
-              Inicio
+              <span>Inicio</span>
+              <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#C59B27] opacity-0 scale-50 group-hover/item:opacity-100 group-hover/item:scale-100 transition-all duration-200" />
             </Link>
 
             <Link
               href="#servicios"
-              className="text-[#555E5A] hover:text-[#146343] transition-colors duration-200 py-1"
+              className="group/item relative inline-flex flex-col items-center justify-center px-5 pt-2 pb-1.5 rounded-2xl border-[1.5px] border-transparent text-[#555E5A] transition-all duration-200 hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]"
             >
-              Servicios
+              <span>Servicios</span>
+              <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#C59B27] opacity-0 scale-50 group-hover/item:opacity-100 group-hover/item:scale-100 transition-all duration-200" />
             </Link>
 
             <Link
               href="#ai-demo"
-              className="text-[#555E5A] hover:text-[#146343] transition-colors duration-200 py-1"
+              className="group/item relative inline-flex flex-col items-center justify-center px-5 pt-2 pb-1.5 rounded-2xl border-[1.5px] border-transparent text-[#555E5A] transition-all duration-200 hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]"
             >
-              Agente IA
+              <span>Agente IA</span>
+              <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#C59B27] opacity-0 scale-50 group-hover/item:opacity-100 group-hover/item:scale-100 transition-all duration-200" />
             </Link>
 
             {/* Menú Desplegable Interactivo: Quiénes somos (Visión, Misión, Historia) */}
@@ -79,10 +82,19 @@ export const FloatingNavbar: React.FC = () => {
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 onMouseEnter={() => setDropdownOpen(true)}
-                className="inline-flex items-center gap-1.5 text-[#555E5A] hover:text-[#146343] transition-colors duration-200 py-1 cursor-pointer"
+                className={`group/item relative inline-flex flex-col items-center justify-center px-5 pt-2 pb-1.5 rounded-2xl border-[1.5px] transition-all duration-200 cursor-pointer ${
+                  dropdownOpen
+                    ? 'bg-[#F3F6F4] border-white text-[#147A50] shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]'
+                    : 'border-transparent text-[#555E5A] hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]'
+                }`}
               >
-                <span>Quiénes somos</span>
-                <ChevronDown className={`w-3.5 h-3.5 text-[#B5892E] stroke-[2.5] transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
+                <span className="inline-flex items-center gap-1.5">
+                  <span>Quiénes somos</span>
+                  <ChevronDown className={`w-3.5 h-3.5 text-[#B5892E] stroke-[2.5] transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
+                </span>
+                <span className={`mt-1 w-1.5 h-1.5 rounded-full bg-[#C59B27] transition-all duration-200 ${
+                  dropdownOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-50 group-hover/item:opacity-100 group-hover/item:scale-100'
+                }`} />
               </button>
 
               {/* Dropdown Window Popover con Tarjetas Soft UI Blanco Luminoso (Imagen 3 + Hover Imagen 2) */}
@@ -163,9 +175,10 @@ export const FloatingNavbar: React.FC = () => {
 
             <Link
               href="#contacto"
-              className="text-[#555E5A] hover:text-[#146343] transition-colors duration-200 py-1"
+              className="group/item relative inline-flex flex-col items-center justify-center px-5 pt-2 pb-1.5 rounded-2xl border-[1.5px] border-transparent text-[#555E5A] transition-all duration-200 hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]"
             >
-              Contacto
+              <span>Contacto</span>
+              <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#C59B27] opacity-0 scale-50 group-hover/item:opacity-100 group-hover/item:scale-100 transition-all duration-200" />
             </Link>
           </div>
 
