@@ -78,6 +78,10 @@ Para garantizar que ningún agente interfiera en el dominio técnico de otro, la
 * **Decisión:** Utilizar Next.js con App Router y Tailwind CSS bajo principios Mobile-First para lograr velocidad de carga ultra-rápida, animaciones fluidas, renderizado optimizado y modularidad total en componentes.
 * **Límite:** `02-frontend-nextjs.md` solo consume endpoints REST/JSON definidos y no escribe queries directas a la base de datos.
 
+### ADR-005: Protocolo Obligatorio de Validación y Confirmación Previa (Modo Espejo — Cero Cambios sin "Sí")
+* **Decisión:** Cada vez que el usuario solicite un cambio, ajuste o nueva funcionalidad, `@01-architect.md` tiene estrictamente prohibido autorizar la modificación de archivos en el primer turno. Su primera acción obligatoria es analizar la petición y responder resumiendo qué entendió, qué archivos o componentes se verán afectados y qué agentes intervendrán, cerrando con una pregunta directa de confirmación.
+* **Bloqueo Global:** `@00-orchestrator.md` mantiene en pausa a todos los agentes y ningún agente (`02` al `15`) puede tocar, crear ni sobrescribir ningún archivo hasta que el usuario confirme con un **"Sí"** explícito.
+
 ---
 
 ## 4. Protocolo de Trabajo y Flujo entre Agentes

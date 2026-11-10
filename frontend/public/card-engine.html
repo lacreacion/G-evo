@@ -329,27 +329,37 @@
           Diseñando sistemas de diseño escalables y experiencias web interactivas de alto impacto para startups globales.
         </p>
 
-        <!-- 4. ACCIONES DE CONTACTO RÁPIDO (CTA Principal vCard + Wallet Secundario) -->
-        <div class="mt-5 grid grid-cols-1 sm:grid-cols-12 gap-2.5">
-          <!-- CTA Principal: Guardar en Contactos (.vcf) -->
+        <!-- 4. ACCIONES DE CONTACTO RÁPIDO (3 Botones: Guardar en contactos, Instalar App y Llamar) -->
+        <div class="mt-5 grid grid-cols-3 gap-2">
+          <!-- Botón 1: Guardar en Contactos (.vcf) -->
           <button
             type="button"
             id="btn-save-vcard"
-            class="theme-btn-primary sm:col-span-7 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-emerald-500 text-zinc-950 font-semibold text-sm transition active:scale-[0.98]"
+            class="theme-btn-primary w-full inline-flex items-center justify-center gap-1.5 px-2.5 py-3 rounded-2xl bg-emerald-500 text-zinc-950 font-bold text-xs transition active:scale-[0.98]"
           >
-            <i data-lucide="user-plus" class="w-4 h-4 stroke-[2.25]"></i>
-            <span>Guardar en contactos</span>
+            <i data-lucide="user-plus" class="w-4 h-4 stroke-[2.25] shrink-0"></i>
+            <span class="leading-tight">Guardar en contactos</span>
           </button>
 
-          <!-- Botón Secundario: Instalar App (PWA) / Wallet -->
+          <!-- Botón 2: Instalar App (PWA) -->
           <button
             type="button"
             id="btn-open-wallet"
-            class="sm:col-span-5 w-full inline-flex items-center justify-center gap-2 px-3.5 py-3 rounded-2xl bg-zinc-900/90 hover:bg-zinc-800/90 border border-amber-500/40 text-zinc-100 font-semibold text-xs transition active:scale-[0.98]"
+            class="w-full inline-flex items-center justify-center gap-1.5 px-2.5 py-3 rounded-2xl bg-zinc-900/90 hover:bg-zinc-800/90 border border-amber-500/40 text-zinc-100 font-semibold text-xs transition active:scale-[0.98]"
           >
-            <i data-lucide="smartphone" class="w-4 h-4 text-amber-400"></i>
-            <span>Instalar App / Wallet</span>
+            <i data-lucide="smartphone" class="w-4 h-4 text-amber-400 shrink-0"></i>
+            <span class="leading-tight">Instalar App</span>
           </button>
+
+          <!-- Botón 3: Llamar directo -->
+          <a
+            id="btn-hero-call"
+            href="tel:+34600123456"
+            class="w-full inline-flex items-center justify-center gap-1.5 px-2.5 py-3 rounded-2xl bg-zinc-900/90 hover:bg-zinc-800/90 border border-emerald-500/40 text-zinc-100 font-semibold text-xs transition active:scale-[0.98]"
+          >
+            <i data-lucide="phone-call" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+            <span class="leading-tight">Llamar</span>
+          </a>
         </div>
       </div>
     </section>
@@ -1642,12 +1652,17 @@
         }
       }
 
-      // Actualizar enlace de WhatsApp directo con el número y nombre actualizados
+      // Actualizar enlace de WhatsApp directo y botón Llamar con el número actualizado
       const waLink = document.querySelector('a[data-social="whatsapp"]');
       if (waLink && PROFILE_CONFIG.phone) {
         const cleanPhone = PROFILE_CONFIG.phone.replace(/[^\d]/g, "");
         const msg = encodeURIComponent(`Hola ${PROFILE_CONFIG.firstName}, acabo de escanear tu tarjeta digital`);
         waLink.href = `https://wa.me/${cleanPhone}?text=${msg}`;
+      }
+      const heroCallBtn = document.getElementById("btn-hero-call");
+      if (heroCallBtn && PROFILE_CONFIG.phone) {
+        const cleanTel = PROFILE_CONFIG.phone.replace(/[^\d+]/g, "");
+        heroCallBtn.href = `tel:${cleanTel}`;
       }
 
       // Actualizar textos con el nombre de pila (ej. botones de contacto)
