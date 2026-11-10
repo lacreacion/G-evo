@@ -43,6 +43,11 @@
   group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-4 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]
   ```
 
+### 2.4 Barra de Navegación Superior Minimalista (`FloatingNavbar.tsx` / `.gevo-header-bar`)
+- **Superficie de la Barra:** Tono claro gris-salvia / piedra suave esmerilada (`rgba(196, 204, 199, 0.94)` a `rgba(205, 212, 207, 0.96)`) con `backdrop-filter: blur(18px)` y borde blanco sutil.
+- **Enlaces del Menú (`Inicio`, `Servicios`, `Agente IA`, `Quiénes somos`, `Contacto`):** Texto limpio y plano (sin cajas ni bordes 3D) en color gris carbón/pizarra suave (`#555E5A`, `font-semibold`), con transición a verde esmeralda (`#146343`) en `:hover`, y chevron desplegable (`▾`) en tono dorado (`#B5892E`).
+- **Botones de Redes Sociales (Facebook e Instagram):** Botones *squircle* (`w-10 h-10 rounded-2xl`) en blanco marfil luminoso (`#F2F6F3`), borde blanco (`border-[1.5px] border-white`), resplandor exterior suave e ícono interno en verde esmeralda oscuro (`#146343`).
+
 ---
 
 ## 3. Limitaciones Estrictas (Límites Operativos)

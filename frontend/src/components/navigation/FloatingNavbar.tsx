@@ -51,39 +51,38 @@ export const FloatingNavbar: React.FC = () => {
           {/* Logo Principal con colores oficiales G-evo (Regla de Oro intacta) */}
           <Logo size="md" />
 
-          {/* Menú de Navegación Desktop con Botones Soft UI Blanco Luminoso + Hover Seda Esmeralda */}
-          <div className="hidden lg:flex items-center gap-2.5 text-xs font-semibold text-[#2C3531]">
+          {/* Menú de Navegación Desktop Minimalista Limpio (Exacto a Segunda Imagen) */}
+          <div className="hidden lg:flex items-center gap-8 xl:gap-10 text-sm font-semibold text-[#555E5A]">
             <Link
               href="/"
-              className="gevo-keycap-idle px-3.5 py-2 text-xs"
+              className="text-[#555E5A] hover:text-[#146343] transition-colors duration-200 py-1"
             >
               Inicio
             </Link>
 
             <Link
               href="#servicios"
-              className="gevo-keycap-idle px-3.5 py-2 text-xs"
+              className="text-[#555E5A] hover:text-[#146343] transition-colors duration-200 py-1"
             >
               Servicios
             </Link>
 
             <Link
               href="#ai-demo"
-              className="gevo-keycap-idle px-3.5 py-2 text-xs gap-1.5"
+              className="text-[#555E5A] hover:text-[#146343] transition-colors duration-200 py-1"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#157A54]" />
-              <span>Agente IA</span>
+              Agente IA
             </Link>
 
-            {/* Menú Desplegable Interactivo: Quiénes Somos (Visión, Misión, Historia) */}
+            {/* Menú Desplegable Interactivo: Quiénes somos (Visión, Misión, Historia) */}
             <div className="relative group/nav">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 onMouseEnter={() => setDropdownOpen(true)}
-                className="gevo-keycap-idle px-3.5 py-2 text-xs gap-1 cursor-pointer"
+                className="inline-flex items-center gap-1.5 text-[#555E5A] hover:text-[#146343] transition-colors duration-200 py-1 cursor-pointer"
               >
-                <span>Quiénes Somos</span>
-                <ChevronDown className={`w-3.5 h-3.5 text-[#157A54] transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
+                <span>Quiénes somos</span>
+                <ChevronDown className={`w-3.5 h-3.5 text-[#B5892E] stroke-[2.5] transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {/* Dropdown Window Popover con Tarjetas Soft UI Blanco Luminoso (Imagen 3 + Hover Imagen 2) */}
@@ -164,45 +163,45 @@ export const FloatingNavbar: React.FC = () => {
 
             <Link
               href="#contacto"
-              className="gevo-keycap-idle px-3.5 py-2 text-xs"
+              className="text-[#555E5A] hover:text-[#146343] transition-colors duration-200 py-1"
             >
               Contacto
             </Link>
           </div>
 
-          {/* Redes Sociales + Botón Portal Clientes */}
+          {/* Redes Sociales Squircle Blancos + Ícono Verde Esmeralda (Exacto a Segunda Imagen) + Portal Clientes */}
           <div className="hidden md:flex items-center gap-2.5">
-            {/* Botón Oficial de Facebook con efecto glow y elevación */}
+            {/* Botón Oficial de Facebook (Squircle Blanco Luminoso + Ícono Verde #146343) */}
             <a
               href="https://www.facebook.com"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Visitar Facebook oficial de G-evo"
               title="Síguenos en Facebook"
-              className="w-8 h-8 rounded-full flex items-center justify-center bg-white/5 border border-white/10 text-gray-300 transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 hover:bg-[#1877F2] hover:border-[#1877F2] hover:text-white hover:shadow-[0_0_16px_rgba(24,119,242,0.55)] group/fb"
+              className="w-10 h-10 rounded-2xl flex items-center justify-center bg-[#F2F6F3] border-[1.5px] border-white text-[#146343] shadow-[0_0_16px_rgba(255,255,255,0.75),0_4px_10px_rgba(20,99,67,0.12)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:border-[#22C58B] hover:shadow-[0_10px_24px_-4px_rgba(23,165,117,0.65),0_0_16px_2px_rgba(0,122,83,0.45)] group/fb"
             >
-              <FacebookIcon className="w-3.5 h-3.5 transition-transform duration-300 group-hover/fb:scale-110" />
+              <FacebookIcon className="w-4 h-4 transition-transform duration-300 group-hover/fb:scale-110" />
             </a>
 
-            {/* Botón Oficial de Instagram con efecto gradiente, giro y glow */}
+            {/* Botón Oficial de Instagram (Squircle Blanco Luminoso + Ícono Verde #146343) */}
             <a
               href="https://www.instagram.com"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Visitar Instagram oficial de G-evo"
               title="Síguenos en Instagram"
-              className="w-8 h-8 rounded-full flex items-center justify-center bg-white/5 border border-white/10 text-gray-300 transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 hover:bg-gradient-to-tr hover:from-amber-500 hover:via-pink-500 hover:to-purple-600 hover:border-pink-500/60 hover:text-white hover:shadow-[0_0_16px_rgba(236,72,153,0.55)] group/ig"
+              className="w-10 h-10 rounded-2xl flex items-center justify-center bg-[#F2F6F3] border-[1.5px] border-white text-[#146343] shadow-[0_0_16px_rgba(255,255,255,0.75),0_4px_10px_rgba(20,99,67,0.12)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:border-[#22C58B] hover:shadow-[0_10px_24px_-4px_rgba(23,165,117,0.65),0_0_16px_2px_rgba(0,122,83,0.45)] group/ig"
             >
-              <InstagramIcon className="w-3.5 h-3.5 transition-transform duration-300 group-hover/ig:scale-110 group-hover/ig:rotate-6" />
+              <InstagramIcon className="w-4 h-4 transition-transform duration-300 group-hover/ig:scale-110" />
             </a>
 
-            {/* Botón Portal Clientes con Soft UI Blanco Luminoso + Hover Seda Esmeralda */}
+            {/* Botón Portal Clientes */}
             <Link
               href="/login"
-              className="gevo-keycap-active px-4 py-2 text-xs gap-1.5"
+              className="flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-[#146343] rounded-2xl bg-[#F2F6F3] border-[1.5px] border-white shadow-[0_0_16px_rgba(255,255,255,0.75),0_4px_10px_rgba(20,99,67,0.12)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:border-[#22C58B] hover:shadow-[0_10px_24px_-4px_rgba(23,165,117,0.65),0_0_16px_2px_rgba(0,122,83,0.45)]"
               title="Portal de Gestión para Clientes"
             >
-              <LogIn className="w-3.5 h-3.5 text-[#157A54]" />
+              <LogIn className="w-3.5 h-3.5 text-[#146343]" />
               <span>Portal Clientes</span>
             </Link>
           </div>
@@ -210,7 +209,7 @@ export const FloatingNavbar: React.FC = () => {
           {/* Mobile Menu Hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-gray-300 hover:text-white rounded-lg bg-white/5 border border-white/10"
+            className="lg:hidden p-2.5 text-[#146343] rounded-2xl bg-[#F2F6F3] border border-white shadow-xs"
             aria-label="Abrir menú"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -308,14 +307,14 @@ export const FloatingNavbar: React.FC = () => {
             </div>
 
             <div className="pt-3 border-t border-white/10 flex flex-col gap-3">
-              {/* Redes Sociales antes de Portal Clientes en Mobile */}
+              {/* Redes Sociales antes de Portal Clientes en Mobile (Squircle Blanco + Ícono Verde #146343) */}
               <div className="flex items-center justify-center gap-3">
                 <a
                   href="https://www.facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Visitar Facebook oficial de G-evo"
-                  className="w-9 h-9 rounded-full flex items-center justify-center bg-white/5 border border-white/10 text-gray-300 transition-all duration-300 hover:scale-110 hover:bg-[#1877F2] hover:border-[#1877F2] hover:text-white hover:shadow-[0_0_16px_rgba(24,119,242,0.55)]"
+                  className="w-10 h-10 rounded-2xl flex items-center justify-center bg-[#F2F6F3] border-[1.5px] border-white text-[#146343] shadow-[0_0_16px_rgba(255,255,255,0.75)] transition-all duration-300 hover:scale-105"
                 >
                   <FacebookIcon className="w-4 h-4" />
                 </a>
@@ -324,7 +323,7 @@ export const FloatingNavbar: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Visitar Instagram oficial de G-evo"
-                  className="w-9 h-9 rounded-full flex items-center justify-center bg-white/5 border border-white/10 text-gray-300 transition-all duration-300 hover:scale-110 hover:bg-gradient-to-tr hover:from-amber-500 hover:via-pink-500 hover:to-purple-600 hover:border-pink-500/60 hover:text-white hover:shadow-[0_0_16px_rgba(236,72,153,0.55)]"
+                  className="w-10 h-10 rounded-2xl flex items-center justify-center bg-[#F2F6F3] border-[1.5px] border-white text-[#146343] shadow-[0_0_16px_rgba(255,255,255,0.75)] transition-all duration-300 hover:scale-105"
                 >
                   <InstagramIcon className="w-4 h-4" />
                 </a>
@@ -333,9 +332,9 @@ export const FloatingNavbar: React.FC = () => {
               <Link
                 href="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-400 text-xs font-bold text-black flex items-center justify-center gap-1.5"
+                className="w-full text-center py-2.5 rounded-2xl bg-[#F2F6F3] border-[1.5px] border-white text-xs font-semibold text-[#146343] flex items-center justify-center gap-1.5 shadow-sm"
               >
-                <LogIn className="w-3.5 h-3.5 text-black" />
+                <LogIn className="w-3.5 h-3.5 text-[#146343]" />
                 <span>Portal Clientes</span>
               </Link>
             </div>
