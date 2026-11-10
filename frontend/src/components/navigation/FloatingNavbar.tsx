@@ -97,77 +97,77 @@ export const FloatingNavbar: React.FC = () => {
                 }`} />
               </button>
 
-              {/* Dropdown Window Popover con Tarjetas Soft UI Blanco Luminoso (Imagen 3 + Hover Imagen 2) */}
+              {/* Dropdown Window Popover con Tarjetas Compactas y Delgadas Soft UI Blanco Luminoso */}
               {dropdownOpen && (
                 <div
                   onMouseLeave={() => setDropdownOpen(false)}
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-80 p-3 gevo-chassis animate-fadeIn space-y-2.5"
+                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 p-2 gevo-chassis animate-fadeIn space-y-1.5"
                 >
-                  <div className="px-2 py-1 text-[11px] font-bold uppercase tracking-wider text-emerald-300 border-b border-white/10">
+                  <div className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-300 border-b border-white/10">
                     Conoce el Ecosistema G-evo
                   </div>
 
-                  {/* Tarjeta 1: Visión (Réplica 1:1 de Imagen 3 + Hover Imagen 2) */}
+                  {/* Tarjeta 1: Visión */}
                   <button
                     onClick={() => openCorporateModal('vision')}
-                    className="w-full text-left cursor-pointer flex items-center justify-between gap-3 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-4 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]"
+                    className="w-full text-left cursor-pointer flex items-center justify-between gap-2.5 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-xl px-3 py-2 shadow-[inset_0_2px_4px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_10px_24px_-4px_rgba(23,165,117,0.75),0_0_16px_3px_rgba(0,122,83,0.6),inset_0_1px_3px_rgba(255,255,255,0.9)]"
                   >
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-11 h-11 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform duration-300 shadow-xs">
-                        <Compass className="w-5 h-5" />
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform duration-300">
+                        <Compass className="w-4 h-4" />
                       </div>
-                      <div>
-                        <div className="text-sm font-semibold text-[#2C3531]">
+                      <div className="leading-tight">
+                        <div className="text-xs font-semibold text-[#2C3531]">
                           Visión
                         </div>
-                        <div className="text-xs text-[#6E7873] line-clamp-1">
+                        <div className="text-[10px] text-[#6E7873] line-clamp-1">
                           El futuro que queremos crear
                         </div>
                       </div>
                     </div>
-                    <ArrowUpRight className="w-4 h-4 text-[#A389F4] shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#A389F4] shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </button>
 
-                  {/* Tarjeta 2: Misión (Soft UI Blanco Luminoso + Hover Seda Esmeralda) */}
+                  {/* Tarjeta 2: Misión */}
                   <button
                     onClick={() => openCorporateModal('mision')}
-                    className="w-full text-left cursor-pointer flex items-center justify-between gap-3 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-4 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]"
+                    className="w-full text-left cursor-pointer flex items-center justify-between gap-2.5 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-xl px-3 py-2 shadow-[inset_0_2px_4px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_10px_24px_-4px_rgba(23,165,117,0.75),0_0_16px_3px_rgba(0,122,83,0.6),inset_0_1px_3px_rgba(255,255,255,0.9)]"
                   >
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-11 h-11 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform duration-300 shadow-xs">
-                        <Target className="w-5 h-5" />
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform duration-300">
+                        <Target className="w-4 h-4" />
                       </div>
-                      <div>
-                        <div className="text-sm font-semibold text-[#2C3531]">
+                      <div className="leading-tight">
+                        <div className="text-xs font-semibold text-[#2C3531]">
                           Misión
                         </div>
-                        <div className="text-xs text-[#6E7873] line-clamp-1">
+                        <div className="text-[10px] text-[#6E7873] line-clamp-1">
                           Propósito y valor comercial
                         </div>
                       </div>
                     </div>
-                    <ArrowUpRight className="w-4 h-4 text-[#A389F4] shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#A389F4] shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </button>
 
-                  {/* Tarjeta 3: Historia (Soft UI Blanco Luminoso + Hover Seda Esmeralda) */}
+                  {/* Tarjeta 3: Historia */}
                   <button
                     onClick={() => openCorporateModal('historia')}
-                    className="w-full text-left cursor-pointer flex items-center justify-between gap-3 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-4 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]"
+                    className="w-full text-left cursor-pointer flex items-center justify-between gap-2.5 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-xl px-3 py-2 shadow-[inset_0_2px_4px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_10px_24px_-4px_rgba(23,165,117,0.75),0_0_16px_3px_rgba(0,122,83,0.6),inset_0_1px_3px_rgba(255,255,255,0.9)]"
                   >
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-11 h-11 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform duration-300 shadow-xs">
-                        <BookOpen className="w-5 h-5" />
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform duration-300">
+                        <BookOpen className="w-4 h-4" />
                       </div>
-                      <div>
-                        <div className="text-sm font-semibold text-[#2C3531]">
+                      <div className="leading-tight">
+                        <div className="text-xs font-semibold text-[#2C3531]">
                           Historia
                         </div>
-                        <div className="text-xs text-[#6E7873] line-clamp-1">
+                        <div className="text-[10px] text-[#6E7873] line-clamp-1">
                           Génesis de la evolución dorada
                         </div>
                       </div>
                     </div>
-                    <ArrowUpRight className="w-4 h-4 text-[#A389F4] shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#A389F4] shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </button>
                 </div>
               )}
@@ -261,51 +261,51 @@ export const FloatingNavbar: React.FC = () => {
                 <div className="text-xs uppercase font-bold text-amber-400 px-2 py-1">
                   Quiénes Somos (G-evo)
                 </div>
-                <div className="flex flex-col gap-2.5 mt-2">
+                <div className="flex flex-col gap-1.5 mt-2">
                   <button
                     onClick={() => openCorporateModal('vision')}
-                    className="w-full text-left flex items-center justify-between gap-3 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-3.5 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]"
+                    className="w-full text-left flex items-center justify-between gap-2.5 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-xl px-3 py-2 shadow-[inset_0_2px_4px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_10px_24px_-4px_rgba(23,165,117,0.75),0_0_16px_3px_rgba(0,122,83,0.6),inset_0_1px_3px_rgba(255,255,255,0.9)]"
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform">
                         <Compass className="w-4 h-4" />
                       </div>
-                      <div>
+                      <div className="leading-tight">
                         <div className="text-xs font-semibold text-[#2C3531]">Visión</div>
-                        <div className="text-[11px] text-[#6E7873]">El futuro que queremos crear</div>
+                        <div className="text-[10px] text-[#6E7873]">El futuro que queremos crear</div>
                       </div>
                     </div>
-                    <ArrowUpRight className="w-4 h-4 text-[#A389F4]" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#A389F4]" />
                   </button>
                   <button
                     onClick={() => openCorporateModal('mision')}
-                    className="w-full text-left flex items-center justify-between gap-3 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-3.5 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]"
+                    className="w-full text-left flex items-center justify-between gap-2.5 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-xl px-3 py-2 shadow-[inset_0_2px_4px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_10px_24px_-4px_rgba(23,165,117,0.75),0_0_16px_3px_rgba(0,122,83,0.6),inset_0_1px_3px_rgba(255,255,255,0.9)]"
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform">
                         <Target className="w-4 h-4" />
                       </div>
-                      <div>
+                      <div className="leading-tight">
                         <div className="text-xs font-semibold text-[#2C3531]">Misión</div>
-                        <div className="text-[11px] text-[#6E7873]">Propósito y valor comercial</div>
+                        <div className="text-[10px] text-[#6E7873]">Propósito y valor comercial</div>
                       </div>
                     </div>
-                    <ArrowUpRight className="w-4 h-4 text-[#A389F4]" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#A389F4]" />
                   </button>
                   <button
                     onClick={() => openCorporateModal('historia')}
-                    className="w-full text-left flex items-center justify-between gap-3 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-3.5 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]"
+                    className="w-full text-left flex items-center justify-between gap-2.5 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-xl px-3 py-2 shadow-[inset_0_2px_4px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_10px_24px_-4px_rgba(23,165,117,0.75),0_0_16px_3px_rgba(0,122,83,0.6),inset_0_1px_3px_rgba(255,255,255,0.9)]"
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform">
                         <BookOpen className="w-4 h-4" />
                       </div>
-                      <div>
+                      <div className="leading-tight">
                         <div className="text-xs font-semibold text-[#2C3531]">Historia</div>
-                        <div className="text-[11px] text-[#6E7873]">Génesis de la evolución dorada</div>
+                        <div className="text-[10px] text-[#6E7873]">Génesis de la evolución dorada</div>
                       </div>
                     </div>
-                    <ArrowUpRight className="w-4 h-4 text-[#A389F4]" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#A389F4]" />
                   </button>
                 </div>
               </div>
