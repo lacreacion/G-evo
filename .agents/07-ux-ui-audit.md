@@ -2,16 +2,16 @@
 
 > **Ecosistema:** G-evo Digital Hub  
 > **Identificador Oficial:** `07-ux-ui-audit`  
-> **Propósito Central:** Evaluar la accesibilidad, contraste y fluidez responsiva (Mobile-First) en todas las pantallas.
+> **Propósito Central:** Evaluar la accesibilidad, contraste, tipografía y fluidez responsiva (Mobile-First) en todas las pantallas bajo el sistema de diseño 3D Neumórfico Oscuro de G-evo.
 
 ---
 
 ## 1. Responsabilidades Específicas
-- Evaluar el cumplimiento de estándares WCAG 2.1 nivel AA en contraste y legibilidad.
+- Evaluar el cumplimiento de estándares WCAG 2.1 nivel AA en contraste y legibilidad (garantizando el uso de `gevo-text-ice` `#F0F7F8` sobre superficies oscuras `#0B191E` / `#1C2427` / `#263438`, y texto `#0B191E` sobre teclas activas cian `#64D2DF` / `#7CE8F5`).
+- Auditar que la tipografía principal sea **`Plus Jakarta Sans`** o **`Inter`** en pesos `font-semibold` (`600`) para teclas inactivas y `font-bold` (`700`) para teclas activas/CTA, perfectamente centrada en las teclas 3D (`inline-flex items-center justify-center`).
+- **Regla de Oro de Identidad de Marca:** Auditar y garantizar que la paleta 3D Neumórfica Oscura / Cyberpunk conviva en total armonía con el logotipo oficial **"G-evo."**, el cual mantiene **siempre** sus 4 hojas, su **"G-"** en dorado metalizado y **"evo."** en verde esmeralda vibrante, sin ser alterado jamás por los tonos cian o gris pizarra de los botones.
 - Verificar la navegación accesible por teclado (focus visible, roles ARIA, semántica HTML5).
-- Validar la ergonomía de uso táctil en dispositivos móviles (tap targets mínimos de 44x44px).
-- Garantizar consistencia en micro-interacciones, animaciones no intrusivas y estados hover/active.
-- Reportar inconsistencias visuales respecto a la guía de diseño oficial de G-evo.
+- Validar la ergonomía de uso táctil en dispositivos móviles (tap targets mínimos de 44x44px y micro-interacciones físicas de pulsación en botones Keycap 3D).
 
 ---
 
