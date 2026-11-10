@@ -64,19 +64,19 @@ export const HeroSection: React.FC = () => {
 
             {/* Badges de Autoridad (Soft UI Blanco Luminoso + Hover Seda Esmeralda) */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs pt-2">
-              <div className="gevo-keycap-idle px-3.5 py-2 gap-2">
+              <div className="group gevo-keycap-idle px-3.5 py-2 gap-2">
                 <span className="w-6 h-6 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center group-hover:-rotate-6 transition-transform">
                   <Wifi className="w-3.5 h-3.5" />
                 </span>
                 <span className="text-[#2C3531] font-semibold">NFC &amp; QR Dinámico</span>
               </div>
-              <div className="gevo-keycap-idle px-3.5 py-2 gap-2">
+              <div className="group gevo-keycap-idle px-3.5 py-2 gap-2">
                 <span className="w-6 h-6 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center group-hover:-rotate-6 transition-transform">
                   <ShoppingBag className="w-3.5 h-3.5" />
                 </span>
                 <span className="text-[#2C3531] font-semibold">Pedidos a WhatsApp</span>
               </div>
-              <div className="gevo-keycap-idle px-3.5 py-2 gap-2">
+              <div className="group gevo-keycap-idle px-3.5 py-2 gap-2">
                 <span className="w-6 h-6 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center group-hover:-rotate-6 transition-transform">
                   <Bot className="w-3.5 h-3.5" />
                 </span>

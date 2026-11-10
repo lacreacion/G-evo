@@ -84,14 +84,14 @@
 
 /* 2 & 3. Tarjeta / Botón Compuesto Soft UI Blanco Luminoso + Hover Seda Esmeralda (Receta Exacta) */
 .gevo-soft-card-btn {
-  @apply group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border-[1.5px] border-[#BCE0CC] rounded-2xl p-4 shadow-[inset_0_3px_6px_rgba(20,80,50,0.10)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)];
+  @apply relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border-[1.5px] border-[#BCE0CC] rounded-2xl p-4 shadow-[inset_0_3px_6px_rgba(20,80,50,0.10)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)];
 }
 
 /* Botones Interactivos Soft UI Blanco Luminoso (CTAs, Menú y Acciones) + Hover Seda Esmeralda */
 .gevo-soft-btn,
 .gevo-keycap-idle,
 .gevo-keycap-active {
-  @apply group relative inline-flex items-center justify-center bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] text-[#2C3531] font-semibold border-[1.5px] border-[#BCE0CC] rounded-2xl shadow-[inset_0_3px_6px_rgba(20,80,50,0.10)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)] active:translate-y-0;
+  @apply relative inline-flex items-center justify-center bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] text-[#2C3531] font-semibold border-[1.5px] border-[#BCE0CC] rounded-2xl shadow-[inset_0_3px_6px_rgba(20,80,50,0.10)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)] active:translate-y-0;
 }
 
 /* Metallic Gold Gradient Text */
