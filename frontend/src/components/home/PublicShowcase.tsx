@@ -22,7 +22,7 @@ export const PublicShowcase: React.FC = () => {
     : MOCK_SHOWCASE.filter((item) => item.category === filter);
 
   return (
-    <section id="mostrario" className="py-20 bg-[#090D16] relative border-t border-white/5">
+    <section id="mostrario" className="py-20 bg-[#0B191E]/85 relative border-t border-white/10">
       <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
         
         {/* Header */}
@@ -32,24 +32,24 @@ export const PublicShowcase: React.FC = () => {
               <Sparkles className="w-3.5 h-3.5" />
               <span>Respaldo y Autoridad de Marca</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-black text-[#F0F7F8] tracking-tight">
               Mostrario Público de <span className="text-gold-metallic">Ejemplos Reales</span>
             </h2>
-            <p className="text-gray-400 text-sm max-w-xl">
+            <p className="text-gray-300 text-sm max-w-xl">
               Explora proyectos implementados con la tecnología G-evo. Cada tarjeta y catálogo es creado centralmente por nosotros y gestionado con total autonomía por sus propietarios.
             </p>
           </div>
 
-          {/* Filtros */}
-          <div className="flex items-center gap-2 p-1.5 rounded-xl bg-white/5 border border-white/10 self-start md:self-auto">
+          {/* Filtros 3D Keycap */}
+          <div className="flex flex-wrap items-center gap-2.5 p-2 rounded-xl bg-[#1C2427]/90 border border-white/10 self-start md:self-auto">
             {(['Todos', 'Tarjeta Digital', 'Catálogo E-commerce'] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setFilter(tab)}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                className={`px-4 py-2 text-xs cursor-pointer ${
                   filter === tab
-                    ? 'bg-gradient-to-r from-amber-400 to-emerald-400 text-black shadow-md'
-                    : 'text-gray-400 hover:text-white'
+                    ? 'gevo-keycap-active'
+                    : 'gevo-keycap-idle'
                 }`}
               >
                 {tab}
@@ -63,7 +63,7 @@ export const PublicShowcase: React.FC = () => {
           {filteredItems.map((item) => (
             <div
               key={item.id}
-              className="group rounded-3xl bg-[#0F1422] border border-white/10 hover:border-amber-500/40 overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-300 flex flex-col justify-between"
+              className="group rounded-3xl gevo-chassis hover:border-[#64D2DF]/40 overflow-hidden transition-all duration-300 flex flex-col justify-between"
             >
               {/* Imagen de Portada con Badge */}
               <div className="relative h-52 overflow-hidden bg-black/40">

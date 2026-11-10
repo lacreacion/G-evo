@@ -69,10 +69,10 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer id="contacto" className="relative bg-[#070B12] text-white border-t border-white/10 pt-20 pb-12 overflow-hidden">
+    <footer id="contacto" className="relative bg-[#0B191E] text-[#F0F7F8] border-t border-white/10 pt-20 pb-12 overflow-hidden">
       {/* Decorative Gradients */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#64D2DF]/5 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10 space-y-16">
         
@@ -85,8 +85,8 @@ export const Footer: React.FC = () => {
               Tarjeta Virtual Oficial
             </div>
 
-            {/* Tarjeta Visual de Alta Fidelidad */}
-            <div className="rounded-3xl bg-gradient-to-br from-[#121929] to-[#0A0F1A] border border-amber-500/40 p-6 shadow-2xl relative overflow-hidden group">
+            {/* Tarjeta Visual de Alta Fidelidad (Chasis 3D) */}
+            <div className="rounded-3xl gevo-chassis border border-amber-500/40 p-6 relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
 
               {/* Header de la Tarjeta */}
@@ -149,20 +149,20 @@ export const Footer: React.FC = () => {
                 </div>
               </div>
 
-              {/* Botón Interactivo de Descarga vCard */}
-              <div className="mt-6 pt-4 border-t border-white/10 flex flex-col sm:flex-row gap-2">
+              {/* Botón Interactivo de Descarga vCard (Keycap 3D) */}
+              <div className="mt-6 pt-4 border-t border-white/10 flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={handleDownloadVCard}
-                  className="flex-1 py-3 px-4 rounded-xl font-bold text-xs text-black bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-400 shadow-lg hover:shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="gevo-keycap-active flex-1 py-3 px-4 text-xs gap-2 cursor-pointer"
                 >
                   {downloadSuccess ? (
                     <>
-                      <Check className="w-4 h-4 text-black" />
+                      <Check className="w-4 h-4 text-[#0B191E]" />
                       <span>¡Contacto Guardado!</span>
                     </>
                   ) : (
                     <>
-                      <Download className="w-4 h-4 text-black" />
+                      <Download className="w-4 h-4 text-[#0B191E]" />
                       <span>Guardar en mi Teléfono (.vcf)</span>
                     </>
                   )}
@@ -172,7 +172,7 @@ export const Footer: React.FC = () => {
                   href="https://wa.me/573001234567?text=Hola%20G-evo,%20quiero%20cotizar%20mi%20tarjeta%20digital"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 flex items-center justify-center transition-colors"
+                  className="gevo-keycap-idle p-3 text-emerald-300"
                   title="Chatear por WhatsApp"
                 >
                   <MessageCircle className="w-4 h-4" />
@@ -182,7 +182,7 @@ export const Footer: React.FC = () => {
           </div>
 
           {/* Columna Derecha: Formulario Rápido de Cotización & Soporte */}
-          <div className="lg:col-span-7 bg-[#0E1524] rounded-3xl border border-white/10 p-6 md:p-8 space-y-6">
+          <div className="lg:col-span-7 gevo-chassis rounded-3xl p-6 md:p-8 space-y-6">
             <div>
               <div className="text-xs uppercase font-bold text-emerald-400 tracking-wider">
                 Atención Inmediata

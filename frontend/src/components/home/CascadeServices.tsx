@@ -65,14 +65,14 @@ export const CascadeServices: React.FC = () => {
             return (
               <div
                 key={service.id}
-                className="group relative rounded-3xl bg-gradient-to-b from-gray-900/90 to-gray-950/90 border border-white/10 hover:border-emerald-500/40 p-6 md:p-10 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/10"
+                className="group relative rounded-3xl gevo-chassis hover:border-[#64D2DF]/40 p-6 md:p-10 transition-all duration-500"
                 style={{
                   animationDelay: `${index * 150}ms`
                 }}
               >
                 {/* Badge Numerado de Cascada */}
-                <div className="absolute -top-4 left-8 px-4 py-1 rounded-full bg-[#0E1524] border border-amber-500/40 text-amber-300 font-extrabold text-xs shadow-md flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                <div className="absolute -top-4 left-8 px-4 py-1 rounded-full bg-[#1C2427] border border-amber-500/40 text-amber-300 font-extrabold text-xs shadow-md flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#7CE8F5]" />
                   <span>0{service.id} {'//'} {service.badge}</span>
                 </div>
 

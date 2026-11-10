@@ -80,20 +80,20 @@ export const AiSupportDemo: React.FC = () => {
   };
 
   return (
-    <section id="ai-demo" className="py-20 bg-[#0B0F19] relative border-t border-white/5 overflow-hidden">
+    <section id="ai-demo" className="py-20 bg-[#0B191E] relative border-t border-white/10 overflow-hidden">
       {/* Background Orbs */}
-      <div className="absolute top-1/4 right-1/4 w-80 h-80 bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/4 right-1/4 w-80 h-80 bg-[#64D2DF]/10 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#263438] border border-[#64D2DF]/30 text-[#7CE8F5] text-xs font-semibold">
             <Bot className="w-3.5 h-3.5" />
             <span>Módulo Monetizado de Inteligencia Artificial</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#F0F7F8] tracking-tight">
             Agente de Soporte IA <span className="text-green-vibrant">Integrado 24/7</span>
           </h2>
 
@@ -105,10 +105,10 @@ export const AiSupportDemo: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Columna Izquierda: Simulador Interactivo del Chatbot con Catálogo Real */}
-          <div className="lg:col-span-7 bg-[#0E1524] rounded-3xl border border-emerald-500/30 shadow-2xl overflow-hidden flex flex-col h-[560px]">
+          <div className="lg:col-span-7 gevo-chassis rounded-3xl overflow-hidden flex flex-col h-[560px]">
             
-            {/* Header del Chatbot */}
-            <div className="p-4 bg-[#141C2E] border-b border-white/10 flex items-center justify-between">
+            {/* Header del Chatbot (Cabezote Teal Satinado) */}
+            <div className="p-4 gevo-header-bar flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 p-0.5 flex items-center justify-center">
@@ -175,13 +175,13 @@ export const AiSupportDemo: React.FC = () => {
               )}
             </div>
 
-            {/* Sugerencias Rápidas */}
-            <div className="p-2.5 bg-[#0D1322] border-t border-white/5 flex gap-2 overflow-x-auto scrollbar-none">
+            {/* Sugerencias Rápidas (Keycaps 3D) */}
+            <div className="p-2.5 bg-[#12262D] border-t border-white/10 flex gap-2 overflow-x-auto scrollbar-none">
               {predefinedQuestions.map((q, i) => (
                 <button
                   key={i}
                   onClick={() => handleSend(q)}
-                  className="whitespace-nowrap px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[11px] text-gray-300 border border-white/5 transition-colors"
+                  className="gevo-keycap-idle whitespace-nowrap px-3 py-1.5 text-[11px] cursor-pointer"
                 >
                   {q}
                 </button>
@@ -189,18 +189,18 @@ export const AiSupportDemo: React.FC = () => {
             </div>
 
             {/* Input Bar */}
-            <div className="p-3 bg-[#111726] border-t border-white/10 flex items-center gap-2">
+            <div className="p-3 bg-[#1C2427] border-t border-white/10 flex items-center gap-2.5">
               <input
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                 placeholder="Escribe una pregunta sobre precios, productos o stock..."
-                className="flex-1 bg-black/40 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
+                className="flex-1 bg-[#0B191E] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-[#F0F7F8] placeholder-gray-500 focus:outline-none focus:border-[#7CE8F5]"
               />
               <button
                 onClick={() => handleSend()}
-                className="p-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-emerald-400 text-black hover:scale-105 transition-transform"
+                className="gevo-keycap-active p-2.5 cursor-pointer"
                 aria-label="Enviar mensaje"
               >
                 <Send className="w-4 h-4" />
@@ -213,7 +213,7 @@ export const AiSupportDemo: React.FC = () => {
           <div className="lg:col-span-5 space-y-6">
             
             {/* Tarjeta del Flujo de Monetización */}
-            <div className="rounded-3xl bg-[#0E1524] border border-amber-500/30 p-6 md:p-8 space-y-5 shadow-xl">
+            <div className="rounded-3xl gevo-chassis border border-amber-500/30 p-6 md:p-8 space-y-5">
               <div className="flex items-center gap-2.5 text-amber-400">
                 <Coins className="w-5 h-5" />
                 <h3 className="text-base font-bold text-white uppercase tracking-wider text-xs">

@@ -9,7 +9,7 @@ import { Footer } from '@/components/footer/Footer';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[#070B14] text-white selection:bg-emerald-500 selection:text-black">
+    <div className="min-h-screen gevo-ambient-bg">
       {/* 1. Barra de Navegación Flotante con Sombras & Ventanas Modales */}
       <FloatingNavbar />
 

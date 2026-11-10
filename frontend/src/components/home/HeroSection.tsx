@@ -61,27 +61,27 @@ export const HeroSection: React.FC = () => {
               Diseñamos y desplegamos tus <span className="text-amber-300 font-semibold">tarjetas digitales inteligentes (NFC/QR)</span>, <span className="text-emerald-400 font-semibold">catálogos digitales, tiendas E-commerce y páginas web</span>. Soluciones tecnológicas de alto impacto diseñadas para destacar tu marca, conectar con más clientes y potenciar tus ventas.
             </p>
 
-            {/* Badges de Autoridad */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-gray-400 pt-2">
-              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+            {/* Badges de Autoridad (Keycap Idle 3D) */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs pt-2">
+              <div className="gevo-keycap-idle px-3.5 py-2 gap-1.5">
                 <Wifi className="w-4 h-4 text-amber-400" />
                 <span>NFC &amp; QR Dinámico</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+              <div className="gevo-keycap-idle px-3.5 py-2 gap-1.5">
                 <ShoppingBag className="w-4 h-4 text-emerald-400" />
                 <span>Pedidos a WhatsApp</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
-                <Bot className="w-4 h-4 text-emerald-400" />
+              <div className="gevo-keycap-idle px-3.5 py-2 gap-1.5">
+                <Bot className="w-4 h-4 text-[#7CE8F5]" />
                 <span>Agente IA 24/7 Disponible</span>
               </div>
             </div>
 
-            {/* Botones de Acción / CTAs */}
+            {/* Botones de Acción / CTAs 3D Keycap */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
               <Link
                 href="#mostrario"
-                className="w-full sm:w-auto px-7 py-3.5 rounded-xl font-bold text-sm text-black bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-400 hover:shadow-xl hover:shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2 group"
+                className="gevo-keycap-active w-full sm:w-auto px-7 py-3.5 text-sm gap-2 group"
               >
                 <span>Explorar Mostrario de Ejemplos</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -89,7 +89,7 @@ export const HeroSection: React.FC = () => {
 
               <Link
                 href="#servicios"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-xl font-semibold text-sm text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors flex items-center justify-center gap-2"
+                className="gevo-keycap-idle w-full sm:w-auto px-6 py-3.5 text-sm gap-2"
               >
                 <span>Ver Servicios en Cascada</span>
               </Link>
