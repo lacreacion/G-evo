@@ -48,6 +48,10 @@
 - **Enlaces del Menú (`Inicio`, `Servicios`, `Agente IA`, `Quiénes somos`, `Contacto`):**
   - En reposo: texto limpio y plano en color gris carbón/pizarra suave (`#555E5A`, `font-semibold`), con chevron desplegable (`▾`) en tono dorado (`#B5892E`).
   - En `:hover`: aparece una pastilla blanca marfil redondeada (`rounded-2xl`, `bg-[#F3F6F4]`, `border-[1.5px] border-white`) con halo blanco superior-izquierdo y sombra suave (`shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]`), el texto cambia a verde esmeralda (`#147A50`) y se muestra un punto dorado centrado debajo de la palabra (`w-1.5 h-1.5 rounded-full bg-[#C59B27]`).
+- **Menú Desplegable "Quiénes somos" (`Visión`, `Misión`, `Historia`):**
+  - Contenedor principal en blanco marfil (`bg-[#F3F6F4]`, `rounded-3xl`, `border-[1.5px] border-white`, `shadow-[-6px_-6px_18px_rgba(255,255,255,0.85),0_18px_36px_rgba(0,0,0,0.18)]`).
+  - Ítems en reposo (sin pisar con el mouse): fondo transparente, sin borde, flecha `↗` oculta, y cuadrito de ícono con efecto neumórfico hundido en gris-blanco (`bg-[#EAEFEC]`, `shadow-[inset_2px_2px_5px_rgba(0,0,0,0.10),inset_-2px_-2px_5px_rgba(255,255,255,0.95)]`).
+  - Ítem en `:hover` (el que pisa el mouse): se activa la cápsula pastel (`from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE]`), borde `#BCE0CC`, sombra interna `shadow-[inset_0_3px_6px_rgba(20,80,50,0.10)]`, el cuadrito del ícono pasa a `#DDF8EC` con giro `-rotate-6`, y aparece la flecha diagonal lavanda `↗` (`#A389F4`).
 - **Botones de Redes Sociales (Facebook e Instagram):** Botones *squircle* (`w-10 h-10 rounded-2xl`) en blanco marfil luminoso (`#F2F6F3`), borde blanco (`border-[1.5px] border-white`), resplandor exterior suave e ícono interno en verde esmeralda oscuro (`#146343`).
 
 ---

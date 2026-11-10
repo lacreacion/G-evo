@@ -12,6 +12,7 @@
 - Auditar que la tipografía principal sea **`Plus Jakarta Sans`** o **`Inter`** en pesos `font-semibold` (`600`) y `font-bold` (`700`).
 - **Regla de Oro de Identidad de Marca:** Auditar y garantizar que la estética Verde Bosque Profundo + Soft UI Blanco Luminoso conviva en total armonía con el logotipo oficial **"G-evo."**, el cual mantiene **siempre** sus 4 hojas, su **"G-"** en dorado metalizado y **"evo."** en verde esmeralda vibrante, sin ser alterado jamás.
 - Auditar que la barra de navegación (`FloatingNavbar.tsx`) conserve el estilo minimalista gris-salvia claro (`#C5CDC8`) con enlaces de texto limpios (`#555E5A`) que al pasar el mouse (`:hover`) despliegan una pastilla blanca marfil (`#F3F6F4`, borde blanco `#FFFFFF` y halo luminoso), texto en verde esmeralda (`#147A50`) y punto dorado inferior (`#C59B27`), además de botones de redes sociales *squircle* blancos (`#F2F6F3`) con íconos en verde esmeralda (`#146343`).
+- Auditar que el menú desplegable de *"Quiénes somos"* tenga contenedor blanco marfil (`#F3F6F4`) donde los ítems no pisados por el mouse permanecen limpios con cuadrito de ícono hundido (`#EAEFEC`), y únicamente el ítem bajo `:hover` enciende la cápsula pastel (`#E5F8EF` → `#FFFFFF` → `#FFF6DE`, borde `#BCE0CC`), inclina su ícono (`-rotate-6`) y muestra la flecha diagonal `↗` (`#A389F4`).
 - Verificar la navegación accesible por teclado (focus visible, roles ARIA, semántica HTML5).
 - Validar la ergonomía de uso táctil en dispositivos móviles (tap targets mínimos de 44x44px y micro-interacciones físicas fluidas).
 
