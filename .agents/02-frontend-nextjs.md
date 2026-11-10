@@ -15,40 +15,32 @@
 
 ---
 
-## 2. Especificación Técnica Oficial: Estética 3D Neumórfica Oscura (Cyberpunk / Glassmorphism)
+## 2. Especificación Técnica Oficial: Orden de Diseño Global G-evo (Verde Bosque Profundo + Soft UI Blanco Luminoso + Hover Seda Esmeralda)
 
-### 2.1 Tokens de Color y Sombras en `tailwind.config.ts` / `@theme`
-- **`gevo-bg-deep`**: `#0B191E` (Fondo ambiental oscuro base)
-- **`gevo-bg-glow`**: `#12262D` (Gradiente ambiental / bokeh)
-- **`gevo-chassis`**: `#1C2427` (Superficie base / Tablero contenedor)
-- **`gevo-header`**: `#38666E` (Cabezote / Barra superior teal satinado)
-- **`gevo-key-idle`**: `#263438` a `#2E3E42` (Botones inactivos gris pizarra mate)
-- **`gevo-key-active`**: `#64D2DF` a `#7CE8F5` (Botones activos / CTA cian luminoso)
-- **`gevo-text-ice`**: `#F0F7F8` (Tipografía blanco hielo de alto contraste)
-- **Sombras (`boxShadow`):**
-  - `keycap-idle`: `'-4px 6px 12px rgba(0, 0, 0, 0.65), inset 1px 1px 0px rgba(255, 255, 255, 0.18), inset -2px -3px 4px rgba(0, 0, 0, 0.5)'`
-  - `keycap-active`: `'-6px 10px 18px rgba(0, 0, 0, 0.75), 0 0 20px rgba(100, 210, 223, 0.55), inset 1px 1px 1px rgba(255, 255, 255, 0.6)'`
+### 2.1 Fondo Global de toda la Página (Inspirado en Textura Verde Bosque Profundo / Terciopelo Mate)
+- **Aplicación:** Todo el `<body>` y contenedor principal (`min-h-screen`) de la plataforma G-evo lleva un fondo verde esmeralda oscuro con acabado orgánico/terciopelo mate y viñeteado profundo en los bordes.
+- **Colores Hexadecimales:**
+  - Base en Verde Abeto Oscuro (`#042419` / `#05281C`)
+  - Nubes de textura central en Verde Bosque (`#0A3C2A` a `#0F523A` / `#0E4D36`)
+  - Bordes/sombras ambientales en Negro Verdoso (`#02140E` / `#02150E`)
+- **Implementación CSS/Tailwind Oficial:**
+  ```plaintext
+  bg-[#05281C] bg-[radial-gradient(ellipse_at_center,_#0E4D36_0%,_#062B1D_60%,_#02150E_100%)]
+  ```
 
-### 2.2 Clases Exactas de Componentes (`globals.css` / Componentes UI)
-- **Fondo Ambiental (Bokeh & Glassmorphism) (`.gevo-ambient-bg`):**
+### 2.2 Estilo de Botones y Tarjetas Interactivas (Soft UI Blanco Luminoso con Efecto Ranura)
+- **Base Blanca con Degradado Pastel:** Transición horizontal suave desde blanco menta hielo (`#E5F8EF`), pasando por blanco puro cálido (`#FFFFFF` / `#FAFDFB`) hasta un toque crema solar muy sutil a la derecha (`#FFF6DE`).
+- **Biselado y Sombra Interna (Efecto Ranura):** Borde fino de `1.5px` en verde salvia claro (`#BCE0CC`) con esquinas redondeadas (`rounded-2xl`) y sombra interna superior (`shadow-[inset_0_3px_6px_rgba(20,80,50,0.10)]` / `0.08`) que le da volumen táctil.
+- **Sub-elementos internos del botón/tarjeta:**
+  - Caja de ícono a la izquierda (`rounded-xl`, `bg-[#DDF8EC]`) con ícono en verde esmeralda (`#157A54`) que rota sutilmente (`group-hover:-rotate-6 transition-transform`).
+  - Título principal en gris carbón oscuro (`#2C3531`, `font-semibold`), subtítulo en gris medio (`#6E7873`) y flecha de acción diagonal (`↗` / `ArrowUpRight`) a la derecha en tono lavanda (`#A389F4`).
+
+### 2.3 Efecto Hover del Mouse (Sombra Resplandeciente Verde Satén / Seda Esmeralda)
+- **Comportamiento al pasar el cursor (`:hover`):** Cuando el mouse pasa por encima de cualquier botón o tarjeta blanca, proyecta hacia afuera una sombra envolvente y brillante con los tonos exactos de la seda verde esmeralda iluminada.
+- **Colores de la Sombra Hover:** Mezcla de Verde Esmeralda Satinado (`#007A53`) y Destello Jade Brillante (`#17A575` / `#22C58B`) que contrasta sobre el fondo oscuro de la página.
+- **Receta exacta de clases en Tailwind CSS:**
   ```plaintext
-  bg-gradient-to-br from-[#0B191E] via-[#0F2026] to-[#12262D] text-[#F0F7F8] antialiased selection:bg-[#64D2DF] selection:text-[#0B191E]
-  ```
-- **Chasis Contenedor / Tablero (`.gevo-chassis`):**
-  ```plaintext
-  bg-[#1C2427]/90 backdrop-blur-xl border border-white/10 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)]
-  ```
-- **Cabezote / Barra Superior (`.gevo-header-bar`):**
-  ```plaintext
-  bg-gradient-to-r from-[#38666E]/90 to-[#2C5258]/90 backdrop-blur-md border-t border-white/25 border-b border-black/40 shadow-lg
-  ```
-- **Botón 3D Keycap Inactivo — Estado Base (`.gevo-keycap-idle`):**
-  ```plaintext
-  relative inline-flex items-center justify-center rounded-md bg-gradient-to-b from-[#2E3E42] to-[#263438] text-[#F0F7F8] font-semibold tracking-wide border-t border-r border-white/20 border-b-[4px] border-l-[3px] border-black/60 shadow-[-4px_6px_10px_rgba(0,0,0,0.6)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:translate-x-0.5 hover:border-white/30 active:translate-y-0.5
-  ```
-- **Botón 3D Keycap Activo / CTA — Seleccionado o Hover Principal (`.gevo-keycap-active`):**
-  ```plaintext
-  relative inline-flex items-center justify-center rounded-md bg-gradient-to-br from-[#7CE8F5] to-[#64D2DF] text-[#0B191E] font-bold tracking-wide border-t border-r border-white/60 border-b-[4px] border-l-[3px] border-[#388E99] shadow-[-6px_8px_15px_rgba(0,0,0,0.7),0_0_22px_rgba(124,232,245,0.6)] -translate-y-1 translate-x-0.5 ring-2 ring-[#7CE8F5]/40
+  group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-4 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]
   ```
 
 ---

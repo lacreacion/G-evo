@@ -22,7 +22,7 @@ export const PublicShowcase: React.FC = () => {
     : MOCK_SHOWCASE.filter((item) => item.category === filter);
 
   return (
-    <section id="mostrario" className="py-20 bg-[#0B191E]/85 relative border-t border-white/10">
+    <section id="mostrario" className="py-20 bg-[#042419]/65 relative border-t border-white/10">
       <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
         
         {/* Header */}
@@ -40,15 +40,15 @@ export const PublicShowcase: React.FC = () => {
             </p>
           </div>
 
-          {/* Filtros 3D Keycap */}
-          <div className="flex flex-wrap items-center gap-2.5 p-2 rounded-xl bg-[#1C2427]/90 border border-white/10 self-start md:self-auto">
+          {/* Filtros Soft UI Blanco Luminoso + Hover Seda Esmeralda */}
+          <div className="flex flex-wrap items-center gap-2.5 p-2 rounded-2xl bg-[#042419]/90 border border-white/15 self-start md:self-auto">
             {(['Todos', 'Tarjeta Digital', 'Catálogo E-commerce'] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setFilter(tab)}
                 className={`px-4 py-2 text-xs cursor-pointer ${
                   filter === tab
-                    ? 'gevo-keycap-active'
+                    ? 'gevo-keycap-active ring-2 ring-[#22C58B]/60'
                     : 'gevo-keycap-idle'
                 }`}
               >
@@ -63,7 +63,7 @@ export const PublicShowcase: React.FC = () => {
           {filteredItems.map((item) => (
             <div
               key={item.id}
-              className="group rounded-3xl gevo-chassis hover:border-[#64D2DF]/40 overflow-hidden transition-all duration-300 flex flex-col justify-between"
+              className="group/card rounded-3xl gevo-chassis hover:border-[#22C58B]/50 overflow-hidden transition-all duration-300 flex flex-col justify-between"
             >
               {/* Imagen de Portada con Badge */}
               <div className="relative h-52 overflow-hidden bg-black/40">
@@ -128,10 +128,10 @@ export const PublicShowcase: React.FC = () => {
                     </span>
                     <button
                       onClick={() => setQrModalItem(item)}
-                      className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-400 hover:text-amber-300"
+                      className="gevo-keycap-idle px-3 py-1.5 text-[11px] gap-1.5 cursor-pointer"
                     >
                       <span>Ver Demo</span>
-                      <ExternalLink className="w-3 h-3" />
+                      <ExternalLink className="w-3 h-3 text-[#A389F4]" />
                     </button>
                   </div>
                 </div>

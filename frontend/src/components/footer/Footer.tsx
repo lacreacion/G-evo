@@ -8,14 +8,12 @@ import {
   Mail, 
   MapPin, 
   Clock, 
-  Share2, 
   Download, 
-  QrCode, 
   ShieldCheck, 
   Send, 
   Check, 
   MessageCircle,
-  ExternalLink
+  ArrowUpRight
 } from 'lucide-react';
 import { InstagramIcon, FacebookIcon, LinkedinIcon } from '@/components/common/SocialIcons';
 
@@ -69,10 +67,10 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer id="contacto" className="relative bg-[#0B191E] text-[#F0F7F8] border-t border-white/10 pt-20 pb-12 overflow-hidden">
+    <footer id="contacto" className="relative bg-[#02140E]/90 text-[#F0F7F8] border-t border-white/10 pt-20 pb-12 overflow-hidden">
       {/* Decorative Gradients */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#64D2DF]/5 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#22C58B]/10 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10 space-y-16">
         
@@ -149,33 +147,36 @@ export const Footer: React.FC = () => {
                 </div>
               </div>
 
-              {/* Botón Interactivo de Descarga vCard (Keycap 3D) */}
+              {/* Botón Interactivo de Descarga vCard (Soft UI Blanco Luminoso + Hover Seda Esmeralda) */}
               <div className="mt-6 pt-4 border-t border-white/10 flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={handleDownloadVCard}
-                  className="gevo-keycap-active flex-1 py-3 px-4 text-xs gap-2 cursor-pointer"
+                  className="flex-1 text-left flex items-center justify-between gap-3 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-3.5 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)] cursor-pointer"
                 >
-                  {downloadSuccess ? (
-                    <>
-                      <Check className="w-4 h-4 text-[#0B191E]" />
-                      <span>¡Contacto Guardado!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Download className="w-4 h-4 text-[#0B191E]" />
-                      <span>Guardar en mi Teléfono (.vcf)</span>
-                    </>
-                  )}
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform">
+                      {downloadSuccess ? <Check className="w-4 h-4" /> : <Download className="w-4 h-4" />}
+                    </div>
+                    <div>
+                      <div className="text-xs font-semibold text-[#2C3531]">
+                        {downloadSuccess ? '¡Contacto Guardado!' : 'Guardar en mi Teléfono'}
+                      </div>
+                      <div className="text-[11px] text-[#6E7873]">
+                        Tarjeta vCard (.vcf)
+                      </div>
+                    </div>
+                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-[#A389F4] shrink-0" />
                 </button>
 
                 <a
                   href="https://wa.me/573001234567?text=Hola%20G-evo,%20quiero%20cotizar%20mi%20tarjeta%20digital"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="gevo-keycap-idle p-3 text-emerald-300"
+                  className="gevo-keycap-idle p-3.5 text-[#157A54]"
                   title="Chatear por WhatsApp"
                 >
-                  <MessageCircle className="w-4 h-4" />
+                  <MessageCircle className="w-5 h-5" />
                 </a>
               </div>
             </div>
@@ -240,10 +241,22 @@ export const Footer: React.FC = () => {
 
               <button
                 type="submit"
-                className="w-full py-3.5 rounded-xl font-bold text-xs text-black bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-400 shadow-xl hover:shadow-emerald-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full text-left flex items-center justify-between gap-3 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-4 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)] cursor-pointer"
               >
-                <Send className="w-4 h-4 text-black" />
-                <span>Enviar Solicitud a WhatsApp Directo</span>
+                <div className="flex items-center gap-3.5">
+                  <div className="w-11 h-11 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform">
+                    <Send className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-[#2C3531]">
+                      {formSubmitted ? '¡Solicitud Enviada a WhatsApp!' : 'Enviar Solicitud a WhatsApp Directo'}
+                    </div>
+                    <div className="text-xs text-[#6E7873]">
+                      Cotización personalizada y demostración gratuita
+                    </div>
+                  </div>
+                </div>
+                <ArrowUpRight className="w-4 h-4 text-[#A389F4] shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </button>
             </form>
           </div>

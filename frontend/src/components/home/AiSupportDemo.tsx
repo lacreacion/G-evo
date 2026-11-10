@@ -80,15 +80,15 @@ export const AiSupportDemo: React.FC = () => {
   };
 
   return (
-    <section id="ai-demo" className="py-20 bg-[#0B191E] relative border-t border-white/10 overflow-hidden">
+    <section id="ai-demo" className="py-20 bg-[#042419]/80 relative border-t border-white/10 overflow-hidden">
       {/* Background Orbs */}
-      <div className="absolute top-1/4 right-1/4 w-80 h-80 bg-[#64D2DF]/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/4 right-1/4 w-80 h-80 bg-[#22C58B]/10 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#263438] border border-[#64D2DF]/30 text-[#7CE8F5] text-xs font-semibold">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0A3C2A] border border-[#22C58B]/40 text-emerald-300 text-xs font-semibold">
             <Bot className="w-3.5 h-3.5" />
             <span>Módulo Monetizado de Inteligencia Artificial</span>
           </div>
@@ -175,8 +175,8 @@ export const AiSupportDemo: React.FC = () => {
               )}
             </div>
 
-            {/* Sugerencias Rápidas (Keycaps 3D) */}
-            <div className="p-2.5 bg-[#12262D] border-t border-white/10 flex gap-2 overflow-x-auto scrollbar-none">
+            {/* Sugerencias Rápidas (Soft UI Blanco Luminoso + Hover Seda Esmeralda) */}
+            <div className="p-2.5 bg-[#042419]/90 border-t border-white/10 flex gap-2 overflow-x-auto scrollbar-none">
               {predefinedQuestions.map((q, i) => (
                 <button
                   key={i}
@@ -189,21 +189,21 @@ export const AiSupportDemo: React.FC = () => {
             </div>
 
             {/* Input Bar */}
-            <div className="p-3 bg-[#1C2427] border-t border-white/10 flex items-center gap-2.5">
+            <div className="p-3 bg-[#02140E]/90 border-t border-white/10 flex items-center gap-2.5">
               <input
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                 placeholder="Escribe una pregunta sobre precios, productos o stock..."
-                className="flex-1 bg-[#0B191E] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-[#F0F7F8] placeholder-gray-500 focus:outline-none focus:border-[#7CE8F5]"
+                className="flex-1 bg-[#042419] border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-[#F0F7F8] placeholder-gray-400 focus:outline-none focus:border-[#22C58B]"
               />
               <button
                 onClick={() => handleSend()}
                 className="gevo-keycap-active p-2.5 cursor-pointer"
                 aria-label="Enviar mensaje"
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-4 h-4 text-[#157A54]" />
               </button>
             </div>
 

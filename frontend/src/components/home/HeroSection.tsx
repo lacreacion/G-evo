@@ -5,13 +5,14 @@ import Link from 'next/link';
 import { GevoText } from '@/components/common/GevoText';
 import { 
   Sparkles, 
-  ArrowRight, 
+  ArrowUpRight, 
   ShoppingBag, 
   ShieldCheck, 
   Bot, 
   TrendingUp, 
   Wifi, 
-  QrCode 
+  QrCode,
+  Layers
 } from 'lucide-react';
 
 export const HeroSection: React.FC = () => {
@@ -61,37 +62,68 @@ export const HeroSection: React.FC = () => {
               Diseñamos y desplegamos tus <span className="text-amber-300 font-semibold">tarjetas digitales inteligentes (NFC/QR)</span>, <span className="text-emerald-400 font-semibold">catálogos digitales, tiendas E-commerce y páginas web</span>. Soluciones tecnológicas de alto impacto diseñadas para destacar tu marca, conectar con más clientes y potenciar tus ventas.
             </p>
 
-            {/* Badges de Autoridad (Keycap Idle 3D) */}
+            {/* Badges de Autoridad (Soft UI Blanco Luminoso + Hover Seda Esmeralda) */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs pt-2">
-              <div className="gevo-keycap-idle px-3.5 py-2 gap-1.5">
-                <Wifi className="w-4 h-4 text-amber-400" />
-                <span>NFC &amp; QR Dinámico</span>
+              <div className="gevo-keycap-idle px-3.5 py-2 gap-2">
+                <span className="w-6 h-6 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center group-hover:-rotate-6 transition-transform">
+                  <Wifi className="w-3.5 h-3.5" />
+                </span>
+                <span className="text-[#2C3531] font-semibold">NFC &amp; QR Dinámico</span>
               </div>
-              <div className="gevo-keycap-idle px-3.5 py-2 gap-1.5">
-                <ShoppingBag className="w-4 h-4 text-emerald-400" />
-                <span>Pedidos a WhatsApp</span>
+              <div className="gevo-keycap-idle px-3.5 py-2 gap-2">
+                <span className="w-6 h-6 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center group-hover:-rotate-6 transition-transform">
+                  <ShoppingBag className="w-3.5 h-3.5" />
+                </span>
+                <span className="text-[#2C3531] font-semibold">Pedidos a WhatsApp</span>
               </div>
-              <div className="gevo-keycap-idle px-3.5 py-2 gap-1.5">
-                <Bot className="w-4 h-4 text-[#7CE8F5]" />
-                <span>Agente IA 24/7 Disponible</span>
+              <div className="gevo-keycap-idle px-3.5 py-2 gap-2">
+                <span className="w-6 h-6 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center group-hover:-rotate-6 transition-transform">
+                  <Bot className="w-3.5 h-3.5" />
+                </span>
+                <span className="text-[#2C3531] font-semibold">Agente IA 24/7 Disponible</span>
               </div>
             </div>
 
-            {/* Botones de Acción / CTAs 3D Keycap */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+            {/* Tarjetas-Botón Interactivas (Soft UI Blanco Luminoso Imagen 3 + Hover Seda Esmeralda Imagen 2) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
               <Link
                 href="#mostrario"
-                className="gevo-keycap-active w-full sm:w-auto px-7 py-3.5 text-sm gap-2 group"
+                className="group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-4 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)] flex items-center justify-between gap-3 text-left"
               >
-                <span>Explorar Mostrario de Ejemplos</span>
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <div className="flex items-center gap-3.5">
+                  <div className="w-11 h-11 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform">
+                    <Sparkles className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-[#2C3531]">
+                      Mostrario de Ejemplos
+                    </div>
+                    <div className="text-xs text-[#6E7873]">
+                      Tarjetas y catálogos reales
+                    </div>
+                  </div>
+                </div>
+                <ArrowUpRight className="w-4 h-4 text-[#A389F4] shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
 
               <Link
                 href="#servicios"
-                className="gevo-keycap-idle w-full sm:w-auto px-6 py-3.5 text-sm gap-2"
+                className="group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-4 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)] flex items-center justify-between gap-3 text-left"
               >
-                <span>Ver Servicios en Cascada</span>
+                <div className="flex items-center gap-3.5">
+                  <div className="w-11 h-11 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform">
+                    <Layers className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-[#2C3531]">
+                      Servicios en Cascada
+                    </div>
+                    <div className="text-xs text-[#6E7873]">
+                      El futuro que queremos crear
+                    </div>
+                  </div>
+                </div>
+                <ArrowUpRight className="w-4 h-4 text-[#A389F4] shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </div>
 

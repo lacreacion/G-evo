@@ -11,7 +11,7 @@ import {
   Award, 
   Zap, 
   X, 
-  ArrowRight, 
+  ArrowUpRight, 
   Sparkles, 
   Layers 
 } from 'lucide-react';
@@ -65,14 +65,14 @@ export const CascadeServices: React.FC = () => {
             return (
               <div
                 key={service.id}
-                className="group relative rounded-3xl gevo-chassis hover:border-[#64D2DF]/40 p-6 md:p-10 transition-all duration-500"
+                className="group/card relative rounded-3xl gevo-chassis hover:border-[#22C58B]/50 p-6 md:p-10 transition-all duration-500"
                 style={{
                   animationDelay: `${index * 150}ms`
                 }}
               >
                 {/* Badge Numerado de Cascada */}
-                <div className="absolute -top-4 left-8 px-4 py-1 rounded-full bg-[#1C2427] border border-amber-500/40 text-amber-300 font-extrabold text-xs shadow-md flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#7CE8F5]" />
+                <div className="absolute -top-4 left-8 px-4 py-1 rounded-full bg-[#042419] border border-amber-500/40 text-amber-300 font-extrabold text-xs shadow-md flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#22C58B]" />
                   <span>0{service.id} {'//'} {service.badge}</span>
                 </div>
 
@@ -169,14 +169,26 @@ export const CascadeServices: React.FC = () => {
                       </ul>
                     </div>
 
-                    {/* CTA a contacto / cotización */}
+                    {/* CTA a contacto / cotización con Botón-Tarjeta Soft UI Blanco Luminoso + Hover Seda Esmeralda */}
                     <div className="pt-2">
                       <Link
                         href="#contacto"
-                        className="inline-flex items-center gap-2 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors group/link"
+                        className="inline-flex items-center justify-between gap-4 w-full sm:w-auto min-w-[290px] group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-4 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]"
                       >
-                        <span className="flex items-center gap-1">Solicitar este servicio con <GevoText withDot={false} /></span>
-                        <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
+                        <div className="flex items-center gap-3.5 text-left">
+                          <div className="w-10 h-10 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform">
+                            <Sparkles className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <div className="text-xs sm:text-sm font-semibold text-[#2C3531]">
+                              Solicitar este servicio
+                            </div>
+                            <div className="text-[11px] text-[#6E7873]">
+                              Cotizar ahora con G-evo
+                            </div>
+                          </div>
+                        </div>
+                        <ArrowUpRight className="w-4 h-4 text-[#A389F4] shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                       </Link>
                     </div>
 
@@ -230,10 +242,10 @@ export const CascadeServices: React.FC = () => {
               <Link
                 href="#contacto"
                 onClick={() => setActiveVideo(null)}
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-xs text-black bg-gradient-to-r from-amber-400 to-emerald-400 shadow-md"
+                className="gevo-keycap-active px-6 py-2.5 text-xs gap-2"
               >
                 <span>Cotizar esta solución ahora</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowUpRight className="w-4 h-4 text-[#A389F4]" />
               </Link>
             </div>
           </div>

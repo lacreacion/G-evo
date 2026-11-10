@@ -12,7 +12,8 @@ import {
   BookOpen, 
   Menu, 
   X, 
-  LogIn
+  LogIn,
+  ArrowUpRight
 } from 'lucide-react';
 import { CorporateModal, CorporateTab } from '@/components/modals/CorporateModal';
 
@@ -50,100 +51,112 @@ export const FloatingNavbar: React.FC = () => {
           {/* Logo Principal con colores oficiales G-evo (Regla de Oro intacta) */}
           <Logo size="md" />
 
-          {/* Menú de Navegación Desktop con Botones 3D Keycap */}
-          <div className="hidden lg:flex items-center gap-2.5 text-xs font-semibold text-[#F0F7F8]">
+          {/* Menú de Navegación Desktop con Botones Soft UI Blanco Luminoso + Hover Seda Esmeralda */}
+          <div className="hidden lg:flex items-center gap-2.5 text-xs font-semibold text-[#2C3531]">
             <Link
               href="/"
-              className="gevo-keycap-idle px-3.5 py-1.5 text-xs"
+              className="gevo-keycap-idle px-3.5 py-2 text-xs"
             >
               Inicio
             </Link>
 
             <Link
               href="#servicios"
-              className="gevo-keycap-idle px-3.5 py-1.5 text-xs"
+              className="gevo-keycap-idle px-3.5 py-2 text-xs"
             >
               Servicios
             </Link>
 
             <Link
               href="#ai-demo"
-              className="gevo-keycap-idle px-3.5 py-1.5 text-xs gap-1.5"
+              className="gevo-keycap-idle px-3.5 py-2 text-xs gap-1.5"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#7CE8F5]" />
+              <Sparkles className="w-3.5 h-3.5 text-[#157A54]" />
               <span>Agente IA</span>
             </Link>
 
             {/* Menú Desplegable Interactivo: Quiénes Somos (Visión, Misión, Historia) */}
-            <div className="relative group">
+            <div className="relative group/nav">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 onMouseEnter={() => setDropdownOpen(true)}
-                className="gevo-keycap-idle px-3.5 py-1.5 text-xs gap-1 cursor-pointer"
+                className="gevo-keycap-idle px-3.5 py-2 text-xs gap-1 cursor-pointer"
               >
                 <span>Quiénes Somos</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${dropdownOpen ? 'rotate-180 text-[#7CE8F5]' : ''}`} />
+                <ChevronDown className={`w-3.5 h-3.5 text-[#157A54] transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
               </button>
 
-              {/* Dropdown Window Popover */}
+              {/* Dropdown Window Popover con Tarjetas Soft UI Blanco Luminoso (Imagen 3 + Hover Imagen 2) */}
               {dropdownOpen && (
                 <div
                   onMouseLeave={() => setDropdownOpen(false)}
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-72 p-2.5 gevo-chassis animate-fadeIn"
+                  className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-80 p-3 gevo-chassis animate-fadeIn space-y-2.5"
                 >
-                  <div className="p-2 text-[11px] font-bold uppercase tracking-wider text-[#7CE8F5] border-b border-white/10">
-                    Conoce el Ecosistema
+                  <div className="px-2 py-1 text-[11px] font-bold uppercase tracking-wider text-emerald-300 border-b border-white/10">
+                    Conoce el Ecosistema G-evo
                   </div>
 
+                  {/* Tarjeta 1: Visión (Réplica 1:1 de Imagen 3 + Hover Imagen 2) */}
                   <button
                     onClick={() => openCorporateModal('vision')}
-                    className="w-full mt-1 p-2.5 rounded-xl hover:bg-white/5 flex items-start gap-3 text-left transition-colors group/item cursor-pointer"
+                    className="w-full text-left cursor-pointer flex items-center justify-between gap-3 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-4 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]"
                   >
-                    <div className="p-2 rounded-lg bg-[#263438] text-[#7CE8F5] border border-white/15 group-hover/item:border-[#7CE8F5]">
-                      <Compass className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold text-[#F0F7F8] group-hover/item:text-[#7CE8F5]">
-                        Nuestra Visión
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-11 h-11 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform duration-300 shadow-xs">
+                        <Compass className="w-5 h-5" />
                       </div>
-                      <div className="text-[11px] text-gray-400 line-clamp-1">
-                        Hacia dónde proyectamos la marca.
+                      <div>
+                        <div className="text-sm font-semibold text-[#2C3531]">
+                          Visión
+                        </div>
+                        <div className="text-xs text-[#6E7873] line-clamp-1">
+                          El futuro que queremos crear
+                        </div>
                       </div>
                     </div>
+                    <ArrowUpRight className="w-4 h-4 text-[#A389F4] shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </button>
 
+                  {/* Tarjeta 2: Misión (Soft UI Blanco Luminoso + Hover Seda Esmeralda) */}
                   <button
                     onClick={() => openCorporateModal('mision')}
-                    className="w-full p-2.5 rounded-xl hover:bg-white/5 flex items-start gap-3 text-left transition-colors group/item cursor-pointer"
+                    className="w-full text-left cursor-pointer flex items-center justify-between gap-3 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-4 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]"
                   >
-                    <div className="p-2 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 group-hover/item:border-amber-400">
-                      <Target className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold text-[#F0F7F8] group-hover/item:text-amber-400">
-                        Nuestra Misión
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-11 h-11 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform duration-300 shadow-xs">
+                        <Target className="w-5 h-5" />
                       </div>
-                      <div className="text-[11px] text-gray-400 line-clamp-1">
-                        Propósito y valor comercial.
+                      <div>
+                        <div className="text-sm font-semibold text-[#2C3531]">
+                          Misión
+                        </div>
+                        <div className="text-xs text-[#6E7873] line-clamp-1">
+                          Propósito y valor comercial
+                        </div>
                       </div>
                     </div>
+                    <ArrowUpRight className="w-4 h-4 text-[#A389F4] shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </button>
 
+                  {/* Tarjeta 3: Historia (Soft UI Blanco Luminoso + Hover Seda Esmeralda) */}
                   <button
                     onClick={() => openCorporateModal('historia')}
-                    className="w-full p-2.5 rounded-xl hover:bg-white/5 flex items-start gap-3 text-left transition-colors group/item cursor-pointer"
+                    className="w-full text-left cursor-pointer flex items-center justify-between gap-3 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-4 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]"
                   >
-                    <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 group-hover/item:border-emerald-400">
-                      <BookOpen className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold text-[#F0F7F8] group-hover/item:text-emerald-400">
-                        Nuestra Historia
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-11 h-11 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform duration-300 shadow-xs">
+                        <BookOpen className="w-5 h-5" />
                       </div>
-                      <div className="text-[11px] text-gray-400 line-clamp-1">
-                        Génesis de la evolución dorada.
+                      <div>
+                        <div className="text-sm font-semibold text-[#2C3531]">
+                          Historia
+                        </div>
+                        <div className="text-xs text-[#6E7873] line-clamp-1">
+                          Génesis de la evolución dorada
+                        </div>
                       </div>
                     </div>
+                    <ArrowUpRight className="w-4 h-4 text-[#A389F4] shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </button>
                 </div>
               )}
@@ -151,7 +164,7 @@ export const FloatingNavbar: React.FC = () => {
 
             <Link
               href="#contacto"
-              className="gevo-keycap-idle px-3.5 py-1.5 text-xs"
+              className="gevo-keycap-idle px-3.5 py-2 text-xs"
             >
               Contacto
             </Link>
@@ -183,13 +196,13 @@ export const FloatingNavbar: React.FC = () => {
               <InstagramIcon className="w-3.5 h-3.5 transition-transform duration-300 group-hover/ig:scale-110 group-hover/ig:rotate-6" />
             </a>
 
-            {/* Botón Portal Clientes */}
+            {/* Botón Portal Clientes con Soft UI Blanco Luminoso + Hover Seda Esmeralda */}
             <Link
               href="/login"
-              className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-black rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 transition-all transform hover:scale-[1.02]"
+              className="gevo-keycap-active px-4 py-2 text-xs gap-1.5"
               title="Portal de Gestión para Clientes"
             >
-              <LogIn className="w-3.5 h-3.5 text-black" />
+              <LogIn className="w-3.5 h-3.5 text-[#157A54]" />
               <span>Portal Clientes</span>
             </Link>
           </div>
@@ -206,7 +219,7 @@ export const FloatingNavbar: React.FC = () => {
 
         {/* Mobile Slide-down Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden absolute top-20 left-4 right-4 p-5 bg-[#0D1321] border border-amber-500/30 rounded-2xl shadow-2xl backdrop-blur-2xl animate-fadeIn space-y-4">
+          <div className="lg:hidden absolute top-20 left-4 right-4 p-5 gevo-chassis animate-fadeIn space-y-4">
             <div className="flex flex-col gap-3 text-sm font-medium text-gray-200">
               <Link
                 href="/"
@@ -231,29 +244,56 @@ export const FloatingNavbar: React.FC = () => {
                 <span>Demostración Agente IA</span>
               </Link>
 
-              {/* Opciones Institucionales en Mobile */}
+              {/* Opciones Institucionales en Mobile (Tarjetas Soft UI Blanco Luminoso + Hover Seda Esmeralda) */}
               <div className="pt-2 border-t border-white/10">
                 <div className="text-xs uppercase font-bold text-amber-400 px-2 py-1">
                   Quiénes Somos (G-evo)
                 </div>
-                <div className="grid grid-cols-3 gap-2 mt-2">
+                <div className="flex flex-col gap-2.5 mt-2">
                   <button
                     onClick={() => openCorporateModal('vision')}
-                    className="p-2 rounded-lg bg-white/5 text-xs text-center hover:bg-white/10"
+                    className="w-full text-left flex items-center justify-between gap-3 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-3.5 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]"
                   >
-                    Visión
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform">
+                        <Compass className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold text-[#2C3531]">Visión</div>
+                        <div className="text-[11px] text-[#6E7873]">El futuro que queremos crear</div>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="w-4 h-4 text-[#A389F4]" />
                   </button>
                   <button
                     onClick={() => openCorporateModal('mision')}
-                    className="p-2 rounded-lg bg-white/5 text-xs text-center hover:bg-white/10"
+                    className="w-full text-left flex items-center justify-between gap-3 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-3.5 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]"
                   >
-                    Misión
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform">
+                        <Target className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold text-[#2C3531]">Misión</div>
+                        <div className="text-[11px] text-[#6E7873]">Propósito y valor comercial</div>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="w-4 h-4 text-[#A389F4]" />
                   </button>
                   <button
                     onClick={() => openCorporateModal('historia')}
-                    className="p-2 rounded-lg bg-white/5 text-xs text-center hover:bg-white/10"
+                    className="w-full text-left flex items-center justify-between gap-3 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-2xl p-3.5 shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]"
                   >
-                    Historia
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform">
+                        <BookOpen className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold text-[#2C3531]">Historia</div>
+                        <div className="text-[11px] text-[#6E7873]">Génesis de la evolución dorada</div>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="w-4 h-4 text-[#A389F4]" />
                   </button>
                 </div>
               </div>

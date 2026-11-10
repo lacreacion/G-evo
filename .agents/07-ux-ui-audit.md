@@ -7,11 +7,12 @@
 ---
 
 ## 1. Responsabilidades Específicas
-- Evaluar el cumplimiento de estándares WCAG 2.1 nivel AA en contraste y legibilidad (garantizando el uso de `gevo-text-ice` `#F0F7F8` sobre superficies oscuras `#0B191E` / `#1C2427` / `#263438`, y texto `#0B191E` sobre teclas activas cian `#64D2DF` / `#7CE8F5`).
-- Auditar que la tipografía principal sea **`Plus Jakarta Sans`** o **`Inter`** en pesos `font-semibold` (`600`) para teclas inactivas y `font-bold` (`700`) para teclas activas/CTA, perfectamente centrada en las teclas 3D (`inline-flex items-center justify-center`).
-- **Regla de Oro de Identidad de Marca:** Auditar y garantizar que la paleta 3D Neumórfica Oscura / Cyberpunk conviva en total armonía con el logotipo oficial **"G-evo."**, el cual mantiene **siempre** sus 4 hojas, su **"G-"** en dorado metalizado y **"evo."** en verde esmeralda vibrante, sin ser alterado jamás por los tonos cian o gris pizarra de los botones.
+- Evaluar el cumplimiento de estándares WCAG 2.1 nivel AA en contraste y legibilidad sobre el **Fondo Global Verde Bosque Profundo** (`#042419` / `#05281C`, nubes `#0A3C2A`–`#0F523A` / `#0E4D36` y bordes `#02140E`) y en el interior de los **Botones y Tarjetas Soft UI Blanco Luminoso** (`from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE]`, borde `#BCE0CC`, título `#2C3531` `font-semibold`, subtítulo `#6E7873`, caja de ícono `bg-[#DDF8EC]` con ícono `#157A54` y flecha diagonal `↗` `#A389F4`).
+- Auditar que el efecto `:hover` proyecte fielmente la **Sombra Resplandeciente Verde Satén / Seda Esmeralda** (`#007A53`, `#17A575` y `#22C58B`) con elevación táctil (`hover:-translate-y-0.5`) y rotación sutil del ícono (`group-hover:-rotate-6`).
+- Auditar que la tipografía principal sea **`Plus Jakarta Sans`** o **`Inter`** en pesos `font-semibold` (`600`) y `font-bold` (`700`).
+- **Regla de Oro de Identidad de Marca:** Auditar y garantizar que la estética Verde Bosque Profundo + Soft UI Blanco Luminoso conviva en total armonía con el logotipo oficial **"G-evo."**, el cual mantiene **siempre** sus 4 hojas, su **"G-"** en dorado metalizado y **"evo."** en verde esmeralda vibrante, sin ser alterado jamás.
 - Verificar la navegación accesible por teclado (focus visible, roles ARIA, semántica HTML5).
-- Validar la ergonomía de uso táctil en dispositivos móviles (tap targets mínimos de 44x44px y micro-interacciones físicas de pulsación en botones Keycap 3D).
+- Validar la ergonomía de uso táctil en dispositivos móviles (tap targets mínimos de 44x44px y micro-interacciones físicas fluidas).
 
 ---
 
