@@ -95,77 +95,77 @@ export const FloatingNavbar: React.FC = () => {
                 }`} />
               </button>
 
-              {/* Dropdown Window Popover Blanco Marfil (Réplica 1:1 de Imagen: Reposo limpio vs Hover iluminado) */}
+              {/* Dropdown Window Popover Blanco Marfil Delgado (Reposo limpio vs Hover iluminado) */}
               {dropdownOpen && (
                 <div
                   onMouseLeave={() => setDropdownOpen(false)}
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-80 p-3 rounded-3xl bg-[#F3F6F4] border-[1.5px] border-white shadow-[-6px_-6px_18px_rgba(255,255,255,0.85),0_18px_36px_rgba(0,0,0,0.18)] animate-fadeIn space-y-1"
+                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-72 p-2 rounded-2xl bg-[#F3F6F4] border-[1.5px] border-white shadow-[-6px_-6px_18px_rgba(255,255,255,0.85),0_16px_32px_rgba(0,0,0,0.16)] animate-fadeIn space-y-0.5"
                 >
                   {/* Opción 1: Visión */}
                   <button
                     onClick={() => openCorporateModal('vision')}
-                    className="w-full text-left cursor-pointer flex items-center justify-between gap-3.5 group/drop relative rounded-2xl px-3.5 py-3 border-[1.5px] border-transparent bg-transparent transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E5F8EF] hover:via-[#FFFFFF] hover:to-[#FFF6DE] hover:border-[#BCE0CC] hover:shadow-[inset_0_3px_6px_rgba(20,80,50,0.10)]"
+                    className="w-full text-left cursor-pointer flex items-center justify-between gap-2.5 group/drop relative rounded-xl px-2.5 py-1.5 border-[1.5px] border-transparent bg-transparent transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E5F8EF] hover:via-[#FFFFFF] hover:to-[#FFF6DE] hover:border-[#BCE0CC] hover:shadow-[inset_0_2px_5px_rgba(20,80,50,0.09)]"
                   >
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-11 h-11 rounded-xl bg-[#EAEFEC] text-[#157A54] flex items-center justify-center shrink-0 border border-white/80 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.10),inset_-2px_-2px_5px_rgba(255,255,255,0.95)] transition-all duration-300 group-hover/drop:bg-[#DDF8EC] group-hover/drop:border-transparent group-hover/drop:shadow-none group-hover/drop:-rotate-6">
-                        <Target className="w-5 h-5" />
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-[#EAEFEC] text-[#157A54] flex items-center justify-center shrink-0 border border-white/80 shadow-[inset_1.5px_1.5px_4px_rgba(0,0,0,0.10),inset_-1.5px_-1.5px_4px_rgba(255,255,255,0.95)] transition-all duration-300 group-hover/drop:bg-[#DDF8EC] group-hover/drop:border-transparent group-hover/drop:shadow-none group-hover/drop:-rotate-6">
+                        <Target className="w-4 h-4" />
                       </div>
-                      <div className="leading-snug">
-                        <div className="text-sm font-semibold text-[#2C3531]">
+                      <div className="leading-tight">
+                        <div className="text-xs font-semibold text-[#2C3531]">
                           Visión
                         </div>
-                        <div className="text-xs text-[#6E7873]">
+                        <div className="text-[11px] text-[#6E7873]">
                           El futuro que queremos crear
                         </div>
                       </div>
                     </div>
-                    <ArrowUpRight className="w-4 h-4 text-[#A389F4] shrink-0 opacity-0 -translate-x-1 translate-y-1 group-hover/drop:opacity-100 group-hover/drop:translate-x-0 group-hover/drop:translate-y-0 transition-all duration-300" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#A389F4] shrink-0 opacity-0 -translate-x-1 translate-y-1 group-hover/drop:opacity-100 group-hover/drop:translate-x-0 group-hover/drop:translate-y-0 transition-all duration-300" />
                   </button>
 
                   {/* Opción 2: Misión */}
                   <button
                     onClick={() => openCorporateModal('mision')}
-                    className="w-full text-left cursor-pointer flex items-center justify-between gap-3.5 group/drop relative rounded-2xl px-3.5 py-3 border-[1.5px] border-transparent bg-transparent transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E5F8EF] hover:via-[#FFFFFF] hover:to-[#FFF6DE] hover:border-[#BCE0CC] hover:shadow-[inset_0_3px_6px_rgba(20,80,50,0.10)]"
+                    className="w-full text-left cursor-pointer flex items-center justify-between gap-2.5 group/drop relative rounded-xl px-2.5 py-1.5 border-[1.5px] border-transparent bg-transparent transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E5F8EF] hover:via-[#FFFFFF] hover:to-[#FFF6DE] hover:border-[#BCE0CC] hover:shadow-[inset_0_2px_5px_rgba(20,80,50,0.09)]"
                   >
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-11 h-11 rounded-xl bg-[#EAEFEC] text-[#157A54] flex items-center justify-center shrink-0 border border-white/80 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.10),inset_-2px_-2px_5px_rgba(255,255,255,0.95)] transition-all duration-300 group-hover/drop:bg-[#DDF8EC] group-hover/drop:border-transparent group-hover/drop:shadow-none group-hover/drop:-rotate-6">
-                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-[#EAEFEC] text-[#157A54] flex items-center justify-center shrink-0 border border-white/80 shadow-[inset_1.5px_1.5px_4px_rgba(0,0,0,0.10),inset_-1.5px_-1.5px_4px_rgba(255,255,255,0.95)] transition-all duration-300 group-hover/drop:bg-[#DDF8EC] group-hover/drop:border-transparent group-hover/drop:shadow-none group-hover/drop:-rotate-6">
+                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
                           <path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4" />
                         </svg>
                       </div>
-                      <div className="leading-snug">
-                        <div className="text-sm font-semibold text-[#2C3531]">
+                      <div className="leading-tight">
+                        <div className="text-xs font-semibold text-[#2C3531]">
                           Misión
                         </div>
-                        <div className="text-xs text-[#6E7873]">
+                        <div className="text-[11px] text-[#6E7873]">
                           Lo que hacemos cada día
                         </div>
                       </div>
                     </div>
-                    <ArrowUpRight className="w-4 h-4 text-[#A389F4] shrink-0 opacity-0 -translate-x-1 translate-y-1 group-hover/drop:opacity-100 group-hover/drop:translate-x-0 group-hover/drop:translate-y-0 transition-all duration-300" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#A389F4] shrink-0 opacity-0 -translate-x-1 translate-y-1 group-hover/drop:opacity-100 group-hover/drop:translate-x-0 group-hover/drop:translate-y-0 transition-all duration-300" />
                   </button>
 
                   {/* Opción 3: Historia */}
                   <button
                     onClick={() => openCorporateModal('historia')}
-                    className="w-full text-left cursor-pointer flex items-center justify-between gap-3.5 group/drop relative rounded-2xl px-3.5 py-3 border-[1.5px] border-transparent bg-transparent transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E5F8EF] hover:via-[#FFFFFF] hover:to-[#FFF6DE] hover:border-[#BCE0CC] hover:shadow-[inset_0_3px_6px_rgba(20,80,50,0.10)]"
+                    className="w-full text-left cursor-pointer flex items-center justify-between gap-2.5 group/drop relative rounded-xl px-2.5 py-1.5 border-[1.5px] border-transparent bg-transparent transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E5F8EF] hover:via-[#FFFFFF] hover:to-[#FFF6DE] hover:border-[#BCE0CC] hover:shadow-[inset_0_2px_5px_rgba(20,80,50,0.09)]"
                   >
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-11 h-11 rounded-xl bg-[#EAEFEC] text-[#157A54] flex items-center justify-center shrink-0 border border-white/80 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.10),inset_-2px_-2px_5px_rgba(255,255,255,0.95)] transition-all duration-300 group-hover/drop:bg-[#DDF8EC] group-hover/drop:border-transparent group-hover/drop:shadow-none group-hover/drop:-rotate-6">
-                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-[#EAEFEC] text-[#157A54] flex items-center justify-center shrink-0 border border-white/80 shadow-[inset_1.5px_1.5px_4px_rgba(0,0,0,0.10),inset_-1.5px_-1.5px_4px_rgba(255,255,255,0.95)] transition-all duration-300 group-hover/drop:bg-[#DDF8EC] group-hover/drop:border-transparent group-hover/drop:shadow-none group-hover/drop:-rotate-6">
+                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M5 12c2.5-2.5 4.5 2.5 7 0s4.5 2.5 7 0" />
                         </svg>
                       </div>
-                      <div className="leading-snug">
-                        <div className="text-sm font-semibold text-[#2C3531]">
+                      <div className="leading-tight">
+                        <div className="text-xs font-semibold text-[#2C3531]">
                           Historia
                         </div>
-                        <div className="text-xs text-[#6E7873]">
+                        <div className="text-[11px] text-[#6E7873]">
                           La idea detrás de G-evo
                         </div>
                       </div>
                     </div>
-                    <ArrowUpRight className="w-4 h-4 text-[#A389F4] shrink-0 opacity-0 -translate-x-1 translate-y-1 group-hover/drop:opacity-100 group-hover/drop:translate-x-0 group-hover/drop:translate-y-0 transition-all duration-300" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#A389F4] shrink-0 opacity-0 -translate-x-1 translate-y-1 group-hover/drop:opacity-100 group-hover/drop:translate-x-0 group-hover/drop:translate-y-0 transition-all duration-300" />
                   </button>
                 </div>
               )}
