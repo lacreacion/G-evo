@@ -55,6 +55,19 @@
   - Ítem en `:hover` (el que pisa el mouse): se activa la cápsula pastel (`from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE]`), borde `#BCE0CC`, sombra interna `shadow-[inset_0_3px_6px_rgba(20,80,50,0.10)]`, el cuadrito del ícono pasa a `#DDF8EC` con giro `-rotate-6`, y aparece la flecha diagonal lavanda `↗` (`#A389F4`).
 - **Botones de Redes Sociales (Facebook e Instagram):** Botones *squircle* (`w-10 h-10 rounded-2xl`) en blanco marfil luminoso (`#F2F6F3`), borde blanco (`border-[1.5px] border-white`), resplandor exterior suave e ícono interno en verde esmeralda oscuro (`#146343`).
 
+### 2.5 Hero Principal G-evo: Cascada 1➔2➔3➔4 + Anillo Orbital 3D sin Cruces (`HeroSection.tsx`)
+- **Fondo y Rejilla:** `#042217` con `radial-gradient(ellipse at center, #0D4A34 0%, #05281C 60%, #02120C 100%)` y rejilla arquitectónica `42px x 42px` (`#22C58B` al `8%`).
+- **Columna Izquierda (Bloques 0 al 5 con delay escalonado `0.11s` y Grid 2x2 de 4 Cajas Blancas Soft UI):**
+  1. `"1. Tarjeta Digital"` (`DIGITAL CARD CREATION`)
+  2. `"2. Catálogo Digital"` (`DIGITAL CATALOG CREATION`)
+  3. `"3. Páginas Web"` (`CREACIÓN DE PÁGINAS WEB`)
+  4. `"4. Tienda E-Commerce"` (`CREACIÓN DE E-COMMERCE`)
+- **Columna Derecha (4 Pantallas Azules Cyber-HUD en `/public/images/hero/01..04.webp`):**
+  - Chasis holográfico azul neón (`border-[#38BDF8]`, esquinas *L-bracket* `#67E8F9`, `shadow-[0_0_55px_rgba(34,211,238,0.42)]`).
+  - **Secuencia en Cascada (Pasos 1 al 4 cada `2.15s`):** Caída vertical `translateY(-115px) -> 0` al frente mientras las pantallas previas pasan a sus ranuras orbitales traseras/laterales sin cruzar el centro.
+  - **Fase 5 Automática (Anillo Orbital 3D Continuo sin Cruces):** Posicionamiento trigonométrico sobre el perímetro del anillo (`translateX = sin(rad)*215`, `translateZ = cos(rad)*240`, `rotateY = sin(rad)*28`, `scale = 0.56 + depthFactor*0.28`, `opacity = 0.28 + depthFactor*0.72`, `zIndex = round(depthFactor*100)+10`).
+  - **Pausa Estricta en Hover (`isHoverPaused`):** Al entrar el mouse al escenario 3D (`onMouseEnter`) el giro se detiene instantáneamente en su ángulo exacto y se reanuda en `onMouseLeave`. Clic en cualquiera de las 4 Cajas Blancas rota esa pantalla al frente (`0°`).
+
 ---
 
 ## 3. Limitaciones Estrictas (Límites Operativos)

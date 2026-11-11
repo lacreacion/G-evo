@@ -181,3 +181,57 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #17A575;
 }
+
+/* ==========================================================================
+   HERO G-EVO: REJILLA ARQUITECTÓNICA, ENTRADA ESCALONADA Y CASCADA CYBER-HUD
+   ========================================================================== */
+
+.gevo-hero-bg {
+  background-color: #042217;
+  background-image: radial-gradient(ellipse at center, #0D4A34 0%, #05281C 60%, #02120C 100%);
+}
+
+.gevo-hero-arch-grid {
+  background-image:
+    linear-gradient(to right, rgba(34, 197, 139, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(34, 197, 139, 0.08) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+@keyframes heroStaggerIn {
+  0% {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-hero-stagger {
+  opacity: 0;
+  animation: heroStaggerIn 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes heroCascadeDrop {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -115px, 240px) scale(0.76);
+  }
+  68% {
+    opacity: 1;
+    transform: translate3d(0, 10px, 245px) scale(0.86);
+  }
+  86% {
+    transform: translate3d(0, -4px, 240px) scale(0.83);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 240px) scale(0.84);
+  }
+}
+
+.animate-cascade-drop {
+  animation: heroCascadeDrop 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}

@@ -9,7 +9,7 @@
 ## 1. Responsabilidades Específicas
 - Redactar y perfeccionar copys de alta conversión centrados en la propuesta de valor B2B de G-evo.
 - Optimizar la ubicación y redacción de los llamados a la acción (CTAs hacia WhatsApp y Mostrario).
-- Diseñar la narrativa de ventas para destacar la exclusividad de las tarjetas NFC y catálogos autónomos.
+- Diseñar la narrativa de ventas para destacar la exclusividad de las tarjetas NFC/QR, catálogos digitales, páginas web y tiendas E-commerce autónomas en los bloques escalonados 0–5 del Hero Principal (`HeroSection.tsx`) y en el Grid 2x2 de las 4 Cajas Blancas Soft UI (*1. Tarjeta Digital*, *2. Catálogo Digital*, *3. Páginas Web*, *4. Tienda E-Commerce*).
 - Proponer experimentos A/B sobre titulares y secciones para maximizar solicitudes de contacto.
 - Mantener coherencia en el tono de voz comercial: profesional, innovador y de alta tecnología.
 
