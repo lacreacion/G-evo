@@ -59,7 +59,7 @@ export const HeroSection: React.FC = () => {
             </h1>
 
             <p className="text-base sm:text-lg text-gray-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
-              Diseñamos y desplegamos tus <span className="text-amber-300 font-semibold">tarjetas digitales inteligentes (NFC/QR)</span>, <span className="text-emerald-400 font-semibold">catálogos digitales, tiendas E-commerce y páginas web</span>. Soluciones tecnológicas de alto impacto diseñadas para destacar tu marca, conectar con más clientes y potenciar tus ventas.
+              Diseñamos y desplegamos tus <span className="text-amber-300 font-semibold">tarjetas digitales inteligentes (URL/QR)</span>, <span className="text-emerald-400 font-semibold">catálogos digitales, tiendas E-commerce y páginas web</span>. Soluciones tecnológicas de alto impacto diseñadas para destacar tu marca, conectar con más clientes y potenciar tus ventas.
             </p>
 
             {/* Badges de Autoridad (Soft UI Blanco Luminoso + Hover Seda Esmeralda) */}
@@ -68,7 +68,7 @@ export const HeroSection: React.FC = () => {
                 <span className="w-6 h-6 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center group-hover:-rotate-6 transition-transform">
                   <Wifi className="w-3.5 h-3.5" />
                 </span>
-                <span className="text-[#2C3531] font-semibold">NFC &amp; QR Dinámico</span>
+                <span className="text-[#2C3531] font-semibold">URL &amp; QR Dinámico</span>
               </div>
               <div className="group gevo-keycap-idle px-3.5 py-2 gap-2">
                 <span className="w-6 h-6 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center group-hover:-rotate-6 transition-transform">

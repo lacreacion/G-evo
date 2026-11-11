@@ -37,63 +37,64 @@ export const FloatingNavbar: React.FC = () => {
 
   return (
     <>
-      {/* Floating Navbar Container */}
-      <header className="fixed top-0 left-0 right-0 z-40 flex justify-center px-3 sm:px-5 pt-4 md:pt-6 transition-all duration-300">
-        <nav
-          className={`w-[96%] max-w-[1480px] rounded-2xl px-6 py-3 md:px-10 md:py-3.5 transition-all duration-300 flex items-center justify-between gevo-header-bar ${
-            isScrolled
-              ? 'shadow-[0_20px_50px_rgba(0,0,0,0.85)]'
-              : 'shadow-lg'
-          }`}
-        >
-          {/* Logo Principal con colores oficiales G-evo (Regla de Oro intacta) */}
-          <Logo size="md" />
+      {/* Floating Navbar Container: Logo afuera a la izquierda + Barra de Menú flotando al mismo tiempo */}
+      <header className="fixed top-0 left-0 right-0 z-40 flex justify-center px-4 sm:px-6 pt-4 md:pt-6 transition-all duration-300 pointer-events-none">
+        <div className="w-[96%] max-w-[1480px] flex items-center justify-between gap-4 md:gap-8">
+          {/* Logo Principal FUERA de la barra de menú, con el mismo efecto flotante simultáneo */}
+          <div
+            className={`pointer-events-auto shrink-0 px-4 py-2.5 rounded-2xl transition-all duration-300 ${
+              isScrolled
+                ? 'bg-[#042419]/75 backdrop-blur-md border border-white/10 shadow-[0_14px_34px_rgba(0,0,0,0.65)]'
+                : 'drop-shadow-[0_6px_18px_rgba(0,0,0,0.6)]'
+            }`}
+          >
+            <Logo size="md" />
+          </div>
 
-          {/* Menú de Navegación Desktop Minimalista con Pastilla Blanca Luminosa + Punto Dorado en Hover */}
-          <div className="hidden lg:flex items-center gap-7 xl:gap-12 text-sm font-semibold text-[#555E5A]">
-            <Link
-              href="/"
-              className="group/item relative inline-flex flex-col items-center justify-center px-5 pt-2 pb-1.5 rounded-2xl border-[1.5px] border-transparent text-[#555E5A] transition-all duration-200 hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]"
-            >
-              <span>Inicio</span>
-              <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#C59B27] opacity-0 scale-50 group-hover/item:opacity-100 group-hover/item:scale-100 transition-all duration-200" />
-            </Link>
-
-            <Link
-              href="#servicios"
-              className="group/item relative inline-flex flex-col items-center justify-center px-5 pt-2 pb-1.5 rounded-2xl border-[1.5px] border-transparent text-[#555E5A] transition-all duration-200 hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]"
-            >
-              <span>Servicios</span>
-              <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#C59B27] opacity-0 scale-50 group-hover/item:opacity-100 group-hover/item:scale-100 transition-all duration-200" />
-            </Link>
-
-            <Link
-              href="#ai-demo"
-              className="group/item relative inline-flex flex-col items-center justify-center px-5 pt-2 pb-1.5 rounded-2xl border-[1.5px] border-transparent text-[#555E5A] transition-all duration-200 hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]"
-            >
-              <span>Agente IA</span>
-              <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#C59B27] opacity-0 scale-50 group-hover/item:opacity-100 group-hover/item:scale-100 transition-all duration-200" />
-            </Link>
-
-            {/* Menú Desplegable Interactivo: Quiénes somos (Visión, Misión, Historia) */}
-            <div className="relative group/nav">
-              <button
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                onMouseEnter={() => setDropdownOpen(true)}
-                className={`group/item relative inline-flex flex-col items-center justify-center px-5 pt-2 pb-1.5 rounded-2xl border-[1.5px] transition-all duration-200 cursor-pointer ${
-                  dropdownOpen
-                    ? 'bg-[#F3F6F4] border-white text-[#147A50] shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]'
-                    : 'border-transparent text-[#555E5A] hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]'
-                }`}
+          <nav
+            className={`pointer-events-auto flex-1 rounded-2xl px-6 py-2.5 md:px-10 md:py-3 transition-all duration-300 flex items-center justify-end lg:justify-between gevo-header-bar ${
+              isScrolled
+                ? 'shadow-[0_20px_50px_rgba(0,0,0,0.85)]'
+                : 'shadow-lg'
+            }`}
+          >
+            {/* Menú de Navegación Desktop Minimalista con Pastilla Blanca Luminosa en Hover (Sin puntos amarillos) */}
+            <div className="hidden lg:flex items-center gap-7 xl:gap-12 text-sm font-semibold text-[#555E5A]">
+              <Link
+                href="/"
+                className="relative inline-flex items-center justify-center px-5 py-2 rounded-2xl border-[1.5px] border-transparent text-[#555E5A] transition-all duration-200 hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]"
               >
-                <span className="inline-flex items-center gap-1.5">
+                <span>Inicio</span>
+              </Link>
+
+              <Link
+                href="#servicios"
+                className="relative inline-flex items-center justify-center px-5 py-2 rounded-2xl border-[1.5px] border-transparent text-[#555E5A] transition-all duration-200 hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]"
+              >
+                <span>Servicios</span>
+              </Link>
+
+              <Link
+                href="#ai-demo"
+                className="relative inline-flex items-center justify-center px-5 py-2 rounded-2xl border-[1.5px] border-transparent text-[#555E5A] transition-all duration-200 hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]"
+              >
+                <span>Agente IA</span>
+              </Link>
+
+              {/* Menú Desplegable Interactivo: Quiénes somos (Visión, Misión, Historia) */}
+              <div className="relative group/nav">
+                <button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  onMouseEnter={() => setDropdownOpen(true)}
+                  className={`relative inline-flex items-center justify-center gap-1.5 px-5 py-2 rounded-2xl border-[1.5px] transition-all duration-200 cursor-pointer ${
+                    dropdownOpen
+                      ? 'bg-[#F3F6F4] border-white text-[#147A50] shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]'
+                      : 'border-transparent text-[#555E5A] hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]'
+                  }`}
+                >
                   <span>Quiénes somos</span>
                   <ChevronDown className={`w-3.5 h-3.5 text-[#B5892E] stroke-[2.5] transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
-                </span>
-                <span className={`mt-1 w-1.5 h-1.5 rounded-full bg-[#C59B27] transition-all duration-200 ${
-                  dropdownOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-50 group-hover/item:opacity-100 group-hover/item:scale-100'
-                }`} />
-              </button>
+                </button>
 
               {/* Dropdown Window Popover Blanco Marfil Delgado (Reposo limpio vs Hover iluminado) */}
               {dropdownOpen && (
@@ -171,14 +172,13 @@ export const FloatingNavbar: React.FC = () => {
               )}
             </div>
 
-            <Link
-              href="#contacto"
-              className="group/item relative inline-flex flex-col items-center justify-center px-5 pt-2 pb-1.5 rounded-2xl border-[1.5px] border-transparent text-[#555E5A] transition-all duration-200 hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]"
-            >
-              <span>Contacto</span>
-              <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#C59B27] opacity-0 scale-50 group-hover/item:opacity-100 group-hover/item:scale-100 transition-all duration-200" />
-            </Link>
-          </div>
+              <Link
+                href="#contacto"
+                className="relative inline-flex items-center justify-center px-5 py-2 rounded-2xl border-[1.5px] border-transparent text-[#555E5A] transition-all duration-200 hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]"
+              >
+                <span>Contacto</span>
+              </Link>
+            </div>
 
           {/* Redes Sociales Squircle Blancos + Ícono Verde Esmeralda (Exacto a Segunda Imagen) + Portal Clientes */}
           <div className="hidden md:flex items-center gap-2.5">
@@ -217,19 +217,20 @@ export const FloatingNavbar: React.FC = () => {
             </Link>
           </div>
 
-          {/* Mobile Menu Hamburger */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2.5 text-[#146343] rounded-2xl bg-[#F2F6F3] border border-white shadow-xs"
-            aria-label="Abrir menú"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </nav>
+            {/* Mobile Menu Hamburger */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2.5 text-[#146343] rounded-2xl bg-[#F2F6F3] border border-white shadow-xs"
+              aria-label="Abrir menú"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </nav>
+        </div>
 
         {/* Mobile Slide-down Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden absolute top-20 left-4 right-4 p-5 gevo-chassis animate-fadeIn space-y-4">
+          <div className="pointer-events-auto lg:hidden absolute top-20 left-4 right-4 p-5 gevo-chassis animate-fadeIn space-y-4">
             <div className="flex flex-col gap-3 text-sm font-medium text-gray-200">
               <Link
                 href="/"
