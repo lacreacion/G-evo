@@ -50,7 +50,19 @@ export const FloatingNavbar: React.FC = () => {
   const openCorporateModal = (tab: 'vision' | 'mision' | 'historia') => {
     setActiveCorporateTab(tab);
     setDropdownOpen(false);
+    setServicesDropdownOpen(false);
     setMobileMenuOpen(false);
+  };
+
+  const triggerInicioCascade = (e?: React.MouseEvent) => {
+    if (e && window.location.pathname === '/') {
+      e.preventDefault();
+    }
+    setDropdownOpen(false);
+    setServicesDropdownOpen(false);
+    setMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.dispatchEvent(new CustomEvent('gevo:restart-hero-cascade'));
   };
 
   return (
@@ -60,7 +72,8 @@ export const FloatingNavbar: React.FC = () => {
         <div className="w-[96%] max-w-[1480px] flex items-center justify-between gap-4 md:gap-8">
           {/* Logo Principal FUERA de la barra de menú, con el mismo efecto flotante simultáneo */}
           <div
-            className={`pointer-events-auto shrink-0 px-4 py-2.5 rounded-2xl transition-all duration-300 ${
+            onClick={triggerInicioCascade}
+            className={`pointer-events-auto shrink-0 px-4 py-2.5 rounded-2xl transition-all duration-300 cursor-pointer ${
               isScrolled
                 ? 'bg-[#042419]/75 backdrop-blur-md border border-white/10 shadow-[0_14px_34px_rgba(0,0,0,0.65)]'
                 : 'drop-shadow-[0_6px_18px_rgba(0,0,0,0.6)]'
@@ -80,6 +93,7 @@ export const FloatingNavbar: React.FC = () => {
             <div className="hidden lg:flex items-center gap-7 xl:gap-12 text-sm font-semibold text-[#555E5A]">
               <Link
                 href="/"
+                onClick={triggerInicioCascade}
                 className="relative inline-flex items-center justify-center px-5 py-2 rounded-2xl border-[1.5px] border-transparent text-[#555E5A] transition-all duration-200 hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]"
               >
                 <span>Inicio</span>
@@ -385,7 +399,7 @@ export const FloatingNavbar: React.FC = () => {
             <div className="flex flex-col gap-3 text-sm font-medium text-gray-200">
               <Link
                 href="/"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={triggerInicioCascade}
                 className="p-2 hover:bg-white/5 rounded-lg"
               >
                 Inicio
