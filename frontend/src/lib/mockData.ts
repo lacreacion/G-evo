@@ -120,10 +120,10 @@ export const MOCK_STORIES: StoryItem[] = [
 export const CASCADE_SERVICES: ServiceItem[] = [
   {
     id: 1,
-    title: 'Tarjetas Digitales Interactivas (URL & QR)',
-    badge: 'Presencia Digital & Web Premium',
+    title: 'Tarjetas Persoales Digitales Interactivas (URL & QR)',
+    badge: 'Presencia Digital',
     tagline: 'Conexión instantánea sin papel, con impacto memorable.',
-    description: 'Transforma tu primera impresión comercial con tarjetas digitales inteligentes equipadas con enlace URL personalizado y código QR dinámico. Al compartirla en cualquier smartphone, entrega tu contacto directo (vCard), redes sociales, ubicación y catálogo en segundos.',
+    description: 'Transforma tu primera impresión comercial con tarjetas digitales inteligentes equipadas con enlace URL personalizado y código QR dinámico.  Comparte en directo por redes sociales, ubicación y catálogo en segundos.',
     videoPreviewUrl: 'https://assets.mixkit.co/videos/preview/mixkit-hand-holding-a-smartphone-with-a-green-screen-42517-large.mp4',
     videoThumbnail: 'https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&w=800&q=80',
     features: [
@@ -140,14 +140,14 @@ export const CASCADE_SERVICES: ServiceItem[] = [
   },
   {
     id: 2,
-    title: 'Catálogos E-commerce Autónomos',
+    title: 'Catálogos Digitales Autónomos',
     badge: 'Venta Digital Directa',
     tagline: 'Tu vitrina de ventas con pedido directo a WhatsApp sin comisiones abusivas.',
     description: 'Páginas de catálogo de carga instantánea diseñadas para negocios que desean exhibir referencias, fotos de alta resolución, precios actualizados y recibir pedidos formateados directamente en su WhatsApp Business.',
     videoPreviewUrl: 'https://assets.mixkit.co/videos/preview/mixkit-online-shopping-on-a-smartphone-40871-large.mp4',
     videoThumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
     features: [
-      'Carrito de compras fluido con cálculo de subtotal y envío.',
+      'flujode compras con cálculo de subtotal y envío.',
       'Generador de mensaje ordenado a WhatsApp con los items seleccionados.',
       'Soporte multi-categoría, variantes de talla, color y presentaciones.',
       'Diseño 100% responsivo optimizado para móviles (Mobile-First).'
@@ -160,22 +160,22 @@ export const CASCADE_SERVICES: ServiceItem[] = [
   },
   {
     id: 3,
-    title: 'Menús y Vitrinas Digitales de Alto Impacto',
-    badge: 'Experiencia Gastronómica & Retail',
-    tagline: 'Atractivo visual que abre el apetito y eleva el ticket promedio.',
-    description: 'Ideal para restaurantes, cafeterías, boutiques y salones de belleza. Ofrece a tus clientes una experiencia visual limpia, sin menús manchados o PDFs pesados que gastan datos.',
-    videoPreviewUrl: 'https://assets.mixkit.co/videos/preview/mixkit-top-view-of-a-table-with-food-in-a-restaurant-42999-large.mp4',
-    videoThumbnail: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+    title: 'Creación de Páginas Web de Alto Impacto',
+    badge: 'Desarrollo & Diseño Web Profesional',
+    tagline: 'Presencia digital corporativa, rápida y optimizada para convertir visitantes en clientes.',
+    description: 'Diseñamos y desarrollamos páginas web corporativas, landing pages y portafolios modernos a medida de tu marca. Estructuras visuales de carga ultra-rápida con certificado de seguridad SSL, optimización para buscadores (SEO) y conexión directa a tu WhatsApp y redes sociales.',
+    videoPreviewUrl: 'https://assets.mixkit.co/videos/preview/mixkit-web-developer-working-on-code-on-multiple-screens-42515-large.mp4',
+    videoThumbnail: 'https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=800&q=80',
     features: [
-      'Lectura de QR en mesa ultra-rápida (menos de 0.8 segundos de carga).',
-      'Etiquetas de destacados, promociones del día y alérgenos.',
-      'Actualización inmediata de platos agotados para no generar fricción.',
-      'Fotografías en alta fidelidad con zoom interactivo.'
+      'Diseño 100% adaptable a celulares, tablets y computadores (Mobile-First).',
+      'Velocidad de carga ultra-rápida y estructura optimizada para aparecer en Google (SEO).',
+      'Secciones personalizadas: Inicio, Servicios, Portafolio, Ubicación y Formulario/WhatsApp.',
+      'Certificado de seguridad SSL (HTTPS) y dominio personalizado incluido.'
     ],
     competitiveAdvantages: [
-      'Reducción de costos de reimpresión de cartas de menú a cero.',
-      'Mayor velocidad de rotación de mesas al facilitar la decisión de compra.',
-      'Posibilidad de integrar pedidos en mesa asistidos.'
+      'Diseño exclusivo alineado con la identidad visual de tu empresa, sin plantillas genéricas.',
+      'Integración directa con tu Tarjeta Digital, Catálogo y Agente de Soporte IA 24/7.',
+      'Arquitectura moderna y escalable lista para crecer junto con tu negocio.'
     ]
   },
   {
