@@ -44,7 +44,7 @@ export const CascadeServices: React.FC = () => {
       <div className="absolute top-1/2 left-0 w-72 h-72 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-6 right-0 w-72 h-72 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 relative z-10">
         
         {/* Encabezado Compacto */}
         <div className="text-center max-w-2xl mx-auto mb-9 space-y-2.5">
@@ -74,103 +74,101 @@ export const CascadeServices: React.FC = () => {
           </p>
         </div>
 
-        {/* Grilla Bento Compacta e Innovadora (5 Cajas Oficiales) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5">
+        {/* Distribución 3 Arriba y 2 Abajo Centradas (Con Tamaño Fijo Estable sin Agrandarse en Hover) */}
+        <div className="flex flex-wrap justify-center gap-4 md:gap-5 items-stretch">
           {CASCADE_SERVICES.map((service: ServiceItem, index: number) => {
             const currentTab = activeTabByCard[service.id] || 'features';
-            const isLastOddCard =
-              CASCADE_SERVICES.length % 2 === 1 && index === CASCADE_SERVICES.length - 1;
 
             return (
               <div
                 key={service.id}
-                className={`group/card relative rounded-2xl gevo-chassis hover:border-[#22C58B]/55 p-4 sm:p-5 transition-all duration-300 flex flex-col justify-between gap-3.5 hover:-translate-y-0.5 ${
-                  isLastOddCard ? 'lg:col-span-2 lg:w-[calc(50%-0.625rem)] lg:mx-auto w-full' : ''
-                }`}
+                className="group/card relative w-full md:w-[calc(50%-0.65rem)] lg:w-[calc(33.333%-0.9rem)] rounded-2xl gevo-chassis hover:border-[#22C58B]/65 hover:shadow-[0_14px_36px_rgba(2,20,14,0.85),0_0_24px_rgba(34,197,139,0.20)] p-4 transition-colors duration-300 flex flex-col justify-between gap-3"
                 style={{
                   animationDelay: `${index * 110}ms`,
                 }}
               >
-                {/* 1. Fila Superior: Mini-Reproductor de Video + Título, Badge y Descripción */}
-                <div className="flex flex-col sm:flex-row items-start gap-3.5">
-                  
-                  {/* Miniatura de Video Interactiva Compacta */}
-                  <div className="relative w-full sm:w-36 h-28 sm:h-26 rounded-xl overflow-hidden border border-white/15 shadow-lg shrink-0 group/video">
-                    <Image
-                      src={service.videoThumbnail}
-                      alt={service.title}
-                      width={240}
-                      height={160}
-                      unoptimized
-                      className="w-full h-full object-cover filter brightness-90 group-hover/video:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setActiveVideo({
-                            title: service.title,
-                            videoUrl: service.videoPreviewUrl,
-                          })
-                        }
-                        className="relative p-2.5 rounded-full bg-gradient-to-r from-amber-400 to-emerald-400 text-black shadow-lg hover:scale-110 transition-all duration-300 cursor-pointer"
-                        aria-label={`Ver video explicativo de ${service.title}`}
-                        title="Reproducir Video Explicativo"
-                      >
-                        <Play className="w-4 h-4 fill-black ml-0.5" />
-                      </button>
+                {/* 1. Fila Superior: Mini-Reproductor de Video + Título, Badge y Descripción Fija */}
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    {/* Miniatura de Video Interactiva Compacta */}
+                    <div className="relative w-28 sm:w-30 h-22 rounded-xl overflow-hidden border border-white/15 shadow-md shrink-0 group/video">
+                      <Image
+                        src={service.videoThumbnail}
+                        alt={service.title}
+                        width={220}
+                        height={150}
+                        unoptimized
+                        className="w-full h-full object-cover filter brightness-90 group-hover/video:brightness-105 transition-all duration-300"
+                      />
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setActiveVideo({
+                              title: service.title,
+                              videoUrl: service.videoPreviewUrl,
+                            })
+                          }
+                          className="relative p-2 rounded-full bg-gradient-to-r from-amber-400 to-emerald-400 text-black shadow-lg hover:brightness-110 transition-all duration-200 cursor-pointer"
+                          aria-label={`Ver video explicativo de ${service.title}`}
+                          title="Reproducir Video Explicativo"
+                        >
+                          <Play className="w-3.5 h-3.5 fill-black ml-0.5" />
+                        </button>
+                      </div>
+
+                      {/* Etiqueta flotante de Video */}
+                      <div className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded-md bg-black/75 backdrop-blur-xs text-[9px] font-bold text-amber-300 border border-white/10 flex items-center gap-1">
+                        <Sparkles className="w-2.5 h-2.5 text-amber-400" />
+                        <span>Video</span>
+                      </div>
                     </div>
 
-                    {/* Etiqueta flotante de Video */}
-                    <div className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded-md bg-black/75 backdrop-blur-xs text-[9px] font-bold text-amber-300 border border-white/10 flex items-center gap-1">
-                      <Sparkles className="w-2.5 h-2.5 text-amber-400" />
-                      <span>Video</span>
+                    {/* Badge, Título y Subtítulo */}
+                    <div className="flex-1 min-w-0 space-y-1">
+                      <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#042419]/90 border border-amber-500/35 text-amber-300 font-extrabold text-[10px] max-w-full truncate">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#22C58B] shrink-0" />
+                        <span className="truncate">
+                          0{service.id} {'//'} {service.badge}
+                        </span>
+                      </div>
+
+                      <h3 className="text-sm sm:text-base font-extrabold text-white tracking-tight leading-snug">
+                        {service.title}
+                      </h3>
+
+                      <p className="text-emerald-400 text-[11px] font-semibold leading-tight">
+                        {service.tagline}
+                      </p>
                     </div>
                   </div>
 
-                  {/* Información Principal del Servicio */}
-                  <div className="flex-1 min-w-0 space-y-1">
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#042419]/90 border border-amber-500/35 text-amber-300 font-extrabold text-[10px]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#22C58B]" />
-                      <span>
-                        0{service.id} {'//'} {service.badge}
-                      </span>
-                    </div>
-
-                    <h3 className="text-base sm:text-lg font-extrabold text-white tracking-tight leading-snug">
-                      {service.title}
-                    </h3>
-
-                    <p className="text-emerald-400 text-[11px] font-semibold leading-tight">
-                      {service.tagline}
-                    </p>
-
-                    <p className="text-gray-300 text-xs leading-relaxed line-clamp-2 group-hover/card:line-clamp-none transition-all">
-                      {service.description}
-                    </p>
-                  </div>
+                  {/* Descripción Completa con Altura Estable (Nunca cambia de tamaño al pasar el mouse) */}
+                  <p className="text-gray-300 text-[11.5px] leading-relaxed">
+                    {service.description}
+                  </p>
                 </div>
 
                 {/* 2. Selector Interactivo de Pestañas Internas (Características vs Ventajas G-evo) */}
-                <div className="space-y-2.5">
+                <div className="space-y-2">
                   <div className="flex items-center gap-1.5 p-1 rounded-xl bg-black/25 border border-white/10">
                     <button
                       type="button"
                       onClick={() => handleTabChange(service.id, 'features')}
-                      className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                      className={`flex-1 flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-[10.5px] font-bold transition-colors cursor-pointer ${
                         currentTab === 'features'
                           ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-xs'
                           : 'text-gray-400 hover:text-white'
                       }`}
                     >
                       <Zap className="w-3 h-3 text-amber-400 shrink-0" />
-                      <span>Características Técnicas</span>
+                      <span>Características</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => handleTabChange(service.id, 'advantages')}
-                      className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                      className={`flex-1 flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-[10.5px] font-bold transition-colors cursor-pointer ${
                         currentTab === 'advantages'
                           ? 'bg-amber-500/20 text-amber-200 border border-amber-500/40 shadow-xs'
                           : 'text-gray-400 hover:text-white'
@@ -183,51 +181,53 @@ export const CascadeServices: React.FC = () => {
                     </button>
                   </div>
 
-                  {/* Contenido Dinámico Compacto de la Pestaña Seleccionada */}
-                  {currentTab === 'features' ? (
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
-                      {service.features.map((feat, i) => (
-                        <li
-                          key={i}
-                          className="flex items-start gap-1.5 text-[11px] text-gray-200 bg-white/5 px-2.5 py-1.5 rounded-lg border border-white/5 leading-snug"
-                        >
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                          <span>{feat}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <div className="p-2.5 rounded-xl bg-amber-950/25 border border-amber-500/25">
-                      <ul className="space-y-1.5">
-                        {service.competitiveAdvantages.map((adv, i) => (
+                  {/* Contenedor de Altura Fija Mínima para que las Pestañas tampoco alteren el tamaño */}
+                  <div className="min-h-[126px] flex flex-col justify-center">
+                    {currentTab === 'features' ? (
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                        {service.features.map((feat, i) => (
                           <li
                             key={i}
-                            className="text-[11px] text-gray-200 flex items-start gap-1.5 leading-snug"
+                            className="flex items-start gap-1.5 text-[10.5px] text-gray-200 bg-white/5 px-2 py-1.5 rounded-lg border border-white/5 leading-snug"
                           >
-                            <span className="text-amber-400 font-bold">•</span>
-                            <span>{adv}</span>
+                            <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0 mt-0.5" />
+                            <span>{feat}</span>
                           </li>
                         ))}
                       </ul>
-                    </div>
-                  )}
+                    ) : (
+                      <div className="p-2.5 rounded-xl bg-amber-950/25 border border-amber-500/25">
+                        <ul className="space-y-1.5">
+                          {service.competitiveAdvantages.map((adv, i) => (
+                            <li
+                              key={i}
+                              className="text-[11px] text-gray-200 flex items-start gap-1.5 leading-snug"
+                            >
+                              <span className="text-amber-400 font-bold">•</span>
+                              <span>{adv}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* 3. Barra Inferior Compacta: Botón Blanco Soft UI + Acceso Rápido al Video */}
-                <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-2.5">
+                <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-2">
                   <Link
                     href="#contacto"
-                    className="flex-1 inline-flex items-center justify-between gap-2.5 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-xl px-3 py-2 shadow-[inset_0_2px_4px_rgba(20,80,50,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_10px_24px_-4px_rgba(23,165,117,0.7),0_0_16px_2px_rgba(0,122,83,0.5),inset_0_2px_4px_rgba(255,255,255,0.9)]"
+                    className="flex-1 inline-flex items-center justify-between gap-2 group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] border border-[#BCE0CC] rounded-xl px-3 py-1.5 shadow-[inset_0_2px_4px_rgba(20,80,50,0.08)] transition-all duration-300 hover:border-[#22C58B] hover:shadow-[0_8px_20px_-4px_rgba(23,165,117,0.65),0_0_14px_2px_rgba(0,122,83,0.45),inset_0_2px_4px_rgba(255,255,255,0.9)]"
                   >
-                    <div className="flex items-center gap-2.5 text-left">
-                      <div className="w-7 h-7 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform">
+                    <div className="flex items-center gap-2 text-left">
+                      <div className="w-6 h-6 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 group-hover:-rotate-6 transition-transform">
                         <Sparkles className="w-3.5 h-3.5" />
                       </div>
                       <div className="leading-tight">
-                        <div className="text-xs font-bold text-[#2C3531]">
+                        <div className="text-[11px] font-bold text-[#2C3531]">
                           Solicitar este servicio
                         </div>
-                        <div className="text-[10px] text-[#6E7873]">
+                        <div className="text-[9.5px] text-[#6E7873]">
                           Cotizar ahora con G-evo
                         </div>
                       </div>
@@ -243,10 +243,10 @@ export const CascadeServices: React.FC = () => {
                         videoUrl: service.videoPreviewUrl,
                       })
                     }
-                    className="px-3 py-2 rounded-xl bg-white/5 hover:bg-emerald-500/15 border border-white/10 hover:border-emerald-400/40 text-[11px] font-semibold text-gray-200 hover:text-emerald-300 transition-all flex items-center gap-1.5 shrink-0 cursor-pointer"
+                    className="px-2.5 py-2 rounded-xl bg-white/5 hover:bg-emerald-500/15 border border-white/10 hover:border-emerald-400/40 text-[10.5px] font-semibold text-gray-200 hover:text-emerald-300 transition-colors flex items-center gap-1 shrink-0 cursor-pointer"
                   >
                     <Play className="w-3 h-3 fill-current text-amber-400" />
-                    <span className="hidden sm:inline">Ver Video</span>
+                    <span>Video</span>
                   </button>
                 </div>
 
