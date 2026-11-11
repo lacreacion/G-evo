@@ -11,15 +11,33 @@ import {
   Menu, 
   X, 
   LogIn,
-  ArrowUpRight
+  ArrowUpRight,
+  Smartphone,
+  BookOpen,
+  Globe,
+  Store,
+  Bot
 } from 'lucide-react';
 import { CorporateModal, CorporateTab } from '@/components/modals/CorporateModal';
 
 export const FloatingNavbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [activeCorporateTab, setActiveCorporateTab] = useState<CorporateTab>(null);
+
+  const selectServiceScene = (sceneIndex: number, targetAnchor: string) => {
+    setServicesDropdownOpen(false);
+    setMobileMenuOpen(false);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('gevo:select-hero-scene', { detail: sceneIndex }));
+      const el = document.querySelector(targetAnchor);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,12 +85,139 @@ export const FloatingNavbar: React.FC = () => {
                 <span>Inicio</span>
               </Link>
 
-              <Link
-                href="#servicios"
-                className="relative inline-flex items-center justify-center px-5 py-2 rounded-2xl border-[1.5px] border-transparent text-[#555E5A] transition-all duration-200 hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]"
-              >
-                <span>Servicios</span>
-              </Link>
+              {/* Menú Desplegable Interactivo: Servicios (5 opciones exactas solicitadas) */}
+              <div className="relative group/srv">
+                <button
+                  onClick={() => {
+                    setServicesDropdownOpen(!servicesDropdownOpen);
+                    setDropdownOpen(false);
+                  }}
+                  onMouseEnter={() => {
+                    setServicesDropdownOpen(true);
+                    setDropdownOpen(false);
+                  }}
+                  className={`relative inline-flex items-center justify-center gap-1.5 px-5 py-2 rounded-2xl border-[1.5px] transition-all duration-200 cursor-pointer ${
+                    servicesDropdownOpen
+                      ? 'bg-[#F3F6F4] border-white text-[#147A50] shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]'
+                      : 'border-transparent text-[#555E5A] hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]'
+                  }`}
+                >
+                  <span>Servicios</span>
+                  <ChevronDown className={`w-3.5 h-3.5 text-[#B5892E] stroke-[2.5] transition-transform duration-200 ${servicesDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {servicesDropdownOpen && (
+                  <div
+                    onMouseLeave={() => setServicesDropdownOpen(false)}
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-76 p-2 rounded-2xl bg-[#F3F6F4] border-[1.5px] border-white shadow-[-6px_-6px_18px_rgba(255,255,255,0.85),0_16px_32px_rgba(0,0,0,0.16)] animate-fadeIn space-y-0.5"
+                  >
+                    {/* 1. Tarjeta Presentación Digital */}
+                    <button
+                      onClick={() => selectServiceScene(0, '#servicios')}
+                      className="w-full text-left cursor-pointer flex items-center justify-between gap-2.5 group/drop relative rounded-xl px-2.5 py-1.5 border-[1.5px] border-transparent bg-transparent transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E5F8EF] hover:via-[#FFFFFF] hover:to-[#FFF6DE] hover:border-[#BCE0CC] hover:shadow-[inset_0_2px_5px_rgba(20,80,50,0.09)]"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-[#EAEFEC] text-[#157A54] flex items-center justify-center shrink-0 border border-white/80 shadow-[inset_1.5px_1.5px_4px_rgba(0,0,0,0.10),inset_-1.5px_-1.5px_4px_rgba(255,255,255,0.95)] transition-all duration-300 group-hover/drop:bg-[#DDF8EC] group-hover/drop:border-transparent group-hover/drop:shadow-none group-hover/drop:-rotate-6">
+                          <Smartphone className="w-4 h-4" />
+                        </div>
+                        <div className="leading-tight">
+                          <div className="text-xs font-semibold text-[#2C3531]">
+                            Tarjeta Presentación Digital
+                          </div>
+                          <div className="text-[11px] text-[#6E7873]">
+                            URL, QR y vCard inteligente
+                          </div>
+                        </div>
+                      </div>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-[#A389F4] shrink-0 opacity-0 -translate-x-1 translate-y-1 group-hover/drop:opacity-100 group-hover/drop:translate-x-0 group-hover/drop:translate-y-0 transition-all duration-300" />
+                    </button>
+
+                    {/* 2. Catálogo Digital */}
+                    <button
+                      onClick={() => selectServiceScene(1, '#servicios')}
+                      className="w-full text-left cursor-pointer flex items-center justify-between gap-2.5 group/drop relative rounded-xl px-2.5 py-1.5 border-[1.5px] border-transparent bg-transparent transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E5F8EF] hover:via-[#FFFFFF] hover:to-[#FFF6DE] hover:border-[#BCE0CC] hover:shadow-[inset_0_2px_5px_rgba(20,80,50,0.09)]"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-[#EAEFEC] text-[#157A54] flex items-center justify-center shrink-0 border border-white/80 shadow-[inset_1.5px_1.5px_4px_rgba(0,0,0,0.10),inset_-1.5px_-1.5px_4px_rgba(255,255,255,0.95)] transition-all duration-300 group-hover/drop:bg-[#DDF8EC] group-hover/drop:border-transparent group-hover/drop:shadow-none group-hover/drop:-rotate-6">
+                          <BookOpen className="w-4 h-4" />
+                        </div>
+                        <div className="leading-tight">
+                          <div className="text-xs font-semibold text-[#2C3531]">
+                            Catálogo Digital
+                          </div>
+                          <div className="text-[11px] text-[#6E7873]">
+                            Productos, precios y pedidos
+                          </div>
+                        </div>
+                      </div>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-[#A389F4] shrink-0 opacity-0 -translate-x-1 translate-y-1 group-hover/drop:opacity-100 group-hover/drop:translate-x-0 group-hover/drop:translate-y-0 transition-all duration-300" />
+                    </button>
+
+                    {/* 3. Páginas Web */}
+                    <button
+                      onClick={() => selectServiceScene(2, '#servicios')}
+                      className="w-full text-left cursor-pointer flex items-center justify-between gap-2.5 group/drop relative rounded-xl px-2.5 py-1.5 border-[1.5px] border-transparent bg-transparent transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E5F8EF] hover:via-[#FFFFFF] hover:to-[#FFF6DE] hover:border-[#BCE0CC] hover:shadow-[inset_0_2px_5px_rgba(20,80,50,0.09)]"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-[#EAEFEC] text-[#157A54] flex items-center justify-center shrink-0 border border-white/80 shadow-[inset_1.5px_1.5px_4px_rgba(0,0,0,0.10),inset_-1.5px_-1.5px_4px_rgba(255,255,255,0.95)] transition-all duration-300 group-hover/drop:bg-[#DDF8EC] group-hover/drop:border-transparent group-hover/drop:shadow-none group-hover/drop:-rotate-6">
+                          <Globe className="w-4 h-4" />
+                        </div>
+                        <div className="leading-tight">
+                          <div className="text-xs font-semibold text-[#2C3531]">
+                            Páginas Web
+                          </div>
+                          <div className="text-[11px] text-[#6E7873]">
+                            Diseño web y estudio creativo
+                          </div>
+                        </div>
+                      </div>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-[#A389F4] shrink-0 opacity-0 -translate-x-1 translate-y-1 group-hover/drop:opacity-100 group-hover/drop:translate-x-0 group-hover/drop:translate-y-0 transition-all duration-300" />
+                    </button>
+
+                    {/* 4. Tienda E-Commerce */}
+                    <button
+                      onClick={() => selectServiceScene(3, '#servicios')}
+                      className="w-full text-left cursor-pointer flex items-center justify-between gap-2.5 group/drop relative rounded-xl px-2.5 py-1.5 border-[1.5px] border-transparent bg-transparent transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E5F8EF] hover:via-[#FFFFFF] hover:to-[#FFF6DE] hover:border-[#BCE0CC] hover:shadow-[inset_0_2px_5px_rgba(20,80,50,0.09)]"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-[#EAEFEC] text-[#157A54] flex items-center justify-center shrink-0 border border-white/80 shadow-[inset_1.5px_1.5px_4px_rgba(0,0,0,0.10),inset_-1.5px_-1.5px_4px_rgba(255,255,255,0.95)] transition-all duration-300 group-hover/drop:bg-[#DDF8EC] group-hover/drop:border-transparent group-hover/drop:shadow-none group-hover/drop:-rotate-6">
+                          <Store className="w-4 h-4" />
+                        </div>
+                        <div className="leading-tight">
+                          <div className="text-xs font-semibold text-[#2C3531]">
+                            Tienda E-Commerce
+                          </div>
+                          <div className="text-[11px] text-[#6E7873]">
+                            Carrito de compras y pasarelas
+                          </div>
+                        </div>
+                      </div>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-[#A389F4] shrink-0 opacity-0 -translate-x-1 translate-y-1 group-hover/drop:opacity-100 group-hover/drop:translate-x-0 group-hover/drop:translate-y-0 transition-all duration-300" />
+                    </button>
+
+                    {/* 5. Agente IA */}
+                    <button
+                      onClick={() => selectServiceScene(4, '#ai-demo')}
+                      className="w-full text-left cursor-pointer flex items-center justify-between gap-2.5 group/drop relative rounded-xl px-2.5 py-1.5 border-[1.5px] border-transparent bg-transparent transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E5F8EF] hover:via-[#FFFFFF] hover:to-[#FFF6DE] hover:border-[#BCE0CC] hover:shadow-[inset_0_2px_5px_rgba(20,80,50,0.09)]"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-[#EAEFEC] text-[#157A54] flex items-center justify-center shrink-0 border border-white/80 shadow-[inset_1.5px_1.5px_4px_rgba(0,0,0,0.10),inset_-1.5px_-1.5px_4px_rgba(255,255,255,0.95)] transition-all duration-300 group-hover/drop:bg-[#DDF8EC] group-hover/drop:border-transparent group-hover/drop:shadow-none group-hover/drop:-rotate-6">
+                          <Bot className="w-4 h-4" />
+                        </div>
+                        <div className="leading-tight">
+                          <div className="text-xs font-semibold text-[#2C3531]">
+                            Agente IA
+                          </div>
+                          <div className="text-[11px] text-[#6E7873]">
+                            Soporte y automatización 24/7
+                          </div>
+                        </div>
+                      </div>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-[#A389F4] shrink-0 opacity-0 -translate-x-1 translate-y-1 group-hover/drop:opacity-100 group-hover/drop:translate-x-0 group-hover/drop:translate-y-0 transition-all duration-300" />
+                    </button>
+                  </div>
+                )}
+              </div>
 
               <Link
                 href="#ai-demo"
@@ -84,8 +229,14 @@ export const FloatingNavbar: React.FC = () => {
               {/* Menú Desplegable Interactivo: Quiénes somos (Visión, Misión, Historia) */}
               <div className="relative group/nav">
                 <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                  onMouseEnter={() => setDropdownOpen(true)}
+                  onClick={() => {
+                    setDropdownOpen(!dropdownOpen);
+                    setServicesDropdownOpen(false);
+                  }}
+                  onMouseEnter={() => {
+                    setDropdownOpen(true);
+                    setServicesDropdownOpen(false);
+                  }}
                   className={`relative inline-flex items-center justify-center gap-1.5 px-5 py-2 rounded-2xl border-[1.5px] transition-all duration-200 cursor-pointer ${
                     dropdownOpen
                       ? 'bg-[#F3F6F4] border-white text-[#147A50] shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]'

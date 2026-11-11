@@ -33,11 +33,12 @@
   }
 
   body {
-    background-color: #05281C;
+    background-color: #032619;
     background-image:
-      radial-gradient(ellipse at 25% 20%, rgba(15, 82, 58, 0.48) 0%, transparent 55%),
-      radial-gradient(ellipse at 75% 65%, rgba(10, 60, 42, 0.52) 0%, transparent 60%),
-      radial-gradient(ellipse at center, #0E4D36 0%, #062B1D 60%, #02140E 100%);
+      linear-gradient(180deg, rgba(3, 38, 25, 0.25) 0%, rgba(2, 26, 17, 0.35) 100%),
+      url('/images/bg-forest-texture.jpg');
+    background-size: cover;
+    background-position: center;
     background-attachment: fixed;
     color: #F0F7F8;
     overflow-x: hidden;
@@ -52,14 +53,16 @@
    3. SOMBRA HOVER RESPLANDECIENTE SEDA ESMERALDA (IMAGEN 2)
    ========================================================================== */
 
-/* 1. Fondo Global Verde Bosque Profundo con Textura Orgánica / Viñeteado */
+/* 1. Fondo Global Verde Bosque Profundo con Textura Orgánica Uniforme en toda la página */
 .gevo-forest-bg,
 .gevo-ambient-bg {
-  background-color: #05281C;
+  background-color: #032619;
   background-image:
-    radial-gradient(circle at 20% 30%, rgba(15, 82, 58, 0.45) 0%, transparent 45%),
-    radial-gradient(circle at 80% 70%, rgba(10, 60, 42, 0.45) 0%, transparent 50%),
-    radial-gradient(ellipse at center, #0E4D36 0%, #062B1D 60%, #02150E 100%);
+    linear-gradient(180deg, rgba(3, 38, 25, 0.25) 0%, rgba(2, 26, 17, 0.35) 100%),
+    url('/images/bg-forest-texture.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: #F0F7F8;
 }
 
@@ -187,15 +190,11 @@
    ========================================================================== */
 
 .gevo-hero-bg {
-  background-color: #042217;
-  background-image: radial-gradient(ellipse at center, #0D4A34 0%, #05281C 60%, #02120C 100%);
+  background: transparent;
 }
 
 .gevo-hero-arch-grid {
-  background-image:
-    linear-gradient(to right, rgba(34, 197, 139, 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(34, 197, 139, 0.08) 1px, transparent 1px);
-  background-size: 42px 42px;
+  background: transparent;
 }
 
 @keyframes heroStaggerIn {

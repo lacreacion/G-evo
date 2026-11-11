@@ -22,7 +22,7 @@ export const PublicShowcase: React.FC = () => {
     : MOCK_SHOWCASE.filter((item) => item.category === filter);
 
   return (
-    <section id="mostrario" className="py-20 bg-[#042419]/65 relative border-t border-white/10">
+    <section id="mostrario" className="py-20 bg-transparent relative border-t border-white/10">
       <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
         
         {/* Header */}

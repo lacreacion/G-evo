@@ -301,6 +301,19 @@ export const HeroSection: React.FC = () => {
     return () => window.clearTimeout(timer);
   }, [activeSceneIndex, isHoverPaused]);
 
+  // Escuchar selección directa desde el menú desplegable "Servicios" del Navbar
+  useEffect(() => {
+    const handleMenuSceneSelect = (e: Event) => {
+      const customEvent = e as CustomEvent<number>;
+      if (typeof customEvent.detail === 'number') {
+        setActiveSceneIndex(customEvent.detail);
+        setCascadeCycleKey((prev) => prev + 1);
+      }
+    };
+    window.addEventListener('gevo:select-hero-scene', handleMenuSceneSelect);
+    return () => window.removeEventListener('gevo:select-hero-scene', handleMenuSceneSelect);
+  }, []);
+
   const handleSelectScene = (index: number) => {
     setActiveSceneIndex(index);
     setCascadeCycleKey((prev) => prev + 1);

@@ -67,7 +67,7 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer id="contacto" className="relative bg-[#02140E]/90 text-[#F0F7F8] border-t border-white/10 pt-20 pb-12 overflow-hidden">
+    <footer id="contacto" className="relative bg-transparent text-[#F0F7F8] border-t border-white/10 pt-20 pb-12 overflow-hidden">
       {/* Decorative Gradients */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#22C58B]/10 rounded-full blur-[140px] pointer-events-none" />

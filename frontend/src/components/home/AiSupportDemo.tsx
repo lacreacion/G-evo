@@ -80,7 +80,7 @@ export const AiSupportDemo: React.FC = () => {
   };
 
   return (
-    <section id="ai-demo" className="py-20 bg-[#042419]/80 relative border-t border-white/10 overflow-hidden">
+    <section id="ai-demo" className="py-20 bg-transparent relative border-t border-white/10 overflow-hidden">
       {/* Background Orbs */}
       <div className="absolute top-1/4 right-1/4 w-80 h-80 bg-[#22C58B]/10 rounded-full blur-[100px] pointer-events-none" />
 

@@ -9,7 +9,7 @@ import { Footer } from '@/components/footer/Footer';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[#05281C] bg-[radial-gradient(ellipse_at_center,_#0E4D36_0%,_#062B1D_60%,_#02150E_100%)] text-[#F0F7F8] selection:bg-[#22C58B] selection:text-[#02140E]">
+    <div className="min-h-screen gevo-forest-bg text-[#F0F7F8] selection:bg-[#22C58B] selection:text-[#02140E]">
       {/* 1. Barra de Navegación Flotante con Sombras & Ventanas Modales */}
       <FloatingNavbar />
 
