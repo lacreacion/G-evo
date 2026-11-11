@@ -10,7 +10,6 @@ import {
   BookOpen,
   Globe,
   Store,
-  ArrowUpRight,
   Pause,
   Rotate3d
 } from 'lucide-react';
@@ -78,8 +77,6 @@ export const HeroSection: React.FC = () => {
   const [targetAngle, setTargetAngle] = useState<number | null>(null);
   // isHoverPaused: pausa estricta e inmediata cuando el mouse entra al escenario 3D o a cualquiera de las 4 pantallas
   const [isHoverPaused, setIsHoverPaused] = useState<boolean>(false);
-  // hoveredBoxIndex: caja blanca de la izquierda sobre la que está el mouse
-  const [hoveredBoxIndex, setHoveredBoxIndex] = useState<number | null>(null);
 
   const orbitAngleRef = useRef<number>(0);
   const targetAngleRef = useRef<number | null>(null);
@@ -160,9 +157,8 @@ export const HeroSection: React.FC = () => {
     return () => window.cancelAnimationFrame(animationFrameId);
   }, [cascadeStep]);
 
-  // Determinar cuál de las 4 pantallas está actualmente al frente (0°) para sincronizar las 4 Cajas Blancas Soft UI
+  // Determinar cuál de las 4 pantallas está actualmente al frente (0°)
   const getFrontScreenIndex = (): number => {
-    if (hoveredBoxIndex !== null) return hoveredBoxIndex;
     if (cascadeStep < 4) return cascadeStep;
 
     let bestIndex = 0;
@@ -287,70 +283,6 @@ export const HeroSection: React.FC = () => {
                 </span>
                 <span className="text-[#2C3531] font-semibold">Agente IA 24/7 Disponible</span>
               </div>
-            </div>
-
-            {/* Bloque 4: Las 4 Cajas Blancas Soft UI con Efecto de Cascada (Caída Secuencial 1➔2➔3➔4 + Desfase Escalonado) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2 pb-2">
-              {HERO_SCREENS.map((item) => {
-                const IconComponent = item.icon;
-                const isActive = activeScreenIndex === item.index;
-
-                // Desfase visual en cascada (peldaños escalonados 1 ➔ 2 ➔ 3 ➔ 4)
-                const cascadeOffsetClass =
-                  item.index === 0
-                    ? 'sm:translate-y-0 sm:translate-x-0'
-                    : item.index === 1
-                    ? 'sm:translate-y-2.5 sm:translate-x-1'
-                    : item.index === 2
-                    ? 'sm:translate-y-1 sm:translate-x-2.5'
-                    : 'sm:translate-y-3.5 sm:translate-x-3.5';
-
-                return (
-                  <div
-                    key={item.index}
-                    className="animate-box-cascade"
-                    style={{ animationDelay: `${0.68 + item.index * 0.22}s` }}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => handleSelectBox(item.index)}
-                      onMouseEnter={() => setHoveredBoxIndex(item.index)}
-                      onMouseLeave={() => setHoveredBoxIndex(null)}
-                      className={`w-full group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] rounded-2xl p-3.5 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex items-center justify-between gap-3 text-left cursor-pointer ${cascadeOffsetClass} ${
-                        isActive
-                          ? '-translate-y-1.5 scale-[1.03] z-20 border-[1.5px] border-[#22C58B] shadow-[0_14px_34px_-4px_rgba(23,165,117,0.82),0_0_22px_5px_rgba(0,122,83,0.65),inset_0_2px_4px_rgba(255,255,255,0.95)]'
-                          : 'border border-[#BCE0CC] shadow-[inset_0_3px_6px_rgba(20,80,50,0.08),0_8px_18px_-6px_rgba(0,0,0,0.35)] hover:-translate-y-1 hover:scale-[1.02] hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div
-                          className={`w-10 h-10 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 transition-transform duration-300 ${
-                            isActive ? '-rotate-6 scale-110' : 'group-hover:-rotate-6'
-                          }`}
-                        >
-                          <IconComponent className="w-5 h-5" />
-                        </div>
-                        <div className="min-w-0">
-                          <div className="text-sm font-semibold text-[#2C3531] truncate">
-                            {item.boxTitle}
-                          </div>
-                          <div className="text-[11px] font-medium text-[#6E7873] truncate tracking-wide">
-                            {item.badgeText}
-                          </div>
-                        </div>
-                      </div>
-
-                      <ArrowUpRight
-                        className={`w-4 h-4 text-[#A389F4] shrink-0 transition-transform duration-300 ${
-                          isActive
-                            ? 'translate-x-0.5 -translate-y-0.5 scale-110'
-                            : 'group-hover:translate-x-0.5 group-hover:-translate-y-0.5'
-                        }`}
-                      />
-                    </button>
-                  </div>
-                );
-              })}
             </div>
 
             {/* Bloque 5 (delay: 0.55s): Contadores Inferiores Animados */}
