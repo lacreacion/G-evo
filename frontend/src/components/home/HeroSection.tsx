@@ -322,12 +322,27 @@ export const HeroSection: React.FC = () => {
   const currentScene = HERO_SCENES[activeSceneIndex];
 
   return (
-    <section className="relative min-h-[95vh] pt-28 pb-12 md:pt-32 md:pb-20 flex items-center justify-center overflow-hidden gevo-hero-bg">
-      {/* Rejilla Arquitectónica Sutil (42px x 42px, #22C58B al 8% de opacidad) + Halos Ambientales */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden gevo-hero-arch-grid">
-        <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[560px] md:w-[780px] h-[340px] md:h-[460px] bg-gradient-to-tr from-[#0D4A34]/45 via-[#22C58B]/12 to-transparent rounded-full blur-[120px]" />
-        <div className="absolute top-1/2 right-0 w-[550px] h-[550px] bg-[#38BDF8]/15 rounded-full blur-[150px]" />
-        <div className="absolute bottom-8 left-10 w-80 h-80 bg-[#F4C145]/10 rounded-full blur-[110px]" />
+    <section className="relative min-h-[95vh] pt-28 pb-12 md:pt-32 md:pb-20 flex items-center justify-center overflow-hidden">
+      {/* Filtro SVG que convierte los píxeles negros puros (#000000) de las escenas en 100% transparentes */}
+      <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
+        <defs>
+          <filter id="gevo-black-to-alpha" colorInterpolationFilters="sRGB">
+            <feColorMatrix
+              type="matrix"
+              values="1 0 0 0 0
+                      0 1 0 0 0
+                      0 0 1 0 0
+                      7 7 7 0 -0.18"
+            />
+          </filter>
+        </defs>
+      </svg>
+
+      {/* Halos Ambientales Suaves (Sin Cuadrícula) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[560px] md:w-[780px] h-[340px] md:h-[460px] bg-gradient-to-tr from-[#0D4A34]/35 via-[#22C58B]/10 to-transparent rounded-full blur-[120px]" />
+        <div className="absolute top-1/2 right-0 w-[550px] h-[550px] bg-[#38BDF8]/10 rounded-full blur-[150px]" />
+        <div className="absolute bottom-8 left-10 w-80 h-80 bg-[#F4C145]/08 rounded-full blur-[110px]" />
       </div>
 
       <div className="relative z-10 max-w-[1540px] mx-auto px-4 sm:px-6 md:px-10 w-full">
@@ -481,15 +496,11 @@ export const HeroSection: React.FC = () => {
               onMouseLeave={() => setIsHoverPaused(false)}
               className="relative w-full h-[380px] sm:h-[490px] md:h-[560px] lg:h-[600px] flex items-center justify-center overflow-visible select-none"
             >
-              {/* Contenedor Escalado para que la Caja Azul y sus Cajas Alrededor se vean GRANDES ocupando todo el espacio */}
+              {/* Contenedor Escalado para que la Caja Azul y sus Cajas Alrededor se vean GRANDES ocupando todo el espacio sin recuadro negro */}
               <div
                 className="relative w-full h-full scale-[1.16] sm:scale-[1.26] lg:scale-[1.34] transition-transform duration-500"
                 style={{
-                  mixBlendMode: 'lighten',
-                  WebkitMaskImage:
-                    'radial-gradient(ellipse 68% 68% at 50% 52%, #000 72%, transparent 100%)',
-                  maskImage:
-                    'radial-gradient(ellipse 68% 68% at 50% 52%, #000 72%, transparent 100%)'
+                  filter: 'url(#gevo-black-to-alpha) drop-shadow(0 16px 38px rgba(2, 20, 14, 0.55))'
                 }}
               >
                 {/* 1. CAJA PRINCIPAL AZUL EN EL CENTRO (Cae Primero en t = 0s) */}
