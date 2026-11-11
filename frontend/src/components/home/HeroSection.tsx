@@ -65,17 +65,30 @@ const HERO_SCREENS: HeroScreenItem[] = [
     imageSrc: '/images/hero/04-ecommerce-creation.webp',
     icon: Store,
     badgeText: 'CREACIÓN DE E-COMMERCE'
+  },
+  {
+    index: 4,
+    stepNumber: '5',
+    boxTitle: '5. Agente IA',
+    hudTitle: 'CREACIÓN DE AGENTE DE IA',
+    hudSubtitle: 'RED NEURONAL & AUTOMATIZACIÓN 24/7',
+    imageSrc: '/images/hero/05-ai-agent-creation.webp',
+    icon: Bot,
+    badgeText: 'CREACIÓN DE AGENTE DE IA'
   }
 ];
 
+const TOTAL_SCREENS = HERO_SCREENS.length; // 5 pantallas
+const STEP_ANGLE = 360 / TOTAL_SCREENS;    // 72° entre cada pantalla en el Anillo Orbital 3D
+
 export const HeroSection: React.FC = () => {
-  // cascadeStep: 0 -> Paso 1, 1 -> Paso 2, 2 -> Paso 3, 3 -> Paso 4, 4 -> Fase 5 (Anillo Orbital 3D Continuo)
+  // cascadeStep: 0..4 -> Pasos 1 al 5 en cascada; 5 -> Giro continuo en Anillo Orbital 3D
   const [cascadeStep, setCascadeStep] = useState<number>(0);
   // orbitAngle: ángulo continuo en grados del anillo orbital 3D
   const [orbitAngle, setOrbitAngle] = useState<number>(0);
   // targetAngle: cuando el usuario selecciona una pantalla, rotamos suavemente hacia ese ángulo
   const [targetAngle, setTargetAngle] = useState<number | null>(null);
-  // isHoverPaused: pausa estricta e inmediata cuando el mouse entra al escenario 3D o a cualquiera de las 4 pantallas
+  // isHoverPaused: pausa estricta e inmediata cuando el mouse entra al escenario 3D o a cualquiera de las 5 pantallas
   const [isHoverPaused, setIsHoverPaused] = useState<boolean>(false);
   // cascadeCycleKey: llave para reiniciar todas las animaciones en cascada cada vez que el usuario hace clic en "Inicio"
   const [cascadeCycleKey, setCascadeCycleKey] = useState<number>(0);
@@ -115,7 +128,7 @@ export const HeroSection: React.FC = () => {
       const customEvent = event as CustomEvent<{ sceneIndex: number }>;
       if (customEvent.detail && typeof customEvent.detail.sceneIndex === 'number') {
         const idx = customEvent.detail.sceneIndex;
-        if (idx >= 0 && idx < HERO_SCREENS.length) {
+        if (idx >= 0 && idx < TOTAL_SCREENS) {
           handleSelectBox(idx);
         }
       }
@@ -129,30 +142,31 @@ export const HeroSection: React.FC = () => {
     };
   }, []);
 
-  // Secuencia Encadenada en Cascada (Pasos 1 ➔ 2 ➔ 3 ➔ 4 cada 2.15 segundos)
+  // Secuencia Encadenada en Cascada (Pasos 1 ➔ 2 ➔ 3 ➔ 4 ➔ 5 cada 2.15 segundos)
   useEffect(() => {
-    if (cascadeStep >= 4 || isHoverPaused) return;
+    if (cascadeStep >= TOTAL_SCREENS || isHoverPaused) return;
 
     const timer = window.setTimeout(() => {
       const nextStep = cascadeStep + 1;
       setCascadeStep(nextStep);
-      if (nextStep < 4) {
-        const nextOrbit = -nextStep * 90;
+      if (nextStep < TOTAL_SCREENS) {
+        const nextOrbit = -nextStep * STEP_ANGLE;
         orbitAngleRef.current = nextOrbit;
         setOrbitAngle(nextOrbit);
       } else {
-        // Al iniciar Fase 5 (Anillo Orbital 3D continuo), partimos exactamente desde el ángulo del Paso 4 (-270°)
-        orbitAngleRef.current = -270;
-        setOrbitAngle(-270);
+        // Al iniciar el giro continuo del Anillo Orbital 3D, partimos exactamente desde el ángulo del Paso 5 (-288°)
+        const finalStepAngle = -(TOTAL_SCREENS - 1) * STEP_ANGLE;
+        orbitAngleRef.current = finalStepAngle;
+        setOrbitAngle(finalStepAngle);
       }
     }, 2150);
 
     return () => window.clearTimeout(timer);
   }, [cascadeStep, isHoverPaused, cascadeCycleKey]);
 
-  // Fase 5 Automática: Giro Continuo en Anillo Orbital 3D (requestAnimationFrame con pausa exacta en hover)
+  // Giro Continuo en Anillo Orbital 3D (requestAnimationFrame con pausa exacta en hover)
   useEffect(() => {
-    if (cascadeStep < 4) return;
+    if (cascadeStep < TOTAL_SCREENS) return;
 
     let animationFrameId: number;
     let lastTimestamp: number | null = null;
@@ -191,14 +205,14 @@ export const HeroSection: React.FC = () => {
     return () => window.cancelAnimationFrame(animationFrameId);
   }, [cascadeStep]);
 
-  // Determinar cuál de las 4 pantallas está actualmente al frente (0°)
+  // Determinar cuál de las 5 pantallas está actualmente al frente (0°)
   const getFrontScreenIndex = (): number => {
-    if (cascadeStep < 4) return cascadeStep;
+    if (cascadeStep < TOTAL_SCREENS) return cascadeStep;
 
     let bestIndex = 0;
     let maxCos = -2;
-    for (let i = 0; i < 4; i++) {
-      const deg = i * 90 + orbitAngle;
+    for (let i = 0; i < TOTAL_SCREENS; i++) {
+      const deg = i * STEP_ANGLE + orbitAngle;
       const rad = (deg * Math.PI) / 180;
       const c = Math.cos(rad);
       if (c > maxCos) {
@@ -211,14 +225,14 @@ export const HeroSection: React.FC = () => {
 
   const activeScreenIndex = getFrontScreenIndex();
 
-  // Al hacer clic en un indicador o pantalla, rotar suavemente esa pantalla al frente (0°)
+  // Al hacer clic en un indicador, pantalla o elemento del menú "Servicios", rotar suavemente esa pantalla al frente (0°)
   const handleSelectBox = (index: number) => {
-    if (cascadeStepRef.current < 4) {
-      cascadeStepRef.current = 4;
-      setCascadeStep(4);
+    if (cascadeStepRef.current < TOTAL_SCREENS) {
+      cascadeStepRef.current = TOTAL_SCREENS;
+      setCascadeStep(TOTAL_SCREENS);
     }
     const current = orbitAngleRef.current;
-    const desiredMod = (-index * 90) % 360;
+    const desiredMod = (-index * STEP_ANGLE) % 360;
     const currentMod = current % 360;
     let delta = desiredMod - currentMod;
     while (delta > 180) delta -= 360;
@@ -357,7 +371,7 @@ export const HeroSection: React.FC = () => {
           </div>
 
           {/* =================================================================
-              COLUMNA DERECHA: CASCADA 1➔2➔3➔4 + ANILLO ORBITAL 3D CYBER-HUD SIN CRUCES
+              COLUMNA DERECHA: CASCADA 1➔2➔3➔4➔5 + ANILLO ORBITAL 3D CYBER-HUD SIN CRUCES
               ================================================================= */}
           <div className="lg:col-span-6 relative flex flex-col items-center justify-center">
             
@@ -370,11 +384,11 @@ export const HeroSection: React.FC = () => {
                     Giro 3D en Pausa • Inspeccionando Pantalla
                   </span>
                 </>
-              ) : cascadeStep < 4 ? (
+              ) : cascadeStep < TOTAL_SCREENS ? (
                 <>
                   <Rotate3d className="w-3.5 h-3.5 text-[#67E8F9] animate-spin" />
                   <span className="font-semibold">
-                    Ensamblando Cascada {cascadeStep + 1}/4: {HERO_SCREENS[cascadeStep].boxTitle}
+                    Ensamblando Cascada {cascadeStep + 1}/{TOTAL_SCREENS}: {HERO_SCREENS[cascadeStep].boxTitle}
                   </span>
                 </>
               ) : (
@@ -406,7 +420,7 @@ export const HeroSection: React.FC = () => {
                 }}
               />
 
-              {/* Contenedor Preserve-3D de las 4 Pantallas Azules Cyber-HUD */}
+              {/* Contenedor Preserve-3D de las 5 Pantallas Azules Cyber-HUD */}
               <div
                 className="relative w-full h-full flex items-center justify-center"
                 style={{
@@ -414,11 +428,11 @@ export const HeroSection: React.FC = () => {
                 }}
               >
                 {HERO_SCREENS.map((screen) => {
-                  // Durante la cascada (cascadeStep < 4), las pantallas con index > cascadeStep aún no han caído
-                  const isVisibleInCascade = cascadeStep >= 4 || screen.index <= cascadeStep;
+                  // Durante la cascada (cascadeStep < 5), las pantallas con index > cascadeStep aún no han caído
+                  const isVisibleInCascade = cascadeStep >= TOTAL_SCREENS || screen.index <= cascadeStep;
                   if (!isVisibleInCascade) return null;
 
-                  const isDroppingNow = cascadeStep < 4 && screen.index === cascadeStep;
+                  const isDroppingNow = cascadeStep < TOTAL_SCREENS && screen.index === cascadeStep;
 
                   // Cálculo trigonométrico sobre el perímetro del Anillo Orbital 3D (CERO CRUCES)
                   let translateX = 0;
@@ -429,11 +443,11 @@ export const HeroSection: React.FC = () => {
                   let opacity = 1;
                   let zIndex = 110;
 
-                  if (cascadeStep < 4) {
-                    // Posicionamiento durante los Pasos 1 al 4 de la cascada
+                  if (cascadeStep < TOTAL_SCREENS) {
+                    // Posicionamiento sobre el anillo durante los Pasos 1 al 5 de la cascada
                     const stepsBehind = cascadeStep - screen.index;
                     if (stepsBehind === 0) {
-                      // Pantalla recién caída al frente
+                      // Pantalla recién caída al frente (0°)
                       translateX = 0;
                       translateY = 0;
                       translateZ = 240;
@@ -441,37 +455,22 @@ export const HeroSection: React.FC = () => {
                       scale = 0.84;
                       opacity = 1;
                       zIndex = 110;
-                    } else if (stepsBehind === 1) {
-                      // Ranura orbital trasera izquierda (especificación exacta del Paso 2)
-                      translateX = -210;
-                      translateY = -22;
-                      translateZ = -260;
-                      rotateY = 22;
-                      scale = 0.62;
-                      opacity = 0.58;
-                      zIndex = 55;
-                    } else if (stepsBehind === 2) {
-                      // Ranura orbital trasera central-superior
-                      translateX = 0;
-                      translateY = -36;
-                      translateZ = -320;
-                      rotateY = 0;
-                      scale = 0.56;
-                      opacity = 0.38;
-                      zIndex = 35;
                     } else {
-                      // Ranura orbital trasera derecha
-                      translateX = 210;
-                      translateY = -22;
-                      translateZ = -260;
-                      rotateY = -22;
-                      scale = 0.62;
-                      opacity = 0.58;
-                      zIndex = 55;
+                      // Ranuras orbitales traseras/laterales distribuidas cada 72° sin cruzarse
+                      const slotDeg = -stepsBehind * STEP_ANGLE;
+                      const slotRad = (slotDeg * Math.PI) / 180;
+                      translateX = Math.sin(slotRad) * 215;
+                      translateY = -18 * (1 - (Math.cos(slotRad) + 1) / 2);
+                      translateZ = Math.cos(slotRad) * 240;
+                      rotateY = Math.sin(slotRad) * 28;
+                      const depthFactor = (Math.cos(slotRad) + 1) / 2;
+                      scale = 0.56 + depthFactor * 0.28;
+                      opacity = 0.28 + depthFactor * 0.72;
+                      zIndex = Math.round(depthFactor * 100) + 10;
                     }
                   } else {
-                    // Fase 5 Automática: Trigonometría exacta del Anillo Orbital 3D (index * 90° + orbitAngle)
-                    const currentDeg = screen.index * 90 + orbitAngle;
+                    // Giro Continuo Automático: Trigonometría exacta del Anillo Orbital 3D (index * 72° + orbitAngle)
+                    const currentDeg = screen.index * STEP_ANGLE + orbitAngle;
                     const rad = (currentDeg * Math.PI) / 180;
                     translateX = Math.sin(rad) * 215;
                     translateZ = Math.cos(rad) * 240;
@@ -490,7 +489,7 @@ export const HeroSection: React.FC = () => {
                       onMouseEnter={() => setIsHoverPaused(true)}
                       onClick={() => handleSelectBox(screen.index)}
                       className={`absolute w-[310px] sm:w-[440px] md:w-[500px] aspect-[16/10] cursor-pointer ${
-                        cascadeStep < 4
+                        cascadeStep < TOTAL_SCREENS
                           ? 'transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]'
                           : ''
                       }`}
@@ -554,8 +553,8 @@ export const HeroSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Indicadores Rápidos de Paso (1 ➔ 2 ➔ 3 ➔ 4) debajo del Anillo 3D */}
-            <div className="mt-2 flex items-center gap-2 z-30">
+            {/* Indicadores Rápidos de Paso (01 ➔ 02 ➔ 03 ➔ 04 ➔ 05) debajo del Anillo 3D */}
+            <div className="mt-2 flex flex-wrap items-center justify-center gap-2 z-30">
               {HERO_SCREENS.map((item) => {
                 const isActive = activeScreenIndex === item.index;
                 return (
