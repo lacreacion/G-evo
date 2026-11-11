@@ -247,7 +247,7 @@ export const HeroSection: React.FC = () => {
             >
               Diseñamos y desplegamos tus{' '}
               <span className="text-[#F4C145] font-semibold">
-                tarjetas digitales inteligentes (NFC/QR)
+                tarjetas digitales inteligentes (URL/QR)
               </span>
               ,{' '}
               <span className="text-[#24D28D] font-semibold">
@@ -256,26 +256,32 @@ export const HeroSection: React.FC = () => {
               . Soluciones tecnológicas de alto impacto diseñadas para destacar tu marca, conectar con más clientes y potenciar tus ventas.
             </p>
 
-            {/* Bloque 3 (delay: 0.33s): Las 3 Píldoras Blancas Interactivas */}
-            <div
-              className="animate-hero-stagger flex flex-wrap items-center justify-center lg:justify-start gap-2.5 text-xs pt-1"
-              style={{ animationDelay: '0.33s' }}
-            >
-              <div className="group gevo-keycap-idle px-3.5 py-2 gap-2 cursor-default">
+            {/* Bloque 3: Las 3 Píldoras Blancas Interactivas cayendo una tras otra en Cascada */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 text-xs pt-1">
+              <div
+                className="animate-box-cascade group gevo-keycap-idle px-3.5 py-2 gap-2 cursor-default"
+                style={{ animationDelay: '0.32s' }}
+              >
                 <span className="w-6 h-6 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center group-hover:-rotate-6 transition-transform">
                   <Wifi className="w-3.5 h-3.5" />
                 </span>
-                <span className="text-[#2C3531] font-semibold">NFC &amp; QR Dinámico</span>
+                <span className="text-[#2C3531] font-semibold">URL &amp; QR Dinámico</span>
               </div>
 
-              <div className="group gevo-keycap-idle px-3.5 py-2 gap-2 cursor-default">
+              <div
+                className="animate-box-cascade group gevo-keycap-idle px-3.5 py-2 gap-2 cursor-default"
+                style={{ animationDelay: '0.46s' }}
+              >
                 <span className="w-6 h-6 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center group-hover:-rotate-6 transition-transform">
                   <ShoppingBag className="w-3.5 h-3.5" />
                 </span>
                 <span className="text-[#2C3531] font-semibold">Pedidos a WhatsApp</span>
               </div>
 
-              <div className="group gevo-keycap-idle px-3.5 py-2 gap-2 cursor-default">
+              <div
+                className="animate-box-cascade group gevo-keycap-idle px-3.5 py-2 gap-2 cursor-default"
+                style={{ animationDelay: '0.60s' }}
+              >
                 <span className="w-6 h-6 rounded-lg bg-[#DDF8EC] text-[#157A54] flex items-center justify-center group-hover:-rotate-6 transition-transform">
                   <Bot className="w-3.5 h-3.5" />
                 </span>
@@ -283,54 +289,66 @@ export const HeroSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Bloque 4 (delay: 0.44s): Grid 2x2 de las 4 Cajas Blancas Soft UI vinculadas a las 4 Pantallas Azules */}
-            <div
-              className="animate-hero-stagger grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2"
-              style={{ animationDelay: '0.44s' }}
-            >
+            {/* Bloque 4: Las 4 Cajas Blancas Soft UI con Efecto de Cascada (Caída Secuencial 1➔2➔3➔4 + Desfase Escalonado) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2 pb-2">
               {HERO_SCREENS.map((item) => {
                 const IconComponent = item.icon;
                 const isActive = activeScreenIndex === item.index;
 
-                return (
-                  <button
-                    key={item.index}
-                    type="button"
-                    onClick={() => handleSelectBox(item.index)}
-                    onMouseEnter={() => setHoveredBoxIndex(item.index)}
-                    onMouseLeave={() => setHoveredBoxIndex(null)}
-                    className={`group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] rounded-2xl p-3.5 transition-all duration-300 flex items-center justify-between gap-3 text-left cursor-pointer ${
-                      isActive
-                        ? '-translate-y-0.5 border-[1.5px] border-[#22C58B] shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]'
-                        : 'border border-[#BCE0CC] shadow-[inset_0_3px_6px_rgba(20,80,50,0.08)] hover:-translate-y-0.5 hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div
-                        className={`w-10 h-10 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 transition-transform duration-300 ${
-                          isActive ? '-rotate-6 scale-105' : 'group-hover:-rotate-6'
-                        }`}
-                      >
-                        <IconComponent className="w-5 h-5" />
-                      </div>
-                      <div className="min-w-0">
-                        <div className="text-sm font-semibold text-[#2C3531] truncate">
-                          {item.boxTitle}
-                        </div>
-                        <div className="text-[11px] font-medium text-[#6E7873] truncate tracking-wide">
-                          {item.badgeText}
-                        </div>
-                      </div>
-                    </div>
+                // Desfase visual en cascada (peldaños escalonados 1 ➔ 2 ➔ 3 ➔ 4)
+                const cascadeOffsetClass =
+                  item.index === 0
+                    ? 'sm:translate-y-0 sm:translate-x-0'
+                    : item.index === 1
+                    ? 'sm:translate-y-2.5 sm:translate-x-1'
+                    : item.index === 2
+                    ? 'sm:translate-y-1 sm:translate-x-2.5'
+                    : 'sm:translate-y-3.5 sm:translate-x-3.5';
 
-                    <ArrowUpRight
-                      className={`w-4 h-4 text-[#A389F4] shrink-0 transition-transform duration-300 ${
+                return (
+                  <div
+                    key={item.index}
+                    className="animate-box-cascade"
+                    style={{ animationDelay: `${0.68 + item.index * 0.22}s` }}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => handleSelectBox(item.index)}
+                      onMouseEnter={() => setHoveredBoxIndex(item.index)}
+                      onMouseLeave={() => setHoveredBoxIndex(null)}
+                      className={`w-full group relative bg-gradient-to-r from-[#E5F8EF] via-[#FFFFFF] to-[#FFF6DE] rounded-2xl p-3.5 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex items-center justify-between gap-3 text-left cursor-pointer ${cascadeOffsetClass} ${
                         isActive
-                          ? 'translate-x-0.5 -translate-y-0.5 scale-110'
-                          : 'group-hover:translate-x-0.5 group-hover:-translate-y-0.5'
+                          ? '-translate-y-1.5 scale-[1.03] z-20 border-[1.5px] border-[#22C58B] shadow-[0_14px_34px_-4px_rgba(23,165,117,0.82),0_0_22px_5px_rgba(0,122,83,0.65),inset_0_2px_4px_rgba(255,255,255,0.95)]'
+                          : 'border border-[#BCE0CC] shadow-[inset_0_3px_6px_rgba(20,80,50,0.08),0_8px_18px_-6px_rgba(0,0,0,0.35)] hover:-translate-y-1 hover:scale-[1.02] hover:border-[#22C58B] hover:shadow-[0_12px_30px_-4px_rgba(23,165,117,0.75),0_0_20px_4px_rgba(0,122,83,0.6),inset_0_2px_4px_rgba(255,255,255,0.9)]'
                       }`}
-                    />
-                  </button>
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div
+                          className={`w-10 h-10 rounded-xl bg-[#DDF8EC] text-[#157A54] flex items-center justify-center shrink-0 transition-transform duration-300 ${
+                            isActive ? '-rotate-6 scale-110' : 'group-hover:-rotate-6'
+                          }`}
+                        >
+                          <IconComponent className="w-5 h-5" />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-sm font-semibold text-[#2C3531] truncate">
+                            {item.boxTitle}
+                          </div>
+                          <div className="text-[11px] font-medium text-[#6E7873] truncate tracking-wide">
+                            {item.badgeText}
+                          </div>
+                        </div>
+                      </div>
+
+                      <ArrowUpRight
+                        className={`w-4 h-4 text-[#A389F4] shrink-0 transition-transform duration-300 ${
+                          isActive
+                            ? 'translate-x-0.5 -translate-y-0.5 scale-110'
+                            : 'group-hover:translate-x-0.5 group-hover:-translate-y-0.5'
+                        }`}
+                      />
+                    </button>
+                  </div>
                 );
               })}
             </div>

@@ -235,3 +235,26 @@
 .animate-cascade-drop {
   animation: heroCascadeDrop 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
+
+@keyframes heroBoxCascade {
+  0% {
+    opacity: 0;
+    transform: translate3d(-16px, -46px, 0) scale(0.88);
+  }
+  65% {
+    opacity: 1;
+    transform: translate3d(2px, 6px, 0) scale(1.02);
+  }
+  85% {
+    transform: translate3d(0, -2px, 0) scale(0.995);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.animate-box-cascade {
+  opacity: 0;
+  animation: heroBoxCascade 0.78s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
