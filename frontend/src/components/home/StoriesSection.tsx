@@ -71,34 +71,34 @@ export const StoriesSection: React.FC = () => {
     selectedStoryIndex !== null ? MOCK_STORIES[selectedStoryIndex] : null;
 
   return (
-    <section className="relative py-8 border-y border-white/5 bg-[#080C14]/80 backdrop-blur-md">
-      <div className="max-w-6xl mx-auto px-4 md:px-6">
+    <section className="relative py-8 border-y border-white/10 bg-[#042419]/65 backdrop-blur-md">
+      <div className="max-w-6xl mx-auto px-4 md:px-6 flex flex-col items-center">
         
-        {/* Encabezado del Módulo de Historias */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-          <div className="flex items-center gap-2.5">
+        {/* Encabezado del Módulo de Historias (Centrado en la franja) */}
+        <div className="w-full flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-3 mb-6 max-w-3xl">
+          <div className="flex items-center gap-2.5 text-center sm:text-left">
             <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
               <Radio className="w-4 h-4 animate-pulse text-emerald-400" />
             </div>
             <div>
-              <h2 className="text-sm font-bold tracking-tight text-white flex items-center gap-2">
+              <h2 className="text-sm font-bold tracking-tight text-white flex flex-wrap items-center justify-center sm:justify-start gap-2">
                 Historias en Vivo de la Marca
                 <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                   Sincronizado vía API
                 </span>
               </h2>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-gray-300">
                 Conectado en tiempo real con perfiles oficiales de Instagram y Facebook
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-gray-400">
+          <div className="flex items-center gap-2 text-xs text-gray-300">
             <span className="flex items-center gap-1">
               <InstagramIcon className="w-3.5 h-3.5 text-pink-400" />
               <span>@g_evo.digital</span>
             </span>
-            <span className="text-gray-600">•</span>
+            <span className="text-gray-500">•</span>
             <span className="flex items-center gap-1">
               <FacebookIcon className="w-3.5 h-3.5 text-blue-400" />
               <span>GEVO Ecosistema</span>
@@ -106,8 +106,8 @@ export const StoriesSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Carrusel de Círculos de Historias */}
-        <div className="flex items-center gap-4 sm:gap-6 overflow-x-auto pb-3 pt-1 scrollbar-none">
+        {/* Franja Centrada de Tarjetas Verticales de Historias (Formato Original Facebook/Instagram Stories) */}
+        <div className="w-full flex items-center justify-start sm:justify-center gap-3.5 sm:gap-5 overflow-x-auto pb-2 pt-1 scrollbar-none">
           {MOCK_STORIES.map((story, index) => {
             const isInstagram = story.platform === 'Instagram';
 
@@ -118,43 +118,63 @@ export const StoriesSection: React.FC = () => {
                   setSelectedStoryIndex(index);
                   setProgress(0);
                 }}
-                className="flex flex-col items-center gap-2 group flex-shrink-0 cursor-pointer focus:outline-none"
+                className="group relative w-[124px] sm:w-[142px] h-[204px] sm:h-[226px] rounded-2xl overflow-hidden flex-shrink-0 cursor-pointer border border-white/15 shadow-[0_10px_28px_rgba(0,0,0,0.45)] hover:border-[#22C58B] hover:shadow-[0_12px_32px_rgba(34,197,139,0.35)] transition-all duration-300 focus:outline-none text-left"
               >
-                {/* Anillo de Historia con Gradiente Oficial Dorado & Verde */}
-                <div className="relative p-[3px] rounded-full bg-gradient-to-tr from-amber-400 via-emerald-400 to-amber-200 transition-transform duration-300 group-hover:scale-105 shadow-md group-hover:shadow-emerald-500/30">
-                  <div className="p-[2px] bg-[#090D14] rounded-full">
-                    <Image
-                      src={story.mediaUrl}
-                      alt={story.caption}
-                      width={80}
-                      height={80}
-                      unoptimized
-                      className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover filter brightness-95 group-hover:brightness-110 transition-all"
-                    />
-                  </div>
+                {/* Imagen Vertical de Fondo de la Historia */}
+                <Image
+                  src={story.mediaUrl}
+                  alt={story.caption}
+                  fill
+                  unoptimized
+                  className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+                />
 
-                  {/* Badge de Plataforma */}
+                {/* Sombreado Superior e Inferior para Contraste Nítido */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-black/85 pointer-events-none" />
+
+                {/* Aro Circular de Perfil en la Esquina Superior Izquierda (Como en la imagen de referencia) */}
+                <div className="absolute top-3 left-3 z-10">
                   <div
-                    className={`absolute bottom-0 right-0 p-1 rounded-full text-white shadow-md ${
+                    className={`relative p-[2.5px] rounded-full shadow-md ${
                       isInstagram
-                        ? 'bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600'
-                        : 'bg-blue-600'
+                        ? 'bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600'
+                        : 'bg-[#1877F2]'
                     }`}
                   >
-                    {isInstagram ? (
-                      <InstagramIcon className="w-3 h-3" />
-                    ) : (
-                      <FacebookIcon className="w-3 h-3" />
-                    )}
+                    <div className="p-[1.5px] bg-[#062318] rounded-full">
+                      <Image
+                        src={story.avatarUrl}
+                        alt={story.userName}
+                        width={36}
+                        height={36}
+                        unoptimized
+                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover"
+                      />
+                    </div>
+
+                    {/* Mini insignia de plataforma */}
+                    <span
+                      className={`absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-white shadow ${
+                        isInstagram
+                          ? 'bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600'
+                          : 'bg-[#1877F2]'
+                      }`}
+                    >
+                      {isInstagram ? (
+                        <InstagramIcon className="w-2.5 h-2.5" />
+                      ) : (
+                        <FacebookIcon className="w-2.5 h-2.5" />
+                      )}
+                    </span>
                   </div>
                 </div>
 
-                {/* Info Text */}
-                <div className="text-center max-w-[90px] sm:max-w-[100px]">
-                  <div className="text-[11px] font-semibold text-gray-200 truncate group-hover:text-emerald-300">
+                {/* Nombre de Usuario y Tiempo en la Parte Inferior de la Tarjeta Vertical */}
+                <div className="absolute bottom-3 left-3 right-3 z-10 leading-tight">
+                  <div className="text-xs font-bold text-white drop-shadow truncate group-hover:text-[#6EE7B7] transition-colors">
                     {story.userName}
                   </div>
-                  <div className="text-[10px] text-gray-400">
+                  <div className="text-[10px] text-gray-300 mt-0.5 drop-shadow">
                     {story.timeAgo}
                   </div>
                 </div>

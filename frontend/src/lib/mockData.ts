@@ -73,8 +73,8 @@ export const MOCK_STORIES: StoryItem[] = [
     platform: 'Instagram',
     userName: 'g_evo.digital',
     avatarUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=160&q=80',
-    mediaUrl: 'https://images.unsplash.com/photo-1556742049-0a67c5574f73?auto=format&fit=crop&w=800&q=80',
-    caption: '🚀 Nuevas Tarjetas Inteligentes NFC con relieve dorado metálico. ¡Haz networking como un verdadero líder de industria!',
+    mediaUrl: 'https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&w=800&q=80',
+    caption: '🚀 Nuevas Tarjetas Inteligentes URL/QR con diseño ejecutivo. ¡Haz networking como un verdadero líder de industria!',
     timeAgo: 'Hace 45 min',
     actionText: 'Cotizar Tarjeta',
     actionUrl: '#contacto'
