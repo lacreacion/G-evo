@@ -36,7 +36,7 @@ export const Footer: React.FC = () => {
       'EMAIL;TYPE=PREF,INTERNET:contacto@g-evo.com',
       'URL:https://g-evo.com',
       'ADR;TYPE=WORK:;;Cra 43A # 1-50;Medellín;Antioquia;;Colombia',
-      'NOTE:Ecosistema de Tarjetas Digitales Inteligentes NFC y Catálogos E-commerce Autónomos.',
+      'NOTE:Ecosistema de Tarjetas Digitales Inteligentes URL/QR y Catálogos E-commerce Autónomos.',
       'END:VCARD'
     ].join('\r\n');
 
@@ -234,7 +234,7 @@ export const Footer: React.FC = () => {
                   rows={3}
                   value={contactMessage}
                   onChange={(e) => setContactMessage(e.target.value)}
-                  placeholder="Ej. Deseo cotizar 5 tarjetas inteligentes NFC para mi equipo comercial y un catálogo digital e-commerce con asistente IA..."
+                  placeholder="Ej. Deseo cotizar 5 tarjetas inteligentes URL/QR para mi equipo comercial y un catálogo digital e-commerce con asistente IA..."
                   className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 resize-none"
                 />
               </div>

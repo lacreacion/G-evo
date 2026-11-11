@@ -14,14 +14,14 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'G-evo | Tarjetas Digitales Inteligentes & Catálogos E-commerce Autónomos',
-  description: 'Ecosistema de digitalización comercial de alto impacto. Tarjetas inteligentes con tecnología NFC y QR dinámico, catálogos e-commerce autogestionables y agentes de soporte con Inteligencia Artificial 24/7.',
-  keywords: ['tarjetas digitales', 'catálogos virtuales', 'nfc', 'qr dinámico', 'e-commerce whatsapp', 'inteligencia artificial soporte', 'g-evo'],
+  description: 'Ecosistema de digitalización comercial de alto impacto. Tarjetas inteligentes con tecnología URL y QR dinámico, catálogos e-commerce autogestionables y agentes de soporte con Inteligencia Artificial 24/7.',
+  keywords: ['tarjetas digitales', 'catálogos virtuales', 'url', 'qr dinámico', 'e-commerce whatsapp', 'inteligencia artificial soporte', 'g-evo'],
   icons: {
     icon: '/favicon.ico',
   },
   openGraph: {
     title: 'G-evo | Ecosistema Comercial de Nueva Generación',
-    description: 'Haz que tu negocio evolucione con tarjetas NFC de lujo y catálogos e-commerce autónomos.',
+    description: 'Haz que tu negocio evolucione con tarjetas URL/QR de lujo y catálogos e-commerce autónomos.',
     url: 'https://g-evo.com',
     siteName: 'G-evo',
     locale: 'es_CO',

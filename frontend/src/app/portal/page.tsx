@@ -257,7 +257,7 @@ export default function ClientPortalPage() {
               Administración de tu Tarjeta &amp; Catálogo
             </h1>
             <p className="text-xs sm:text-sm text-gray-400 mt-1">
-              Edita tu tarjeta digital interactiva (NFC/QR), tus productos, fotos y precios en tiempo real.
+              Edita tu tarjeta digital interactiva (URL/QR), tus productos, fotos y precios en tiempo real.
             </p>
           </div>
 
@@ -272,7 +272,7 @@ export default function ClientPortalPage() {
               }`}
             >
               <CreditCard className="w-3.5 h-3.5" />
-              <span>Mi Tarjeta Digital (NFC/QR)</span>
+              <span>Mi Tarjeta Digital (URL/QR)</span>
             </button>
 
             <button
@@ -326,7 +326,7 @@ export default function ClientPortalPage() {
                   <span>Modo Propietario Activado • Edita tu Tarjeta en Vivo</span>
                 </div>
                 <p className="text-xs text-gray-300">
-                  Actualiza los datos, enlaces externos y acabado de tu Tarjeta Digital Inteligente (NFC/QR) o usa el botón <strong className="text-emerald-400">&quot;Editar&quot;</strong> dentro de la vista interactiva.
+                  Actualiza los datos, enlaces externos y acabado de tu Tarjeta Digital Inteligente (URL/QR) o usa el botón <strong className="text-emerald-400">&quot;Editar&quot;</strong> dentro de la vista interactiva.
                 </p>
               </div>
 

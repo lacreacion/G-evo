@@ -243,7 +243,7 @@ export default function AdminMasterPage() {
               Gestión Centralizada de Tarjetas &amp; Ecosistemas
             </h1>
             <p className="text-xs sm:text-sm text-gray-400 mt-1">
-              Crea tarjetas digitales interactivas (NFC/QR) y tiendas para tus clientes, y envíales su enlace y PIN de edición con un clic.
+              Crea tarjetas digitales interactivas (URL/QR) y tiendas para tus clientes, y envíales su enlace y PIN de edición con un clic.
             </p>
           </div>
 
@@ -264,7 +264,7 @@ export default function AdminMasterPage() {
               <CreditCard className="w-4 h-4 text-emerald-400" />
             </div>
             <div className="text-2xl font-black text-white">{tenants.length}</div>
-            <div className="text-[10px] text-emerald-400 font-semibold">100% Operativas con QR &amp; NFC</div>
+            <div className="text-[10px] text-emerald-400 font-semibold">100% Operativas con QR &amp; URL</div>
           </div>
 
           <div className="p-5 rounded-2xl bg-[#0E1524] border border-white/10 space-y-1">
@@ -399,7 +399,7 @@ export default function AdminMasterPage() {
                 <thead className="bg-[#0E1524] text-[11px] font-bold text-gray-400 uppercase tracking-wider border-b border-white/10">
                   <tr>
                     <th className="py-3.5 px-4">Negocio / Tarjeta</th>
-                    <th className="py-3.5 px-4">Enlace Tarjeta NFC/QR</th>
+                    <th className="py-3.5 px-4">Enlace Tarjeta URL/QR</th>
                     <th className="py-3.5 px-4">Cliente Responsable</th>
                     <th className="py-3.5 px-4">Agente IA</th>
                     <th className="py-3.5 px-4 text-right">Acciones de Tarjeta &amp; Entrega</th>
@@ -494,7 +494,7 @@ export default function AdminMasterPage() {
               <div className="flex items-center gap-2">
                 <CreditCard className="w-5 h-5 text-emerald-400" />
                 <h3 className="text-base md:text-lg font-bold text-white">
-                  Crear Nueva Tarjeta Digital Interactiva (NFC/QR)
+                  Crear Nueva Tarjeta Digital Interactiva (URL/QR)
                 </h3>
               </div>
               <button
@@ -715,14 +715,14 @@ export default function AdminMasterPage() {
                 ¡Kit de Tarjeta Digital Listo!
               </h3>
               <p className="text-xs text-gray-400 mt-1">
-                Envía estos datos a <strong className="text-white">{showCredentialsModal.clientName}</strong> para que abra su tarjeta, la comparta por QR/NFC y la edite cuando quiera.
+                Envía estos datos a <strong className="text-white">{showCredentialsModal.clientName}</strong> para que abra su tarjeta, la comparta por QR/URL y la edite cuando quiera.
               </p>
             </div>
 
             <div className="p-4 rounded-2xl bg-black/50 border border-white/10 text-left text-xs space-y-3">
               <div>
                 <span className="text-gray-400 block text-[10px] uppercase font-semibold">
-                  1. Enlace Público de su Tarjeta (Para NFC, QR y Redes)
+                  1. Enlace Público de su Tarjeta (Para URL, QR y Redes)
                 </span>
                 <a
                   href={`${originUrl}/t/${showCredentialsModal.slug}`}
@@ -773,7 +773,7 @@ export default function AdminMasterPage() {
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => {
-                  const text = `¡Hola ${showCredentialsModal.clientName}! 🚀 Tu Tarjeta Digital Interactiva (NFC & QR) de G-evo. ya está activa.\n\n🔗 1. Tu Enlace Público (para compartir, QR y chip NFC):\n${originUrl}/t/${showCredentialsModal.slug}\n\n✏️ 2. Tu Enlace para Editar tu Tarjeta (cambiar fotos, colores metalizados, teléfono, redes y ver estadísticas):\n${originUrl}/t/${showCredentialsModal.slug}?owner=1\n🔑 PIN de Propietario: ${showCredentialsModal.ownerPin}\n\n💻 3. Acceso a tu Portal Clientes (${originUrl}/login):\nUsuario: ${showCredentialsModal.email}\nContraseña: ${showCredentialsModal.temporaryPassword}`;
+                  const text = `¡Hola ${showCredentialsModal.clientName}! 🚀 Tu Tarjeta Digital Interactiva (URL & QR) de G-evo. ya está activa.\n\n🔗 1. Tu Enlace Público (para compartir por URL, QR y redes):\n${originUrl}/t/${showCredentialsModal.slug}\n\n✏️ 2. Tu Enlace para Editar tu Tarjeta (cambiar fotos, colores metalizados, teléfono, redes y ver estadísticas):\n${originUrl}/t/${showCredentialsModal.slug}?owner=1\n🔑 PIN de Propietario: ${showCredentialsModal.ownerPin}\n\n💻 3. Acceso a tu Portal Clientes (${originUrl}/login):\nUsuario: ${showCredentialsModal.email}\nContraseña: ${showCredentialsModal.temporaryPassword}`;
                   navigator.clipboard.writeText(text);
                   setKitCopied(true);
                   setTimeout(() => setKitCopied(false), 2500);

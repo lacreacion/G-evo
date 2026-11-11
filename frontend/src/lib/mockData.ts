@@ -120,21 +120,21 @@ export const MOCK_STORIES: StoryItem[] = [
 export const CASCADE_SERVICES: ServiceItem[] = [
   {
     id: 1,
-    title: 'Tarjetas Digitales Interactivas (NFC & QR)',
-    badge: 'Hardware & Web Premium',
+    title: 'Tarjetas Digitales Interactivas (URL & QR)',
+    badge: 'Presencia Digital & Web Premium',
     tagline: 'Conexión instantánea sin papel, con impacto memorable.',
-    description: 'Transforma tu primera impresión comercial con tarjetas físicas inteligentes equipadas con chip NFC y código QR dinámico. Al acercarla a cualquier smartphone, comparte tu contacto directo (vCard), redes sociales, ubicación y catálogo en segundos.',
+    description: 'Transforma tu primera impresión comercial con tarjetas digitales inteligentes equipadas con enlace URL personalizado y código QR dinámico. Al compartirla en cualquier smartphone, entrega tu contacto directo (vCard), redes sociales, ubicación y catálogo en segundos.',
     videoPreviewUrl: 'https://assets.mixkit.co/videos/preview/mixkit-hand-holding-a-smartphone-with-a-green-screen-42517-large.mp4',
-    videoThumbnail: 'https://images.unsplash.com/photo-1556742049-0a67c5574f73?auto=format&fit=crop&w=800&q=80',
+    videoThumbnail: 'https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&w=800&q=80',
     features: [
-      'Chip NFC de alta fidelidad compatible con iOS y Android sin apps extras.',
+      'Enlace URL personalizado de alta velocidad compatible con iOS y Android sin apps extras.',
       'Código QR vectorizado dinámico que nunca caduca.',
       'Botón de descarga instantánea vCard para la agenda telefónica del prospecto.',
       'Estadísticas de visualizaciones y toques en tiempo real.'
     ],
     competitiveAdvantages: [
       'Personalización con acabados dorados mate y verde corporativo de lujo.',
-      'Actualización remota: Si cambias de número o dirección, tu tarjeta se actualiza sola sin reimprimir.',
+      'Actualización remota: Si cambias de número o dirección, tu tarjeta se actualiza sola al instante.',
       'Cero aplicaciones requeridas para tus clientes.'
     ]
   },
@@ -213,7 +213,7 @@ export const MOCK_SHOWCASE: ShowcaseItem[] = [
     image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80',
     qrCodeUrl: '/qr-preview.png',
     description: 'Tarjeta de presentación digital inteligente y portafolio de servicios con agendamiento directo y descarga vCard.',
-    tags: ['NFC Gold', 'QR Dinámico', 'Consultoría', 'Medellín'],
+    tags: ['URL Gold', 'QR Dinámico', 'Consultoría', 'Medellín'],
     metrics: '+1,420 contactos guardados'
   },
   {
@@ -255,7 +255,7 @@ export const CORPORATE_INFO = {
   mision: {
     title: 'Nuestra Misión',
     badge: 'Propósito Fundamental',
-    p1: 'Democratizar el acceso a tecnologías comerciales de alto impacto a través de tarjetas digitales con tecnología NFC/QR y catálogos e-commerce autogestionables que combinan estética premium, simplicidad operativa y automatización inteligente.',
+    p1: 'Democratizar el acceso a tecnologías comerciales de alto impacto a través de tarjetas digitales con tecnología URL/QR y catálogos e-commerce autogestionables que combinan estética premium, simplicidad operativa y automatización inteligente.',
     p2: 'Brindamos a los empresarios el control total y autónomo de sus productos e inventarios, mientras nosotros nos encargamos de proveer la infraestructura, la seguridad multi-tenant y la innovación continua que respalda su crecimiento comercial.'
   },
   historia: {
