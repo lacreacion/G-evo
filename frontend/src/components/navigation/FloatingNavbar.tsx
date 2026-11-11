@@ -211,7 +211,7 @@ export const FloatingNavbar: React.FC = () => {
 
                     {/* 5. Agente IA */}
                     <button
-                      onClick={() => selectServiceScene(4, '#ai-demo')}
+                      onClick={() => selectServiceScene(4, '#servicios')}
                       className="w-full text-left cursor-pointer flex items-center justify-between gap-2.5 group/drop relative rounded-xl px-2.5 py-1.5 border-[1.5px] border-transparent bg-transparent transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E5F8EF] hover:via-[#FFFFFF] hover:to-[#FFF6DE] hover:border-[#BCE0CC] hover:shadow-[inset_0_2px_5px_rgba(20,80,50,0.09)]"
                     >
                       <div className="flex items-center gap-2.5">
@@ -233,12 +233,13 @@ export const FloatingNavbar: React.FC = () => {
                 )}
               </div>
 
-              <Link
-                href="#ai-demo"
-                className="relative inline-flex items-center justify-center px-5 py-2 rounded-2xl border-[1.5px] border-transparent text-[#555E5A] transition-all duration-200 hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)]"
+              <button
+                type="button"
+                onClick={() => selectServiceScene(4, '#servicios')}
+                className="relative inline-flex items-center justify-center px-5 py-2 rounded-2xl border-[1.5px] border-transparent text-[#555E5A] transition-all duration-200 hover:bg-[#F3F6F4] hover:border-white hover:text-[#147A50] hover:shadow-[-4px_-4px_14px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.12)] cursor-pointer"
               >
                 <span>Agente IA</span>
-              </Link>
+              </button>
 
               {/* Menú Desplegable Interactivo: Quiénes somos (Visión, Misión, Historia) */}
               <div className="relative group/nav">
@@ -411,14 +412,14 @@ export const FloatingNavbar: React.FC = () => {
               >
                 Servicios
               </Link>
-              <Link
-                href="#ai-demo"
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2 hover:bg-white/5 rounded-lg flex items-center gap-2"
+              <button
+                type="button"
+                onClick={() => selectServiceScene(4, '#servicios')}
+                className="p-2 hover:bg-white/5 rounded-lg flex items-center gap-2 text-left cursor-pointer"
               >
                 <Sparkles className="w-4 h-4 text-emerald-400" />
-                <span>Demostración Agente IA</span>
-              </Link>
+                <span>Agente IA 24/7</span>
+              </button>
 
               {/* Opciones Institucionales en Mobile (Contenedor Blanco Marfil: Reposo limpio vs Hover iluminado) */}
               <div className="pt-2 border-t border-white/10">
