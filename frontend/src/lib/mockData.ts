@@ -180,6 +180,26 @@ export const CASCADE_SERVICES: ServiceItem[] = [
   },
   {
     id: 4,
+    title: 'Tiendas E-Commerce Completas & Autogestionables',
+    badge: 'Comercio Electrónico & Pagos Online',
+    tagline: 'Vende en automático las 24 horas con carrito de compras, inventario en vivo y pasarelas de pago.',
+    description: 'Desplegamos tu tienda virtual profesional lista para procesar pagos en línea con tarjetas débito, crédito, PSE, Nequi y transferencias, o cerrar pedidos por WhatsApp. Controla tu stock, cupones de descuento, costos de envío y clientes desde un panel intuitivo.',
+    videoPreviewUrl: 'https://assets.mixkit.co/videos/preview/mixkit-online-shopping-on-a-smartphone-40871-large.mp4',
+    videoThumbnail: 'https://images.unsplash.com/photo-1556742044-3c52d6e88c62?auto=format&fit=crop&w=800&q=80',
+    features: [
+      'Carrito de compras avanzado con pasarela de pagos integrada (Tarjetas, PSE, Nequi, etc.).',
+      'Control automático de inventario, variantes (tallas/colores) y alertas de stock.',
+      'Cálculo de envíos por ciudad/zona, cupones promocionales y seguimiento de pedidos.',
+      'Panel administrativo autónomo para crear o editar productos y precios en segundos.'
+    ],
+    competitiveAdvantages: [
+      '0% de comisión para G-evo sobre tus ventas: el 100% de tus ingresos va directo a tu cuenta.',
+      'Ecosistema conectado con tu Tarjeta Digital, QR y Agente de Soporte IA 24/7.',
+      'Diseño de alta conversión ultra-rápido optimizado para compras desde el celular.'
+    ]
+  },
+  {
+    id: 5,
     title: 'Agente de Soporte IA 24/7 (Monetizado)',
     badge: 'Inteligencia Artificial Especializada',
     tagline: 'Tu vendedor experto que nunca duerme y conoce tu stock al milímetro.',

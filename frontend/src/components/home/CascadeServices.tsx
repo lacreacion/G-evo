@@ -28,6 +28,7 @@ export const CascadeServices: React.FC = () => {
     2: 'features',
     3: 'features',
     4: 'features',
+    5: 'features',
   });
 
   const handleTabChange = (cardId: number, tab: 'features' | 'advantages') => {
@@ -73,15 +74,19 @@ export const CascadeServices: React.FC = () => {
           </p>
         </div>
 
-        {/* Grilla Bento 2x2 Compacta e Innovadora (4 Cajas en una sola vista) */}
+        {/* Grilla Bento Compacta e Innovadora (5 Cajas Oficiales) */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5">
           {CASCADE_SERVICES.map((service: ServiceItem, index: number) => {
             const currentTab = activeTabByCard[service.id] || 'features';
+            const isLastOddCard =
+              CASCADE_SERVICES.length % 2 === 1 && index === CASCADE_SERVICES.length - 1;
 
             return (
               <div
                 key={service.id}
-                className="group/card relative rounded-2xl gevo-chassis hover:border-[#22C58B]/55 p-4 sm:p-5 transition-all duration-300 flex flex-col justify-between gap-3.5 hover:-translate-y-0.5"
+                className={`group/card relative rounded-2xl gevo-chassis hover:border-[#22C58B]/55 p-4 sm:p-5 transition-all duration-300 flex flex-col justify-between gap-3.5 hover:-translate-y-0.5 ${
+                  isLastOddCard ? 'lg:col-span-2 lg:w-[calc(50%-0.625rem)] lg:mx-auto w-full' : ''
+                }`}
                 style={{
                   animationDelay: `${index * 110}ms`,
                 }}
