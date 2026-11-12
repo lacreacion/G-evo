@@ -31,3 +31,9 @@
 ## 4. Regla Global Obligatoria: Validación y Confirmación Previa (Modo Espejo — Cero Cambios sin "Sí")
 - **Confirmación por Pregunta (`01-architect.md`):** Ante cualquier solicitud de cambio, ajuste o nueva funcionalidad del usuario, está **estrictamente prohibido** modificar archivos en el primer turno. `01-architect.md` debe analizar la petición y responder resumiendo qué entendió, qué archivos/componentes se verán afectados y qué agentes intervendrán, cerrando con una pregunta directa de confirmación (*"Entiendo que deseas realizar [X cambio] en [Y componente/archivo]. ¿Es exactamente esto lo que necesitas que ejecutemos?"*).
 - **Bloqueo de Ejecución (`00-orchestrator.md` y Agentes `02` al `15`):** `00-orchestrator.md` mantiene en pausa a todos los agentes del ecosistema y **ningún agente (`02` al `15`) puede tocar, crear ni sobrescribir ningún archivo** hasta que el usuario responda confirmando con un **"Sí"** explícito.
+
+---
+
+## 5. Empaquetado de Proyectos Exportables Standalone (`/exports/[nombre-del-cliente]/` — ADR-006)
+- Verificar que cada Página Web o Tienda E-commerce construida en `/exports/[nombre-del-cliente]/` cuente con su propio `package.json`, scripts de compilación limpios (`npm run build`), configuración de exportación (`output: 'export'` o build autónomo de producción) y documentación `README_DEPLOY.md`.
+- Garantizar que la carpeta `/exports/[nombre-del-cliente]/` pueda extraerse, comprimirse en un archivo `.zip` para entrega directa al cliente o subirse a un hosting/dominio aparte sin depender en absoluto del servidor central de G-evo.

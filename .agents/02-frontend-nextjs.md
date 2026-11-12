@@ -87,3 +87,15 @@
 ## 5. Regla Global Obligatoria: Validación y Confirmación Previa (Modo Espejo — Cero Cambios sin "Sí")
 - **Confirmación por Pregunta (`01-architect.md`):** Ante cualquier solicitud de cambio, ajuste o nueva funcionalidad del usuario, está **estrictamente prohibido** modificar archivos en el primer turno. `01-architect.md` debe analizar la petición y responder resumiendo qué entendió, qué archivos/componentes se verán afectados y qué agentes intervendrán, cerrando con una pregunta directa de confirmación (*"Entiendo que deseas realizar [X cambio] en [Y componente/archivo]. ¿Es exactamente esto lo que necesitas que ejecutemos?"*).
 - **Bloqueo de Ejecución (`00-orchestrator.md` y Agentes `02` al `15`):** `00-orchestrator.md` mantiene en pausa a todos los agentes del ecosistema y **ningún agente (`02` al `15`) puede tocar, crear ni sobrescribir ningún archivo** hasta que el usuario responda confirmando con un **"Sí"** explícito.
+
+---
+
+## 6. Modo Fábrica de Proyectos Exportables (`/exports/[nombre-del-cliente]/`) y Sello de Respaldo Obligatorio
+- **Separación de Modelos:**
+  - **Tarjetas Digitales y Catálogos Digitales:** Se desarrollan y mantienen dentro de la plataforma principal (`frontend/src/app/t/[slug]` y `/admin`).
+  - **Páginas Web y Tiendas en Línea (E-commerce):** Se construyen como un proyecto Next.js/React **100% independiente y autónomo** dentro de `/exports/[nombre-del-cliente]/`, con su propio `package.json`, `next.config.mjs` (`output: 'export'` o build autónomo) y activos propios.
+- **Sello de Respaldo Obligatorio en el Footer (`@02-frontend-nextjs.md`):**
+  - Toda Página Web o Tienda E-commerce exportada debe llevar integrado en su Footer el sello oficial con el logo y los colores exactos de nuestra marca (`G-` en dorado metálico `#D4AF37`/`#F5BE18` y `evo.` en verde esmeralda `#10B981`/`#22C55E`):
+    - **Para Páginas Web:** `Página Web • Creada y respaldada por G-evo.`
+    - **Para Tiendas E-commerce:** `Tienda E-commerce • Creada y respaldada por G-evo.`
+  - El sello debe incluir un enlace directo (`href="https://g-evo.com" target="_blank" rel="noopener noreferrer"`) hacia la web principal de **G-evo**.

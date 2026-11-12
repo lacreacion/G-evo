@@ -82,6 +82,13 @@ Para garantizar que ningún agente interfiera en el dominio técnico de otro, la
 * **Decisión:** Cada vez que el usuario solicite un cambio, ajuste o nueva funcionalidad, `@01-architect.md` tiene estrictamente prohibido autorizar la modificación de archivos en el primer turno. Su primera acción obligatoria es analizar la petición y responder resumiendo qué entendió, qué archivos o componentes se verán afectados y qué agentes intervendrán, cerrando con una pregunta directa de confirmación.
 * **Bloqueo Global:** `@00-orchestrator.md` mantiene en pausa a todos los agentes y ningún agente (`02` al `15`) puede tocar, crear ni sobrescribir ningún archivo hasta que el usuario confirme con un **"Sí"** explícito.
 
+### ADR-006: Modo Fábrica de Proyectos Exportables (Standalone Export en `/exports/[nombre-del-cliente]/`)
+* **Decisión (Separación de Modelos — Interno vs. Exportable):**
+  1. **Tarjetas Digitales y Catálogos Digitales (Modelo Interno):** Continúan operando dentro de la plataforma principal de G-evo bajo rutas dinámicas (`/t/[slug]`) y administración centralizada desde `/admin`.
+  2. **Páginas Web y Tiendas en Línea E-commerce (Modelo Exportable Standalone):** Cuando el usuario solicite crear una Página Web o Tienda en Línea para un cliente, los agentes (`@01-architect.md`, `@02-frontend-nextjs.md`, `@03-backend-dotnet.md`, `@04-db-sql.md`, `@15-agente-legal.md`, etc.) la construirán como un **proyecto 100% independiente y autónomo** dentro de `/exports/[nombre-del-cliente]/`.
+* **Paquete Entregable Listo para Subir por Aparte (`@09-release-manager.md` y `@13-infra-terraform.md`):** Todo proyecto generado en `/exports/[nombre-del-cliente]/` debe contar con su propio `package.json`, archivos de configuración listos para producción (`output: 'export'` o build autónomo en Next.js) y su guía `README_DEPLOY.md`, de modo que la carpeta pueda comprimirse en `.zip` para entregarse al cliente o desplegarse en cualquier hosting/dominio externo sin depender del servidor central de G-evo.
+* **Sello de Respaldo Obligatorio (`@02-frontend-nextjs.md`):** Toda Página Web o Tienda E-commerce exportada debe integrar obligatoriamente en su Footer el sello oficial con el logo y colores exactos de nuestra marca (`G-` dorado metálico y `evo.` verde esmeralda): `Página Web / Tienda E-commerce • Creada y respaldada por G-evo.` con enlace directo (`target="_blank" rel="noopener noreferrer"`) hacia la web principal de G-evo.
+
 ---
 
 ## 4. Protocolo de Trabajo y Flujo entre Agentes

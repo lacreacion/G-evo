@@ -31,3 +31,12 @@
 ## 4. Regla Global Obligatoria: Validación y Confirmación Previa (Modo Espejo — Cero Cambios sin "Sí")
 - **Confirmación por Pregunta (`01-architect.md`):** Ante cualquier solicitud de cambio, ajuste o nueva funcionalidad del usuario, está **estrictamente prohibido** modificar archivos en el primer turno. `01-architect.md` debe analizar la petición y responder resumiendo qué entendió, qué archivos/componentes se verán afectados y qué agentes intervendrán, cerrando con una pregunta directa de confirmación (*"Entiendo que deseas realizar [X cambio] en [Y componente/archivo]. ¿Es exactamente esto lo que necesitas que ejecutemos?"*).
 - **Bloqueo de Ejecución (`00-orchestrator.md` y Agentes `02` al `15`):** `00-orchestrator.md` mantiene en pausa a todos los agentes del ecosistema y **ningún agente (`02` al `15`) puede tocar, crear ni sobrescribir ningún archivo** hasta que el usuario responda confirmando con un **"Sí"** explícito.
+
+---
+
+## 5. Arquitectura Dual: Plataforma Interna vs. Modo Fábrica Exportable (ADR-006)
+- **Modelo Interno (Tarjetas Digitales y Catálogos Digitales):** Operan dentro de la arquitectura multi-tenant central de G-evo bajo rutas dinámicas (`/t/[slug]`) y gestión desde `/admin`.
+- **Modelo Exportable Standalone (Páginas Web y Tiendas en Línea E-commerce):**
+  - Se diseñan como proyectos **totalmente independientes y autónomos** alojados en `/exports/[nombre-del-cliente]/`.
+  - No deben depender en tiempo de ejecución del servidor central de G-evo para que puedan entregarse en `.zip` al cliente o subirse a un hosting/dominio externo.
+  - Deben incluir su propio `package.json`, configuración de compilación lista para producción (`output: 'export'` o build independiente en Next.js), guía de despliegue y el **Sello Oficial de Respaldo de G-evo** en el Footer.
