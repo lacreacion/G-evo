@@ -19,10 +19,14 @@ public record CreateTenantRequest(
     string? SecondaryColor,
     string? Category,
     bool TermsAccepted = false,
-    [property: JsonPropertyName("terms_accepted")] bool? TermsAcceptedSnake = null
+    [property: JsonPropertyName("terms_accepted")] bool? TermsAcceptedSnake = null,
+    [property: JsonPropertyName("service_type")] string ServiceType = "tarjeta",
+    [property: JsonPropertyName("privacy_accepted")] bool PrivacyAccepted = true,
+    [property: JsonPropertyName("cookies_accepted")] bool CookiesAccepted = true,
+    [property: JsonPropertyName("terms_version")] string TermsVersion = "2.0"
 )
 {
-    public bool IsTermsAccepted => TermsAccepted || (TermsAcceptedSnake == true);
+    public bool IsTermsAccepted => (TermsAccepted || (TermsAcceptedSnake == true)) && PrivacyAccepted && CookiesAccepted;
 }
 
 // --- Digital Card & Tenant Profile Legal Audit DTOs ---
@@ -42,11 +46,36 @@ public record UpsertTenantProfileRequest(
     string? PortfolioUrl = null,
     bool TermsAccepted = false,
     [property: JsonPropertyName("terms_accepted")] bool? TermsAcceptedSnake = null,
-    string? TermsVersion = "1.1"
+    string? TermsVersion = "1.1",
+    [property: JsonPropertyName("service_type")] string ServiceType = "tarjeta",
+    [property: JsonPropertyName("privacy_accepted")] bool PrivacyAccepted = true,
+    [property: JsonPropertyName("cookies_accepted")] bool CookiesAccepted = true
 )
 {
-    public bool IsTermsAccepted => TermsAccepted || (TermsAcceptedSnake == true);
+    public bool IsTermsAccepted => (TermsAccepted || (TermsAcceptedSnake == true)) && PrivacyAccepted && CookiesAccepted;
 }
+
+// --- Modular Service Legal Consent DTOs (5 Services + Privacy + Cookies) ---
+public record ServiceLegalConsentRequest(
+    [property: JsonPropertyName("service_type")] string ServiceType,
+    [property: JsonPropertyName("terms_accepted")] bool TermsAccepted,
+    [property: JsonPropertyName("privacy_accepted")] bool PrivacyAccepted,
+    [property: JsonPropertyName("cookies_accepted")] bool CookiesAccepted,
+    [property: JsonPropertyName("terms_version")] string TermsVersion = "2.0"
+);
+
+public record ServiceLegalConsentResponse(
+    Guid Id,
+    Guid TenantId,
+    [property: JsonPropertyName("service_type")] string ServiceType,
+    [property: JsonPropertyName("terms_accepted")] bool TermsAccepted,
+    [property: JsonPropertyName("privacy_accepted")] bool PrivacyAccepted,
+    [property: JsonPropertyName("cookies_accepted")] bool CookiesAccepted,
+    [property: JsonPropertyName("terms_version")] string TermsVersion,
+    [property: JsonPropertyName("document_slug")] string DocumentSlug,
+    [property: JsonPropertyName("ip_address")] string IpAddress,
+    [property: JsonPropertyName("accepted_at")] DateTime AcceptedAt
+);
 
 public record DigitalCardProfileResponse(
     Guid Id,
@@ -122,10 +151,23 @@ public record ProductResponse(
 );
 
 // --- Licensing & AI DTOs ---
-public record GenerateLicenseRequest(Guid TenantId, string ModuleCode, int DurationDays = 365, string? Notes = null);
+public record GenerateLicenseRequest(
+    Guid TenantId,
+    string ModuleCode,
+    int DurationDays = 365,
+    string? Notes = null,
+    bool TermsAccepted = true,
+    bool PrivacyAccepted = true,
+    bool CookiesAccepted = true
+);
 public record GenerateLicenseResponse(string LicenseKey, string Status, DateTime ExpiresAt);
 
-public record RedeemLicenseRequest(string LicenseKey);
+public record RedeemLicenseRequest(
+    string LicenseKey,
+    bool TermsAccepted = true,
+    bool PrivacyAccepted = true,
+    bool CookiesAccepted = true
+);
 public record RedeemLicenseResponse(bool Success, string Message, string ModuleCode, DateTime? ExpiresAt);
 
 public record AiChatRequest(string SessionId, string Query, string? CustomerPhone);

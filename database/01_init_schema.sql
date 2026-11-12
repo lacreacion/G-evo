@@ -241,4 +241,25 @@ CREATE TABLE IF NOT EXISTS digital_cards (
 CREATE INDEX idx_digital_cards_tenant_id ON digital_cards(tenant_id);
 CREATE INDEX idx_digital_cards_slug ON digital_cards(slug);
 
+-- ------------------------------------------------------------------------------
+-- 11. TENANT LEGAL CONSENTS (AUDITORÍA DIFERENCIADA POR SERVICIO, PRIVACIDAD Y COOKIES)
+-- ------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS tenant_legal_consents (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+    service_type VARCHAR(30) NOT NULL CHECK (service_type IN ('tarjeta', 'catalogo', 'web', 'ecommerce', 'ia')),
+    terms_accepted BOOLEAN NOT NULL DEFAULT TRUE CHECK (terms_accepted = TRUE),
+    privacy_accepted BOOLEAN NOT NULL DEFAULT TRUE CHECK (privacy_accepted = TRUE),
+    cookies_accepted BOOLEAN NOT NULL DEFAULT TRUE CHECK (cookies_accepted = TRUE),
+    terms_version VARCHAR(20) NOT NULL DEFAULT '2.0',
+    document_slug VARCHAR(120) NOT NULL,
+    ip_address VARCHAR(64) NOT NULL,
+    user_agent TEXT,
+    accepted_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_tenant_legal_consents_tenant ON tenant_legal_consents(tenant_id, service_type);
+CREATE INDEX idx_tenant_legal_consents_accepted_at ON tenant_legal_consents(accepted_at DESC);
+
+
 

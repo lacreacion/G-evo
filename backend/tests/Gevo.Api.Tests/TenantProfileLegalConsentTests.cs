@@ -147,4 +147,37 @@ public class TenantProfileLegalConsentTests
         var forbiddenResult = Assert.IsType<ObjectResult>(crossTenantAttempt);
         Assert.Equal(StatusCodes.Status403Forbidden, forbiddenResult.StatusCode);
     }
+
+    [Theory]
+    [InlineData("tarjeta", "terminos-tarjeta-digital.pdf")]
+    [InlineData("catalogo", "terminos-catalogo-digital.pdf")]
+    [InlineData("web", "terminos-pagina-web.pdf")]
+    [InlineData("ecommerce", "terminos-tienda-ecommerce.pdf")]
+    [InlineData("ia", "terminos-agente-ia.pdf")]
+    public async Task Caso3_LegalConsentsController_RecordsDifferentiatedServiceConsent_AndBlocksMissingConsents(string serviceType, string expectedPdf)
+    {
+        var tenantId = Guid.Parse("11111111-1111-1111-1111-111111111111");
+        var (db, tenantCtx, _) = CreateSut($"{nameof(Caso3_LegalConsentsController_RecordsDifferentiatedServiceConsent_AndBlocksMissingConsents)}_{serviceType}", tenantId);
+        var consentsController = new LegalConsentsController(db, tenantCtx);
+
+        // 1. Bloqueo 400 Bad Request si falta cualquiera de los consentimientos (Terms, Privacy o Cookies)
+        var invalidReq = new ServiceLegalConsentRequest(serviceType, TermsAccepted: true, PrivacyAccepted: false, CookiesAccepted: true, TermsVersion: "2.0");
+        var badRes = await consentsController.RecordConsent(invalidReq);
+        Assert.IsType<BadRequestObjectResult>(badRes);
+
+        // 2. Registro exitoso 200 OK cuando Terms, Privacy y Cookies son true
+        var validReq = new ServiceLegalConsentRequest(serviceType, TermsAccepted: true, PrivacyAccepted: true, CookiesAccepted: true, TermsVersion: "2.0");
+        var okRes = await consentsController.RecordConsent(validReq);
+        var okObj = Assert.IsType<OkObjectResult>(okRes);
+        var payload = Assert.IsType<ServiceLegalConsentResponse>(okObj.Value);
+
+        Assert.Equal(serviceType, payload.ServiceType);
+        Assert.Equal(expectedPdf, payload.DocumentSlug);
+        Assert.True(payload.TermsAccepted);
+        Assert.True(payload.PrivacyAccepted);
+        Assert.True(payload.CookiesAccepted);
+        Assert.Equal("2.0", payload.TermsVersion);
+        Assert.Equal(DateTimeKind.Utc, payload.AcceptedAt.Kind);
+    }
 }
+

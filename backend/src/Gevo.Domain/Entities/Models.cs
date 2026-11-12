@@ -31,6 +31,24 @@ public class Tenant
     public ICollection<Catalog> Catalogs { get; set; } = new List<Catalog>();
     public ICollection<License> Licenses { get; set; } = new List<License>();
     public ICollection<DigitalCard> DigitalCards { get; set; } = new List<DigitalCard>();
+    public ICollection<TenantLegalConsent> LegalConsents { get; set; } = new List<TenantLegalConsent>();
+}
+
+public class TenantLegalConsent
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid TenantId { get; set; }
+    public string ServiceType { get; set; } = "tarjeta"; // tarjeta | catalogo | web | ecommerce | ia
+    public bool TermsAccepted { get; set; } = true;
+    public bool PrivacyAccepted { get; set; } = true;
+    public bool CookiesAccepted { get; set; } = true;
+    public string TermsVersion { get; set; } = "2.0";
+    public string DocumentSlug { get; set; } = "terminos-tarjeta-digital.pdf";
+    public string IpAddress { get; set; } = "127.0.0.1";
+    public string? UserAgent { get; set; }
+    public DateTime AcceptedAt { get; set; } = DateTime.UtcNow;
+
+    public Tenant? Tenant { get; set; }
 }
 
 public class DigitalCard

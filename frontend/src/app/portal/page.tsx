@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/common/Logo';
 import { INITIAL_PRODUCTS, ProductItem } from '@/lib/mockData';
+import { TermsAcceptanceBox } from '@/components/legal/TermsAcceptanceBox';
 import { 
   Package, 
   Plus, 
@@ -41,8 +42,12 @@ export default function ClientPortalPage() {
   // AI Support Bot Activation State
   const [hasAiActive, setHasAiActive] = useState(true);
   const [licenseKeyInput, setLicenseKeyInput] = useState('');
+  const [aiTermsAccepted, setAiTermsAccepted] = useState(false);
   const [licenseSuccess, setLicenseSuccess] = useState(false);
   const [licenseError, setLicenseError] = useState('');
+
+  // Catalog Legal Consent State
+  const [catalogTermsAccepted, setCatalogTermsAccepted] = useState(false);
 
   // Business Info States
   const [businessName, setBusinessName] = useState('Laura Restrepo | Branding & Consultoría');
@@ -474,44 +479,13 @@ export default function ClientPortalPage() {
                   </div>
                 </div>
 
-                {/* Bloque de Autorización Legal Obligatoria (Habeas Data / GDPR - Versión 1.1) */}
-                <div className="p-3.5 rounded-2xl bg-black/50 border border-amber-500/30 space-y-2">
-                  <div className="flex items-start gap-2.5">
-                    <input
-                      id="terms-accepted-checkbox"
-                      name="terms_accepted"
-                      type="checkbox"
-                      checked={termsAccepted}
-                      onChange={(e) => setTermsAccepted(e.target.checked)}
-                      className="mt-0.5 w-4 h-4 rounded accent-emerald-500 cursor-pointer shrink-0"
-                    />
-                    <label
-                      htmlFor="terms-accepted-checkbox"
-                      className="text-[11px] text-gray-200 leading-relaxed cursor-pointer select-none"
-                    >
-                      Sí autorizo el tratamiento de mis datos personales y acepto los términos de manejo de enlaces y uso de la Tarjeta Digital.
-                    </label>
-                  </div>
-
-                  <div className="flex flex-wrap items-center justify-between gap-2 pl-6 pt-1">
-                    <a
-                      href="/docs/terminos-y-autorizacion-tarjeta-digital.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 underline underline-offset-2"
-                    >
-                      <ExternalLink className="w-3 h-3" />
-                      <span>Ver documento legal (PDF)</span>
-                    </a>
-                    <Link
-                      href="/legal/autorizacion-tarjeta-digital"
-                      target="_blank"
-                      className="text-[10px] text-emerald-400 hover:text-emerald-300 underline"
-                    >
-                      Vista lectura web (v1.1)
-                    </Link>
-                  </div>
-                </div>
+                {/* Bloque de Autorización Legal Modular (Servicio 01: Tarjeta Digital - v2.0) */}
+                <TermsAcceptanceBox
+                  serviceType="tarjeta"
+                  id="terms-accepted-checkbox"
+                  checked={termsAccepted}
+                  onChange={setTermsAccepted}
+                />
 
                 {cardSaveSuccess && (
                   <div
@@ -802,21 +776,31 @@ export default function ClientPortalPage() {
                 Ingresa a continuación el código de licenciamiento entregado por tu asesor G-evo tras efectuar el pago del módulo adicional:
               </p>
 
-              <form onSubmit={handleRedeemLicense} className="flex flex-col sm:flex-row gap-3">
-                <input
-                  type="text"
-                  value={licenseKeyInput}
-                  onChange={(e) => setLicenseKeyInput(e.target.value)}
-                  placeholder="Ej. GEVO-LAUR-AI24-8F92A1"
-                  className="flex-1 bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-emerald-300 font-mono tracking-wider placeholder-gray-600 focus:outline-none focus:border-emerald-500"
-                />
+              <form onSubmit={handleRedeemLicense} className="space-y-3">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <input
+                    type="text"
+                    value={licenseKeyInput}
+                    onChange={(e) => setLicenseKeyInput(e.target.value)}
+                    placeholder="Ej. GEVO-LAUR-AI24-8F92A1"
+                    className="flex-1 bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-emerald-300 font-mono tracking-wider placeholder-gray-600 focus:outline-none focus:border-emerald-500"
+                  />
 
-                <button
-                  type="submit"
-                  className="px-6 py-2.5 rounded-xl font-bold text-xs text-black bg-gradient-to-r from-amber-400 to-emerald-400 hover:shadow-lg transition-all"
-                >
-                  Validar y Activar
-                </button>
+                  <button
+                    type="submit"
+                    disabled={!aiTermsAccepted}
+                    className="px-6 py-2.5 rounded-xl font-bold text-xs text-black bg-gradient-to-r from-amber-400 to-emerald-400 hover:shadow-lg transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    Validar y Activar
+                  </button>
+                </div>
+
+                <TermsAcceptanceBox
+                  serviceType="ia"
+                  id="ai-terms-checkbox"
+                  checked={aiTermsAccepted}
+                  onChange={setAiTermsAccepted}
+                />
               </form>
 
               {licenseSuccess && (
@@ -952,10 +936,18 @@ export default function ClientPortalPage() {
                 />
               </div>
 
+              <TermsAcceptanceBox
+                serviceType="catalogo"
+                id="catalog-terms-checkbox"
+                checked={catalogTermsAccepted}
+                onChange={setCatalogTermsAccepted}
+              />
+
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-3 rounded-xl font-bold text-xs text-black bg-gradient-to-r from-amber-400 to-emerald-400 shadow-lg hover:shadow-emerald-500/20 transition-all cursor-pointer"
+                  disabled={!catalogTermsAccepted}
+                  className="w-full py-3 rounded-xl font-bold text-xs text-black bg-gradient-to-r from-amber-400 to-emerald-400 shadow-lg hover:shadow-emerald-500/20 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {editingProduct ? 'Guardar Cambios' : 'Publicar en mi Catálogo'}
                 </button>

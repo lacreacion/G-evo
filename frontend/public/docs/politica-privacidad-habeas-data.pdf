@@ -1,0 +1,50 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1257 >>
+stream
+BT
+/F1 11 Tf
+50 760 Td
+15 TL
+(G-EVO DIGITAL HUB - DOCUMENTO LEGAL OFICIAL VERSION 2.0) Tj T*
+(POLITICA DE PRIVACIDAD Y TRATAMIENTO DE DATOS PERSONALES HABEAS DATA) Tj T*
+(Documento Transversal Obligatorio - Ley 1581 de 2012, Decreto 1377 de 2013 y GDPR) Tj T*
+(----------------------------------------------------------------------------) Tj T*
+(1. RESPONSABLE DEL TRATAMIENTO: G-evo Digital Hub actua como Encargado del Tratamiento) Tj T*
+(   de los datos alojados por los comercios multi-tenant y como Responsable de su plataforma.) Tj T*
+(2. FINALIDADES: Aprovisionar tarjetas digitales, catalogos, sitios web, tiendas e-commerce,) Tj T*
+(   autenticacion segura y auditoria legal de consentimientos con fecha UTC y direccion IP.) Tj T*
+(3. DERECHOS ARCO / HABEAS DATA: El titular puede conocer, actualizar, rectificar y suprimir) Tj T*
+(   sus datos personales en cualquier momento desde su panel autonomo o canal oficial.) Tj T*
+(4. AISLAMIENTO MULTI-TENANT: Aislamiento estricto por tenant_id en base de datos.) Tj T*
+(----------------------------------------------------------------------------) Tj T*
+(Emitido y respaldado por G-evo Digital Hub https://g-evo.com) Tj T*
+(Cumplimiento Ley 1581 de 2012 Habeas Data, Ley 1480 de 2011 y GDPR.) Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001549 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1619
+%%EOF

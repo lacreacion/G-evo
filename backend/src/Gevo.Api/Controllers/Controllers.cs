@@ -51,6 +51,15 @@ public class TenantsController : ControllerBase
     [HttpPost]
     public IActionResult CreateTenant([FromBody] CreateTenantRequest req)
     {
+        if (req == null || !req.IsTermsAccepted)
+        {
+            return BadRequest(new
+            {
+                error = "Debe aceptar obligatoriamente los Términos y Condiciones del servicio, la Política de Privacidad y la Política de Cookies.",
+                code = "LEGAL_CONSENT_REQUIRED"
+            });
+        }
+
         var tempPassword = $"Gevo{Random.Shared.Next(1000, 9999)}!";
         var newId = Guid.NewGuid();
 
@@ -59,6 +68,7 @@ public class TenantsController : ControllerBase
             TenantId = newId,
             req.Slug,
             req.BusinessName,
+            ServiceType = req.ServiceType,
             Credentials = new
             {
                 Email = req.ClientEmail,
@@ -115,6 +125,15 @@ public class LicensesController : ControllerBase
     [Authorize(Roles = "SuperAdmin")]
     public IActionResult GenerateLicense([FromBody] GenerateLicenseRequest req)
     {
+        if (req == null || !req.TermsAccepted || !req.PrivacyAccepted || !req.CookiesAccepted)
+        {
+            return BadRequest(new
+            {
+                error = "Debe aceptar los Términos y Condiciones del Agente IA, la Política de Privacidad y la Política de Cookies antes de emitir la licencia.",
+                code = "AI_LEGAL_CONSENT_REQUIRED"
+            });
+        }
+
         var key = _licenseService.GenerateLicenseKey("LAUR", req.ModuleCode);
         return Ok(new GenerateLicenseResponse(key, "Active", DateTime.UtcNow.AddDays(req.DurationDays)));
     }
@@ -123,6 +142,15 @@ public class LicensesController : ControllerBase
     [Authorize(Roles = "BusinessOwner")]
     public IActionResult RedeemLicense([FromBody] RedeemLicenseRequest req)
     {
+        if (req == null || !req.TermsAccepted || !req.PrivacyAccepted || !req.CookiesAccepted)
+        {
+            return BadRequest(new
+            {
+                error = "Debe aceptar los Términos y Condiciones del Agente IA, la Política de Privacidad y la Política de Cookies antes de activar el servicio.",
+                code = "AI_LEGAL_CONSENT_REQUIRED"
+            });
+        }
+
         var isValid = _licenseService.ValidateLicenseKey(req.LicenseKey, "laura-restrepo", out var reason);
         if (!isValid)
         {
@@ -319,6 +347,25 @@ public class TenantProfileController : ControllerBase
             existingCard.UpdatedAt = nowUtc;
         }
 
+        var normalizedService = string.IsNullOrWhiteSpace(req.ServiceType) ? "tarjeta" : req.ServiceType.Trim().ToLowerInvariant();
+        var clientIp = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "127.0.0.1";
+        var userAgent = HttpContext?.Request?.Headers["User-Agent"].ToString();
+
+        _dbContext.LegalConsents.Add(new TenantLegalConsent
+        {
+            Id = Guid.NewGuid(),
+            TenantId = resolvedTenantId,
+            ServiceType = normalizedService,
+            TermsAccepted = true,
+            PrivacyAccepted = req.PrivacyAccepted,
+            CookiesAccepted = req.CookiesAccepted,
+            TermsVersion = string.IsNullOrWhiteSpace(req.TermsVersion) ? "1.1" : req.TermsVersion!,
+            DocumentSlug = $"terminos-{normalizedService}.pdf",
+            IpAddress = clientIp,
+            UserAgent = userAgent,
+            AcceptedAt = nowUtc
+        });
+
         await _dbContext.SaveChangesAsync();
 
         return Ok(new DigitalCardProfileResponse(
@@ -336,6 +383,125 @@ public class TenantProfileController : ControllerBase
             existingCard.TermsAccepted,
             existingCard.TermsAcceptedAt!.Value,
             existingCard.TermsVersion
+        ));
+    }
+}
+
+[ApiController]
+[Route("api/legal/consents")]
+[Authorize(Roles = "BusinessOwner,SuperAdmin")]
+public class LegalConsentsController : ControllerBase
+{
+    private static readonly HashSet<string> AllowedServiceTypes = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "tarjeta", "catalogo", "web", "ecommerce", "ia"
+    };
+
+    private static readonly Dictionary<string, string> ServiceDocumentMap = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["tarjeta"] = "terminos-tarjeta-digital.pdf",
+        ["catalogo"] = "terminos-catalogo-digital.pdf",
+        ["web"] = "terminos-pagina-web.pdf",
+        ["ecommerce"] = "terminos-tienda-ecommerce.pdf",
+        ["ia"] = "terminos-agente-ia.pdf"
+    };
+
+    private readonly GevoDbContext _dbContext;
+    private readonly ITenantContext _tenantContext;
+
+    public LegalConsentsController(GevoDbContext dbContext, ITenantContext tenantContext)
+    {
+        _dbContext = dbContext;
+        _tenantContext = tenantContext;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetConsents([FromQuery] string? serviceType = null)
+    {
+        var query = _dbContext.LegalConsents.AsNoTracking();
+        if (!string.IsNullOrWhiteSpace(serviceType))
+        {
+            var normalized = serviceType.Trim().ToLowerInvariant();
+            query = query.Where(c => c.ServiceType == normalized);
+        }
+
+        var items = await query
+            .OrderByDescending(c => c.AcceptedAt)
+            .Select(c => new ServiceLegalConsentResponse(
+                c.Id,
+                c.TenantId,
+                c.ServiceType,
+                c.TermsAccepted,
+                c.PrivacyAccepted,
+                c.CookiesAccepted,
+                c.TermsVersion,
+                c.DocumentSlug,
+                c.IpAddress,
+                c.AcceptedAt
+            ))
+            .ToListAsync();
+
+        return Ok(items);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> RecordConsent([FromBody] ServiceLegalConsentRequest req)
+    {
+        if (req == null || string.IsNullOrWhiteSpace(req.ServiceType) || !AllowedServiceTypes.Contains(req.ServiceType))
+        {
+            return BadRequest(new
+            {
+                error = "El tipo de servicio (service_type) es inválido. Debe ser: tarjeta, catalogo, web, ecommerce o ia.",
+                code = "INVALID_SERVICE_TYPE"
+            });
+        }
+
+        if (!req.TermsAccepted || !req.PrivacyAccepted || !req.CookiesAccepted)
+        {
+            return BadRequest(new
+            {
+                error = $"No se puede crear ni activar el servicio '{req.ServiceType}' sin aceptar sus Términos y Condiciones específicos, la Política de Privacidad y la Política de Cookies.",
+                code = "SERVICE_CONSENT_REQUIRED",
+                serviceType = req.ServiceType.Trim().ToLowerInvariant()
+            });
+        }
+
+        var normalizedService = req.ServiceType.Trim().ToLowerInvariant();
+        var resolvedTenantId = _tenantContext.TenantId ?? Guid.Parse("11111111-1111-1111-1111-111111111111");
+        var nowUtc = DateTime.UtcNow;
+        var clientIp = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "127.0.0.1";
+        var userAgent = HttpContext?.Request?.Headers["User-Agent"].ToString();
+        var docSlug = ServiceDocumentMap[normalizedService];
+
+        var entity = new TenantLegalConsent
+        {
+            Id = Guid.NewGuid(),
+            TenantId = resolvedTenantId,
+            ServiceType = normalizedService,
+            TermsAccepted = true,
+            PrivacyAccepted = true,
+            CookiesAccepted = true,
+            TermsVersion = string.IsNullOrWhiteSpace(req.TermsVersion) ? "2.0" : req.TermsVersion,
+            DocumentSlug = docSlug,
+            IpAddress = clientIp,
+            UserAgent = userAgent,
+            AcceptedAt = nowUtc
+        };
+
+        _dbContext.LegalConsents.Add(entity);
+        await _dbContext.SaveChangesAsync();
+
+        return Ok(new ServiceLegalConsentResponse(
+            entity.Id,
+            entity.TenantId,
+            entity.ServiceType,
+            entity.TermsAccepted,
+            entity.PrivacyAccepted,
+            entity.CookiesAccepted,
+            entity.TermsVersion,
+            entity.DocumentSlug,
+            entity.IpAddress,
+            entity.AcceptedAt
         ));
     }
 }

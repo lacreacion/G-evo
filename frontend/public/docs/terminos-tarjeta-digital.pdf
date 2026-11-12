@@ -1,0 +1,50 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1212 >>
+stream
+BT
+/F1 11 Tf
+50 760 Td
+15 TL
+(G-EVO DIGITAL HUB - DOCUMENTO LEGAL OFICIAL VERSION 2.0) Tj T*
+(1. TERMINOS Y CONDICIONES - TARJETA DIGITAL INTERACTIVA URL & QR) Tj T*
+(Servicio: Tarjeta Personal Digital Interactiva /t/[slug]) Tj T*
+(----------------------------------------------------------------------------) Tj T*
+(1. OBJETO: Regula el uso del perfil publico interactivo URL y codigo QR dinamico.) Tj T*
+(2. PERFIL PUBLICO Y VCARD: El titular autoriza la publicacion de los datos de contacto) Tj T*
+(   nombre, cargo, WhatsApp, correo y redes para descarga voluntaria de terceros .vcf.) Tj T*
+(3. RESPONSABILIDAD DE LINKS: El titular es el unico responsable de la legitimidad,) Tj T*
+(   seguridad y derechos de autor de los enlaces externos, redes y portafolios vinculados.) Tj T*
+(4. PROHIBICIONES: Queda prohibido alojar enlaces de phishing, malware o contenido ilicito.) Tj T*
+(5. SEGURIDAD PIN: La edicion en vivo esta protegida por PIN de propietario y token JWT.) Tj T*
+(----------------------------------------------------------------------------) Tj T*
+(Emitido y respaldado por G-evo Digital Hub https://g-evo.com) Tj T*
+(Cumplimiento Ley 1581 de 2012 Habeas Data, Ley 1480 de 2011 y GDPR.) Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001504 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1574
+%%EOF

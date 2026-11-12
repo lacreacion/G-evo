@@ -27,7 +27,8 @@ exports/
     ├── src/
     │   ├── app/                  # Páginas, estilos y rutas del cliente
     │   └── components/
-    │       └── GevoOfficialSeal.tsx  # Sello oficial de respaldo G-evo en el Footer
+    │       ├── GevoOfficialSeal.tsx     # Sello oficial de respaldo G-evo en el Footer
+    │       └── CookieConsentBanner.tsx  # Banner flotante de Aviso de Cookies y Habeas Data
     └── README_DEPLOY.md          # Guía paso a paso para subir a hosting/dominio externo
 ```
 
@@ -70,3 +71,12 @@ Toda Página Web o Tienda E-commerce exportada debe incluir en su Footer el sell
   </a>
 </div>
 ```
+
+---
+
+## 4. Banner Flotante de Aviso de Cookies y Enlaces Legales en Exportables (`@15-agente-legal.md` y `@02-frontend-nextjs.md`)
+
+Toda Página Web (`serviceType="web"`) o Tienda en Línea (`serviceType="ecommerce"`) exportada debe incluir el banner flotante inferior de **Aviso de Cookies** (`CookieConsentBanner.tsx`) y enlazar en su pie de página o flujo de compra a:
+- **Términos específicos del caso:** `/docs/terminos-pagina-web.pdf` o `/docs/terminos-tienda-ecommerce.pdf`
+- **Política de Privacidad y Habeas Data:** `/docs/politica-privacidad-habeas-data.pdf`
+- **Política de Cookies:** `/docs/politica-de-cookies.pdf`

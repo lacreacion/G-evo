@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/common/Logo';
 import { INITIAL_TENANTS, TenantData } from '@/lib/mockData';
+import { TermsAcceptanceBox, GevoLegalServiceType } from '@/components/legal/TermsAcceptanceBox';
 import { 
   ShieldCheck, 
   PlusCircle, 
@@ -60,11 +61,13 @@ export default function AdminMasterPage() {
   const [newCardTheme, setNewCardTheme] = useState('gold_metallic');
   const [newOwnerPin, setNewOwnerPin] = useState('1234');
   const [newSlug, setNewSlug] = useState('');
+  const [adminServiceType, setAdminServiceType] = useState<GevoLegalServiceType>('tarjeta');
   const [adminTermsAccepted, setAdminTermsAccepted] = useState(false);
 
   // Licensing Generator states
   const [selectedTenantForLicense, setSelectedTenantForLicense] = useState<string>('');
   const [generatedLicenseKey, setGeneratedLicenseKey] = useState<string | null>(null);
+  const [licenseTermsAccepted, setLicenseTermsAccepted] = useState(false);
   const [licenseCopied, setLicenseCopied] = useState(false);
   const [kitCopied, setKitCopied] = useState(false);
 
@@ -110,9 +113,12 @@ export default function AdminMasterPage() {
       email: newClientEmail.trim(),
       theme: newCardTheme,
       ownerPin: pinToSave,
+      service_type: adminServiceType,
       terms_accepted: true,
+      privacy_accepted: true,
+      cookies_accepted: true,
       terms_accepted_at: new Date().toISOString(),
-      terms_version: '1.1',
+      terms_version: '2.0',
       note: `Contacto guardado desde Tarjeta Digital G-evo (${newBusinessName.trim()}).`
     };
 
@@ -328,12 +334,21 @@ export default function AdminMasterPage() {
 
             <button
               onClick={handleGenerateLicense}
-              disabled={!selectedTenantForLicense}
+              disabled={!selectedTenantForLicense || !licenseTermsAccepted}
               className="w-full sm:w-auto px-5 py-2.5 rounded-xl font-bold text-xs text-black bg-gradient-to-r from-amber-400 to-yellow-300 disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <Sparkles className="w-4 h-4 text-black" />
               <span>Emitir Código de Licencia</span>
             </button>
+          </div>
+
+          <div className="pt-2">
+            <TermsAcceptanceBox
+              serviceType="ia"
+              id="admin-ai-license-terms-checkbox"
+              checked={licenseTermsAccepted}
+              onChange={setLicenseTermsAccepted}
+            />
           </div>
 
           {/* Resultado de la Licencia Generada */}
@@ -657,30 +672,17 @@ export default function AdminMasterPage() {
                 />
               </div>
 
-              <div className="p-3 rounded-2xl bg-black/50 border border-amber-500/30 space-y-1.5">
-                <label className="flex items-start gap-2.5 cursor-pointer select-none">
-                  <input
-                    id="admin-terms-checkbox"
-                    type="checkbox"
-                    checked={adminTermsAccepted}
-                    onChange={(e) => setAdminTermsAccepted(e.target.checked)}
-                    className="mt-0.5 w-4 h-4 rounded accent-emerald-500 cursor-pointer shrink-0"
-                  />
-                  <span className="text-[11px] text-gray-200 leading-relaxed">
-                    Sí autorizo el tratamiento de mis datos personales y acepto los términos de manejo de enlaces y uso de la Tarjeta Digital.
-                  </span>
-                </label>
-                <div className="pl-6">
-                  <a
-                    href="/docs/terminos-y-autorizacion-tarjeta-digital.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-400 hover:text-amber-300 underline"
-                  >
-                    <span>Ver documento legal (PDF)</span>
-                  </a>
-                </div>
-              </div>
+              <TermsAcceptanceBox
+                serviceType={adminServiceType}
+                id="admin-terms-checkbox"
+                checked={adminTermsAccepted}
+                onChange={setAdminTermsAccepted}
+                showServiceSelector={true}
+                onServiceTypeChange={(nextType) => {
+                  setAdminServiceType(nextType);
+                  setAdminTermsAccepted(false);
+                }}
+              />
 
               <div className="pt-2">
                 <button

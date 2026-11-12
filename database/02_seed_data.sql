@@ -127,3 +127,11 @@ VALUES
 ('Facebook', 'fb_story_03', 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80', 'image', '💡 Caso de éxito: Laura Restrepo multiplicó sus contactos comerciales con su tarjeta G-evo.', 'https://facebook.com/stories/gevo.digital/03', 3, TRUE, CURRENT_TIMESTAMP + INTERVAL '24 hours'),
 ('Instagram', 'ig_story_04', 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80', 'image', '✨ Pide hoy tu catálogo digital autónomo y gestiona tus productos en minutos.', 'https://instagram.com/stories/gevo.digital/04', 4, TRUE, CURRENT_TIMESTAMP + INTERVAL '24 hours');
 
+-- Auditoría Legal Inicial (tenant_legal_consents) para Laura Restrepo
+INSERT INTO tenant_legal_consents (tenant_id, service_type, terms_accepted, privacy_accepted, cookies_accepted, terms_version, document_slug, ip_address, user_agent, accepted_at)
+VALUES
+('11111111-1111-1111-1111-111111111111', 'tarjeta', TRUE, TRUE, TRUE, '2.0', 'terminos-tarjeta-digital.pdf', '181.58.10.24', 'Mozilla/5.0 (Seed Initial Consent)', CURRENT_TIMESTAMP),
+('11111111-1111-1111-1111-111111111111', 'catalogo', TRUE, TRUE, TRUE, '2.0', 'terminos-catalogo-digital.pdf', '181.58.10.24', 'Mozilla/5.0 (Seed Initial Consent)', CURRENT_TIMESTAMP),
+('11111111-1111-1111-1111-111111111111', 'ia', TRUE, TRUE, TRUE, '2.0', 'terminos-agente-ia.pdf', '181.58.10.24', 'Mozilla/5.0 (Seed Initial Consent)', CURRENT_TIMESTAMP);
+
+

@@ -23,6 +23,7 @@ public class GevoDbContext : DbContext
     public DbSet<ProductMedia> ProductMedia => Set<ProductMedia>();
     public DbSet<SocialStory> SocialStories => Set<SocialStory>();
     public DbSet<DigitalCard> DigitalCards => Set<DigitalCard>();
+    public DbSet<TenantLegalConsent> LegalConsents => Set<TenantLegalConsent>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -48,6 +49,10 @@ public class GevoDbContext : DbContext
         modelBuilder.Entity<DigitalCard>()
             .HasQueryFilter(d => _tenantContext.IsSuperAdmin || d.TenantId == _tenantContext.TenantId);
 
+        modelBuilder.Entity<TenantLegalConsent>()
+            .ToTable("tenant_legal_consents")
+            .HasQueryFilter(c => _tenantContext.IsSuperAdmin || c.TenantId == _tenantContext.TenantId);
+
         // Index configurations
         modelBuilder.Entity<Tenant>().HasIndex(t => t.Slug).IsUnique();
         modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
@@ -55,6 +60,7 @@ public class GevoDbContext : DbContext
         modelBuilder.Entity<Product>().HasIndex(p => new { p.TenantId, p.Sku });
         modelBuilder.Entity<DigitalCard>().HasIndex(d => d.Slug).IsUnique();
         modelBuilder.Entity<DigitalCard>().HasIndex(d => d.TenantId);
+        modelBuilder.Entity<TenantLegalConsent>().HasIndex(c => new { c.TenantId, c.ServiceType });
     }
 }
 
