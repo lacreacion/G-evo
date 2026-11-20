@@ -27,7 +27,8 @@ G-evo/
     ├── 12-doc-generator.md
     ├── 13-infra-terraform.md
     ├── 14-user-docs.md
-    └── 15-agente-legal.md
+    ├── 15-agente-legal.md
+    └── 16-marketing-estrategia-ads.md
 ```
 
 ---
@@ -54,6 +55,7 @@ Para garantizar que ningún agente interfiera en el dominio técnico de otro, la
 | **`13-infra-terraform.md`** | Automatizar el despliegue de infraestructura en la nube (IaC), contenedores Docker y certificados SSL. | **NO** modifica el código fuente de la aplicación ni interviene en el diseño visual. |
 | **`14-user-docs.md`** | Redactar exclusivamente los manuales paso a paso para los clientes finales sobre cómo usar su panel de administración. | **NO** redacta documentación interna de arquitectura técnica ni código. |
 | **`15-agente-legal.md`** | Velar por el cumplimiento normativo en protección de datos (Habeas Data/GDPR), pasarelas de pago y términos legales de los e-commerce. | **NO** toma decisiones de diseño técnico ni de infraestructura de servidores. |
+| **`16-marketing-estrategia-ads.md`** | Diseñar campañas de tráfico pago (Meta/TikTok/Google Ads), embudos de cierre y upselling de licencias IA por WhatsApp, calendarios de Historias, kits de lanzamiento comercial (`MARKETING_LAUNCH_KIT.md`) para proyectos en `/exports/` y taxonomía de parámetros UTM. | **NO** modifica código fuente de React/Next.js, estilos CSS, controladores .NET, esquemas SQL, metadatos SEO técnicos ni documentos legales. |
 
 ---
 
@@ -80,7 +82,7 @@ Para garantizar que ningún agente interfiera en el dominio técnico de otro, la
 
 ### ADR-005: Protocolo Obligatorio de Validación y Confirmación Previa (Modo Espejo — Cero Cambios sin "Sí")
 * **Decisión:** Cada vez que el usuario solicite un cambio, ajuste o nueva funcionalidad, `@01-architect.md` tiene estrictamente prohibido autorizar la modificación de archivos en el primer turno. Su primera acción obligatoria es analizar la petición y responder resumiendo qué entendió, qué archivos o componentes se verán afectados y qué agentes intervendrán, cerrando con una pregunta directa de confirmación.
-* **Bloqueo Global:** `@00-orchestrator.md` mantiene en pausa a todos los agentes y ningún agente (`02` al `15`) puede tocar, crear ni sobrescribir ningún archivo hasta que el usuario confirme con un **"Sí"** explícito.
+* **Bloqueo Global:** `@00-orchestrator.md` mantiene en pausa a todos los agentes y ningún agente (`02` al `16`) puede tocar, crear ni sobrescribir ningún archivo hasta que el usuario confirme con un **"Sí"** explícito.
 
 ### ADR-006: Modo Fábrica de Proyectos Exportables (Standalone Export en `/exports/[nombre-del-cliente]/`)
 * **Decisión (Separación de Modelos — Interno vs. Exportable):**
@@ -135,7 +137,7 @@ sequenceDiagram
 
 ## 5. Estado de Implementación en el Repositorio
 
-- **Estructura de Agentes:** [`.agents/`](file:///c:/Users/carlo/G-evo/.agents/) (16 agentes modulares formalizados)
+- **Estructura de Agentes:** [`.agents/`](file:///c:/Users/carlo/G-evo/.agents/) (17 agentes modulares formalizados)
 - **Esquema de Base de Datos y Semillas:** [`database/01_init_schema.sql`](file:///c:/Users/carlo/G-evo/database/01_init_schema.sql) y [`database/02_seed_data.sql`](file:///c:/Users/carlo/G-evo/database/02_seed_data.sql)
 - **API Backend Multi-Tenant:** [`backend/src/Gevo.Api/`](file:///c:/Users/carlo/G-evo/backend/src/Gevo.Api/)
 - **Frontend y Paneles de Control:** [`frontend/src/app/`](file:///c:/Users/carlo/G-evo/frontend/src/app/)
