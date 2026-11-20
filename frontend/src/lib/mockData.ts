@@ -226,11 +226,11 @@ export const CASCADE_SERVICES: ServiceItem[] = [
 export const MOCK_SHOWCASE: ShowcaseItem[] = [
   {
     id: 'showcase-aurea',
-    title: 'AUREA Velas Artesanales | Navidad 2026',
-    clientName: 'AUREA Velas Artesanales',
+    title: 'AÚREA Velas Artesanales | Navidad 2026',
+    clientName: 'AÚREA Velas Artesanales',
     category: 'Catálogo E-commerce',
     slug: 'aurea-velas',
-    image: 'https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=800&q=80',
+    image: '/images/aurea/img_01_1076x1440.webp',
     qrCodeUrl: '/qr-preview.png',
     description: 'Catálogo Digital Navideño con selectores 3D Keycap de color y aroma, personalizador "De / Para" y Configurador de Combos a WhatsApp.',
     tags: ['3D Keycaps', 'Combos Navideños', 'Checkout WhatsApp', 'Velas Artesanales'],
