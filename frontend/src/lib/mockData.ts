@@ -209,7 +209,7 @@ export const CASCADE_SERVICES: ServiceItem[] = [
     features: [
       'Entrenado con tu catálogo real: no inventa datos ni precios.',
       'Disponible 24/7 en tu web y conector directo a WhatsApp.',
-      'Demostración gratuita incluida en tu plataforma para que compruebes su efectividad.',
+"Infraestructura preinstalada en tu panel y optimizada para automatizar la operación de tu negocio",
       'Activación permanente mediante código de licenciamiento único tras el pago.'
     ],
     competitiveAdvantages: [

@@ -43,3 +43,4 @@ ALTER TABLE digital_cards
 
 CREATE INDEX IF NOT EXISTS idx_digital_cards_tenant_id ON digital_cards(tenant_id);
 CREATE INDEX IF NOT EXISTS idx_digital_cards_slug ON digital_cards(slug);
+

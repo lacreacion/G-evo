@@ -1,0 +1,14 @@
+
+
+
+Página Principal (Home, Barra de menú, Hero y Servicios):
+http://localhost:3000
+
+Portal de Clientes (Gestión autónoma de productos y bot IA):
+http://localhost:3000/portal
+
+Panel Maestro Administrador (Creación centralizada de tarjetas y tiendas):
+http://localhost:3000/admin
+
+Acceso / Login:
+http://localhost:3000/login

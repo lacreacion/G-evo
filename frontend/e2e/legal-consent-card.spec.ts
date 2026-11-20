@@ -41,3 +41,4 @@ test.describe('Módulo de Tarjetas Digitales — Autorización Legal y Documento
     await expect(successToast).toContainText('Auditoría legal v1.1 registrada:');
   });
 });
+
