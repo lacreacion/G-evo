@@ -44,7 +44,8 @@ public class TenantsController : ControllerBase
     {
         return Ok(new[]
         {
-            new TenantResponse(Guid.Parse("11111111-1111-1111-1111-111111111111"), "laura-restrepo", "Laura Restrepo | Branding", "Estrategia boutique", "#10B981", "#D4AF37", "+573124567890", "cliente@laurarestrepo.com", true, true, "GEVO-LAUR-AI24-8F92A1")
+            new TenantResponse(Guid.Parse("11111111-1111-1111-1111-111111111111"), "laura-restrepo", "Laura Restrepo | Branding", "Estrategia boutique", "#10B981", "#D4AF37", "+573124567890", "cliente@laurarestrepo.com", true, true, "GEVO-LAUR-AI24-8F92A1"),
+            new TenantResponse(Guid.Parse("22222222-2222-2222-2222-222222222222"), "aurea-velas", "AUREA Velas Artesanales", "Colección Navideña 2026", "#D4AF37", "#10B981", "+573004567890", "pedidos@aureavelas.com", true, true, "GEVO-AURE-AI24-9C41E2")
         });
     }
 

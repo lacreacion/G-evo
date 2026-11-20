@@ -143,6 +143,11 @@ CREATE TABLE IF NOT EXISTS products (
     track_stock BOOLEAN NOT NULL DEFAULT FALSE,
     is_featured BOOLEAN NOT NULL DEFAULT FALSE,
     is_available BOOLEAN NOT NULL DEFAULT TRUE,
+    dimensions_cm VARCHAR(60),
+    available_colors TEXT[],
+    available_aromas TEXT[],
+    is_combo BOOLEAN NOT NULL DEFAULT FALSE,
+    allow_dedication BOOLEAN NOT NULL DEFAULT FALSE,
     tags TEXT[],
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP

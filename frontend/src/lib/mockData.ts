@@ -225,6 +225,18 @@ export const CASCADE_SERVICES: ServiceItem[] = [
 // -------------------------------------------------------------
 export const MOCK_SHOWCASE: ShowcaseItem[] = [
   {
+    id: 'showcase-aurea',
+    title: 'AUREA Velas Artesanales | Navidad 2026',
+    clientName: 'AUREA Velas Artesanales',
+    category: 'Catálogo E-commerce',
+    slug: 'aurea-velas',
+    image: 'https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=800&q=80',
+    qrCodeUrl: '/qr-preview.png',
+    description: 'Catálogo Digital Navideño con selectores 3D Keycap de color y aroma, personalizador "De / Para" y Configurador de Combos a WhatsApp.',
+    tags: ['3D Keycaps', 'Combos Navideños', 'Checkout WhatsApp', 'Velas Artesanales'],
+    metrics: '12 referencias interactivas'
+  },
+  {
     id: 'showcase-1',
     title: 'Laura Restrepo | Branding & Consultoría',
     clientName: 'Laura Restrepo',
@@ -290,6 +302,20 @@ export const CORPORATE_INFO = {
 // CLIENTES / INQUILINOS DEMOSTRATIVOS PARA PANELES
 // -------------------------------------------------------------
 export const INITIAL_TENANTS: TenantData[] = [
+  {
+    id: 't-aurea',
+    slug: 'aurea-velas',
+    businessName: 'AUREA Velas Artesanales — Colección Navideña 2026',
+    clientName: 'AUREA Studio Artesanal',
+    clientEmail: 'pedidos@aureavelas.com',
+    phoneWhatsapp: '+57 300 456 7890',
+    category: 'Catálogo Digital • Velas & Regalos',
+    productsCount: 12,
+    hasAiSupport: true,
+    aiLicenseKey: 'GEVO-AURE-AI24-9C41E2',
+    status: 'Activo',
+    createdAt: '2026-11-20'
+  },
   {
     id: 't-1',
     slug: 'laura-restrepo',

@@ -164,6 +164,11 @@ public class Product
     public bool TrackStock { get; set; } = false;
     public bool IsFeatured { get; set; } = false;
     public bool IsAvailable { get; set; } = true;
+    public string? DimensionsCm { get; set; }
+    public List<string> AvailableColors { get; set; } = new();
+    public List<string> AvailableAromas { get; set; } = new();
+    public bool IsCombo { get; set; } = false;
+    public bool AllowDedication { get; set; } = false;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public Catalog? Catalog { get; set; }

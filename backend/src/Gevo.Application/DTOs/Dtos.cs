@@ -147,7 +147,12 @@ public record ProductResponse(
     string? FullDescription,
     string? ImageUrl,
     bool IsAvailable,
-    bool IsFeatured
+    bool IsFeatured,
+    string? DimensionsCm = null,
+    List<string>? AvailableColors = null,
+    List<string>? AvailableAromas = null,
+    bool IsCombo = false,
+    bool AllowDedication = false
 );
 
 // --- Licensing & AI DTOs ---

@@ -453,6 +453,16 @@ export default function AdminMasterPage() {
                       </td>
                       <td className="py-3.5 px-4 text-right">
                         <div className="inline-flex items-center justify-end gap-2 flex-wrap">
+                          {t.slug === 'aurea-velas' && (
+                            <Link
+                              href="/catalogo/aurea-velas"
+                              target="_blank"
+                              className="px-2.5 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-400/40 font-extrabold text-[11px] inline-flex items-center gap-1 transition-colors"
+                            >
+                              <Sparkles className="w-3.5 h-3.5" />
+                              <span>Abrir Catálogo Navideño</span>
+                            </Link>
+                          )}
                           <Link
                             href={`/t/${t.slug}`}
                             target="_blank"
