@@ -140,15 +140,17 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* Sello Oficial de Respaldo Obligatorio G-evo. (Tal cual el original) */}
+          {/* Sello Oficial de Respaldo Obligatorio G-evo. (Logo Grande y Protagonista) */}
           <a
             href="https://g-evo.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-stone-900 hover:bg-stone-800 text-stone-200 text-xs transition-all shadow-sm"
+            className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-[#070B14] hover:bg-[#0D1526] border border-amber-500/40 text-stone-200 transition-all shadow-xl"
           >
-            <span>Tienda E-commerce • Creada y respaldada por</span>
-            <span className="font-extrabold tracking-tight">
+            <span className="text-xs sm:text-sm font-semibold text-gray-300">
+              Tienda E-commerce • Creada y respaldada por
+            </span>
+            <span className="font-black tracking-tight text-2xl sm:text-3xl leading-none">
               <span
                 style={{
                   background:
