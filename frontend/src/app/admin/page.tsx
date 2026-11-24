@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/common/Logo';
-import { INITIAL_TENANTS, TenantData } from '@/lib/mockData';
+import { INITIAL_TENANTS, TenantData, GevoServiceGroup } from '@/lib/mockData';
 import { TermsAcceptanceBox, GevoLegalServiceType } from '@/components/legal/TermsAcceptanceBox';
 import { 
   ShieldCheck, 
@@ -39,6 +39,7 @@ export default function AdminMasterPage() {
     return INITIAL_TENANTS;
   });
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeGroupTab, setActiveGroupTab] = useState<'todos' | GevoServiceGroup>('todos');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showCredentialsModal, setShowCredentialsModal] = useState<{
     businessName: string;
@@ -128,6 +129,13 @@ export default function AdminMasterPage() {
       // Ignore storage errors
     }
 
+    const resolvedGroup: GevoServiceGroup =
+      adminServiceType === 'catalogo'
+        ? 'catalogos'
+        : adminServiceType === 'web' || adminServiceType === 'ecommerce'
+        ? 'ecommerce-web'
+        : 'tarjetas';
+
     const newTenant: TenantData = {
       id: `t-${Date.now()}`,
       slug: generatedSlug,
@@ -136,6 +144,10 @@ export default function AdminMasterPage() {
       clientEmail: newClientEmail,
       phoneWhatsapp: newPhoneWhatsapp || '+57 300 000 0000',
       category: newCategory,
+      serviceGroup: resolvedGroup,
+      maxImagesAllowed: resolvedGroup === 'tarjetas' ? 3 : resolvedGroup === 'catalogos' ? 20 : undefined,
+      publicRoute: resolvedGroup === 'catalogos' ? `/catalogo/${generatedSlug}` : `/t/${generatedSlug}`,
+      exportFolderPath: resolvedGroup === 'ecommerce-web' ? `/exports/${generatedSlug}/` : undefined,
       productsCount: 0,
       hasAiSupport: false,
       status: 'Activo',
@@ -191,12 +203,26 @@ export default function AdminMasterPage() {
     setTimeout(() => setLicenseCopied(false), 2500);
   };
 
-  const filteredTenants = tenants.filter(
-    (t) =>
+  const resolveTenantGroup = (t: TenantData): GevoServiceGroup => {
+    if (t.serviceGroup) return t.serviceGroup;
+    if (t.slug === 'aurea-velas' || t.slug === 'cafe-origen' || t.category.toLowerCase().includes('catálogo')) {
+      return 'catalogos';
+    }
+    if (t.slug === 'urban-trend' || t.category.toLowerCase().includes('e-commerce') || t.category.toLowerCase().includes('web')) {
+      return 'ecommerce-web';
+    }
+    return 'tarjetas';
+  };
+
+  const filteredTenants = tenants.filter((t) => {
+    const matchesSearch =
       t.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       t.clientEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      t.slug.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+      t.slug.toLowerCase().includes(searchTerm.toLowerCase());
+    if (!matchesSearch) return false;
+    if (activeGroupTab === 'todos') return true;
+    return resolveTenantGroup(t) === activeGroupTab;
+  });
 
   const originUrl = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
 
@@ -386,15 +412,48 @@ export default function AdminMasterPage() {
           )}
         </div>
 
-        {/* Tabla de Tiendas y Tarjetas Creadas */}
+        {/* Tabla de Tiendas y Tarjetas Creadas Separadas en 3 Archivos */}
         <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <h2 className="text-base font-bold text-white flex items-center gap-2">
-              <span>Listado de Tarjetas Digitales &amp; Tiendas Activas</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-gray-300 font-semibold">
-                {tenants.length}
-              </span>
-            </h2>
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+            <div className="space-y-2">
+              <h2 className="text-base font-bold text-white flex items-center gap-2">
+                <span>Registros Separados por Línea de Servicio</span>
+                <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-gray-300 font-semibold">
+                  {filteredTenants.length}
+                </span>
+              </h2>
+
+              {/* Pestañas de los 3 Archivos Separados */}
+              <div className="flex flex-wrap items-center gap-2">
+                {[
+                  { id: 'todos', label: '📂 Todos', badge: '' },
+                  { id: 'tarjetas', label: '1. Tarjetas Digitales', badge: 'tarjetas.ts • Máx 3 fotos' },
+                  { id: 'catalogos', label: '2. Catálogos Digitales', badge: 'catalogos.ts • Máx 20 fotos' },
+                  { id: 'ecommerce-web', label: '3. E-Commerce & Páginas Web', badge: 'ecommerce-paginas-web.ts • /exports/' },
+                ].map((tab) => {
+                  const active = activeGroupTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      onClick={() => setActiveGroupTab(tab.id as typeof activeGroupTab)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                        active
+                          ? 'bg-gradient-to-r from-amber-400/25 to-emerald-400/25 text-amber-300 border border-amber-400/50'
+                          : 'bg-[#0E1524] text-gray-400 border border-white/10 hover:text-white'
+                      }`}
+                    >
+                      <span>{tab.label}</span>
+                      {tab.badge && (
+                        <span className="text-[10px] px-1.5 py-0.2 rounded bg-black/50 text-emerald-300 font-mono">
+                          {tab.badge}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
             <div className="relative w-full sm:w-64">
               <Search className="w-4 h-4 text-gray-500 absolute left-3 top-1/2 -translate-y-1/2" />

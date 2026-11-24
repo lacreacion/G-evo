@@ -1,3 +1,7 @@
+import { REGISTRO_TARJETAS_DIGITALES } from './registros/tarjetas';
+import { REGISTRO_CATALOGOS_DIGITALES } from './registros/catalogos';
+import { REGISTRO_ECOMMERCE_Y_PAGINAS_WEB } from './registros/ecommerce-paginas-web';
+
 export interface StoryItem {
   id: string;
   platform: 'Instagram' | 'Facebook';
@@ -35,6 +39,8 @@ export interface ShowcaseItem {
   metrics: string;
 }
 
+export type GevoServiceGroup = 'tarjetas' | 'catalogos' | 'ecommerce-web';
+
 export interface TenantData {
   id: string;
   slug: string;
@@ -43,6 +49,10 @@ export interface TenantData {
   clientEmail: string;
   phoneWhatsapp: string;
   category: string;
+  serviceGroup?: GevoServiceGroup;
+  maxImagesAllowed?: number;
+  publicRoute?: string;
+  exportFolderPath?: string;
   productsCount: number;
   hasAiSupport: boolean;
   aiLicenseKey?: string;
@@ -299,64 +309,15 @@ export const CORPORATE_INFO = {
 };
 
 // -------------------------------------------------------------
-// CLIENTES / INQUILINOS DEMOSTRATIVOS PARA PANELES
+// CLIENTES / INQUILINOS UNIFICADOS DESDE LOS 3 ARCHIVOS SEPARADOS:
+// 1. frontend/src/lib/registros/tarjetas.ts
+// 2. frontend/src/lib/registros/catalogos.ts
+// 3. frontend/src/lib/registros/ecommerce-paginas-web.ts
 // -------------------------------------------------------------
 export const INITIAL_TENANTS: TenantData[] = [
-  {
-    id: 't-aurea',
-    slug: 'aurea-velas',
-    businessName: 'AUREA Velas Artesanales — Colección Navideña 2026',
-    clientName: 'AUREA Studio Artesanal',
-    clientEmail: 'pedidos@aureavelas.com',
-    phoneWhatsapp: '+57 300 456 7890',
-    category: 'Catálogo Digital • Velas & Regalos',
-    productsCount: 12,
-    hasAiSupport: true,
-    aiLicenseKey: 'GEVO-AURE-AI24-9C41E2',
-    status: 'Activo',
-    createdAt: '2026-11-20'
-  },
-  {
-    id: 't-1',
-    slug: 'laura-restrepo',
-    businessName: 'Laura Restrepo | Branding & Consultoría',
-    clientName: 'Laura Restrepo',
-    clientEmail: 'cliente@laurarestrepo.com',
-    phoneWhatsapp: '+57 312 456 7890',
-    category: 'Consultoría y Marca Personal',
-    productsCount: 4,
-    hasAiSupport: true,
-    aiLicenseKey: 'GEVO-LAUR-AI24-8F92A1',
-    status: 'Activo',
-    createdAt: '2026-10-15'
-  },
-  {
-    id: 't-2',
-    slug: 'cafe-origen',
-    businessName: 'Café & Bar Origen',
-    clientName: 'Carlos M. Rodríguez',
-    clientEmail: 'contacto@caforigen.com',
-    phoneWhatsapp: '+57 301 987 6543',
-    category: 'Gastronomía y Café',
-    productsCount: 12,
-    hasAiSupport: false,
-    status: 'Activo',
-    createdAt: '2026-10-20'
-  },
-  {
-    id: 't-3',
-    slug: 'urban-trend',
-    businessName: 'Urban Trend Footwear',
-    clientName: 'Mariana Gómez',
-    clientEmail: 'ventas@urbantrend.co',
-    phoneWhatsapp: '+57 315 222 3344',
-    category: 'Moda y Calzado',
-    productsCount: 28,
-    hasAiSupport: true,
-    aiLicenseKey: 'GEVO-URBN-AI24-3C89D2',
-    status: 'Activo',
-    createdAt: '2026-10-24'
-  }
+  ...REGISTRO_TARJETAS_DIGITALES,
+  ...REGISTRO_CATALOGOS_DIGITALES,
+  ...REGISTRO_ECOMMERCE_Y_PAGINAS_WEB,
 ];
 
 // -------------------------------------------------------------
