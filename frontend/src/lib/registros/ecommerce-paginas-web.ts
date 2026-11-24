@@ -8,6 +8,23 @@ import { TenantData } from '@/lib/mockData';
  */
 export const REGISTRO_ECOMMERCE_Y_PAGINAS_WEB: TenantData[] = [
   {
+    id: 't-sweet-house',
+    slug: 'sweet-house',
+    businessName: 'Sweet House Candy Store (Tienda E-Commerce + Back-Office)',
+    clientName: 'Sweet House Administración',
+    clientEmail: 'admin@sweethouse.co',
+    phoneWhatsapp: '+57 312 456 7890',
+    category: 'Tienda E-Commerce & Panel Admin • Dulcería y Cajas Regalo',
+    serviceGroup: 'ecommerce-web',
+    exportFolderPath: '/exports/sweet house candy store/',
+    publicRoute: '/exports/sweet house candy store',
+    productsCount: 120,
+    hasAiSupport: true,
+    aiLicenseKey: 'GEVO-SWET-AI24-7A19F4',
+    status: 'Activo',
+    createdAt: '2026-11-24',
+  },
+  {
     id: 't-3',
     slug: 'urban-trend',
     businessName: 'Urban Trend Footwear (Tienda E-Commerce)',
