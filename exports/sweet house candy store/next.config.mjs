@@ -1,23 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   reactStrictMode: true,
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cdn.g-evo.io',
-      },
-      {
-        protocol: 'https',
-        hostname: 'api.g-evo.store',
-      },
-    ],
+    unoptimized: true,
   },
 };
 
 export default nextConfig;
-
