@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useCart } from '@/context/CartContext';
-import { X, CreditCard, Smartphone, Building2, MessageCircle, ShieldCheck } from 'lucide-react';
+import { X, Lock, AlertTriangle, FlaskConical } from 'lucide-react';
 import { Order, CustomerData } from '@/types';
 
 interface CheckoutModalProps {
@@ -12,13 +12,9 @@ interface CheckoutModalProps {
 }
 
 /**
- * GUEST CHECKOUT LIGERO (OPCIÓN 1):
- * - Cero registro ni login para compradores.
- * - Solo 3 campos obligatorios:
- *   1) Nombre completo de quien recibe
- *   2) Celular / WhatsApp de contacto
- *   3) Ciudad y Dirección exacta (incluyendo barrio / apartamento)
- * - Delegación de pago temporal a Wompi Colombia (Nequi, PSE, Bancolombia, Tarjetas) / WhatsApp.
+ * CHECKOUT EN MODO PRUEBAS / DEMOSTRACIÓN (SIN PASARELA DE PAGOS VINCULADA):
+ * - Nadie puede realizar compras ni pagos reales.
+ * - Solo permite simular el envío de los 3 datos de prueba hacia la Plataforma de Administrador (/admin).
  */
 export default function CheckoutModal({
   isOpen,
@@ -31,14 +27,11 @@ export default function CheckoutModal({
   const [recipientName, setRecipientName] = useState('');
   const [recipientWhatsapp, setRecipientWhatsapp] = useState('');
   const [deliveryAddressFull, setDeliveryAddressFull] = useState('');
-
-  // Medio de pago en Wompi (Opción Temporal Desacoplada)
-  const [paymentMethod, setPaymentMethod] = useState<string>('Nequi');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmitDemoOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!recipientName.trim() || !recipientWhatsapp.trim() || !deliveryAddressFull.trim()) {
       return;
@@ -53,35 +46,18 @@ export default function CheckoutModal({
       city: deliveryAddressFull.split(',')[0]?.trim() || 'Colombia',
     };
 
-    // Llamada opcional al Webhook Temporal de Wompi para registrar la aprobación y firma
-    try {
-      await fetch('/api/webhooks/wompi', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          data: {
-            transaction: {
-              id: `TX-${Date.now()}`,
-              reference: `WOMPI-REF-${Date.now().toString().slice(-6)}`,
-              status: 'APPROVED',
-              payment_method_type: paymentMethod,
-              amount_in_cents: Math.round(total * 100),
-            },
-          },
-        }),
-      });
-    } catch {
-      // Continúa en modo autónomo si la ruta es estática
-    }
-
-    const order = await processOrder(customerPayload, paymentMethod, 'PAGADO');
+    const order = await processOrder(
+      customerPayload,
+      'Simulación de Prueba (Sin Cobro)',
+      'PAGADO'
+    );
     setIsSubmitting(false);
     onOrderConfirmed(order);
   };
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in"
       onClick={onClose}
     >
       <div
@@ -89,15 +65,15 @@ export default function CheckoutModal({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Cabecera */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-stone-100 bg-gradient-to-r from-pink-50 to-amber-50">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-stone-100 bg-gradient-to-r from-amber-50 to-pink-50">
           <div className="flex items-center gap-2">
-            <span className="text-xl">🛍️</span>
+            <FlaskConical className="w-5 h-5 text-amber-600" />
             <div>
               <h2 className="font-heading text-base sm:text-lg font-bold text-stone-900">
-                Compra Rápida Sin Registro
+                Checkout en Modo Pruebas (Sin Pago Real)
               </h2>
               <p className="text-[11px] text-stone-500">
-                Completa solo 3 datos de envío y elige tu medio de pago
+                Pasarela de pagos aún no vinculada • Solo demostración para el administrador
               </p>
             </div>
           </div>
@@ -109,14 +85,26 @@ export default function CheckoutModal({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 max-h-[82vh] overflow-y-auto space-y-4">
+        <form onSubmit={handleSubmitDemoOrder} className="p-6 max-h-[82vh] overflow-y-auto space-y-4">
+          {/* AVISO DE BLOQUEO DE COMPRAS REALES */}
+          <div className="p-3.5 rounded-xl bg-amber-50 border-2 border-amber-300 space-y-1">
+            <div className="flex items-center gap-1.5 text-xs font-extrabold text-amber-900">
+              <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+              <span>Compras Reales Deshabilitadas (Tienda en Fase de Pruebas)</span>
+            </div>
+            <p className="text-[11px] text-amber-800 leading-relaxed">
+              Esta tienda se encuentra en <strong>Modo de Prueba</strong> y aún no tiene vinculada una pasarela bancaria activa. Puedes llenar los 3 datos abajo únicamente para simular cómo recibe el pedido el <strong>Panel de Administrador (/admin)</strong> sin ningún cobro.
+            </p>
+          </div>
+
           {/* Resumen del Total */}
-          <div className="bg-pink-50/70 border border-dashed border-pink-200 p-3.5 rounded-xl flex items-center justify-between">
+          <div className="bg-stone-50 border border-dashed border-stone-200 p-3.5 rounded-xl flex items-center justify-between">
             <div>
-              <span className="text-xs font-bold text-stone-700 block">Total a Pagar:</span>
-              <span className="text-[10px] text-emerald-700 font-semibold flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5" />
-                Pago Seguro • Guest Checkout
+              <span className="text-xs font-bold text-stone-700 block">
+                Valor Simulado del Carrito:
+              </span>
+              <span className="text-[10px] text-stone-500 font-semibold">
+                No se realizará ningún cargo ni transacción
               </span>
             </div>
             <span className="font-heading text-2xl font-bold text-pink-600">
@@ -134,7 +122,7 @@ export default function CheckoutModal({
               required
               value={recipientName}
               onChange={(e) => setRecipientName(e.target.value)}
-              placeholder="Ej. Camila Morales"
+              placeholder="Ej. Cliente de Prueba Sweet House"
               className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-xs text-stone-800 outline-none focus:border-pink-500 focus:bg-white"
             />
           </div>
@@ -169,55 +157,35 @@ export default function CheckoutModal({
             />
           </div>
 
-          {/* Selector de Medio de Pago (Wompi Temporal / WhatsApp) */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-bold text-stone-800">
-                Medio de Pago (Pasarela Wompi / Directo)
-              </label>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold">
-                Modo Sandbox Activo
+          {/* Pasarela de Pagos Bloqueada / No Vinculada */}
+          <div className="p-3 rounded-xl bg-stone-100 border border-stone-200 space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-bold text-stone-700 flex items-center gap-1.5">
+                <Lock className="w-3.5 h-3.5 text-stone-500" />
+                <span>Pasarela de Pagos Online</span>
+              </span>
+              <span className="px-2 py-0.5 rounded-full bg-stone-200 text-stone-600 text-[10px] font-extrabold">
+                No Vinculada Aún
               </span>
             </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {[
-                { id: 'Nequi', label: 'Nequi', icon: Smartphone },
-                { id: 'PSE', label: 'PSE', icon: Building2 },
-                { id: 'Botón Bancolombia', label: 'Bancolombia', icon: Building2 },
-                { id: 'Tarjeta de Crédito/Débito', label: 'Tarjeta', icon: CreditCard },
-                { id: 'WhatsApp', label: 'WhatsApp', icon: MessageCircle },
-              ].map((m) => {
-                const Icon = m.icon;
-                const active = paymentMethod === m.id;
-                return (
-                  <button
-                    key={m.id}
-                    type="button"
-                    onClick={() => setPaymentMethod(m.id)}
-                    className={`flex items-center gap-2 p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
-                      active
-                        ? 'border-pink-500 bg-pink-50 text-pink-700 font-bold shadow-sm'
-                        : 'border-stone-200 bg-stone-50 text-stone-600 hover:bg-white'
-                    }`}
-                  >
-                    <Icon className="w-4 h-4 shrink-0" />
-                    <span className="text-[11px] truncate">{m.label}</span>
-                  </button>
-                );
-              })}
+            <div className="grid grid-cols-4 gap-1.5 opacity-50 pointer-events-none select-none text-[10px] font-bold text-center">
+              <div className="p-2 rounded-lg bg-white border border-stone-200">Nequi 🔒</div>
+              <div className="p-2 rounded-lg bg-white border border-stone-200">PSE 🔒</div>
+              <div className="p-2 rounded-lg bg-white border border-stone-200">Bancolombia 🔒</div>
+              <div className="p-2 rounded-lg bg-white border border-stone-200">Tarjetas 🔒</div>
             </div>
           </div>
 
           <button
             type="submit"
             disabled={isSubmitting}
-            className="candy-btn-gradient w-full py-3.5 text-sm font-bold shadow-lg flex items-center justify-center gap-2 mt-2 cursor-pointer"
+            className="w-full py-3.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs sm:text-sm font-bold shadow-lg flex items-center justify-center gap-2 mt-2 cursor-pointer transition-all"
           >
+            <FlaskConical className="w-4 h-4 text-amber-400" />
             <span>
               {isSubmitting
-                ? 'Confirmando Pago y Stock...'
-                : `🎉 Pagar con ${paymentMethod} ($${total.toFixed(2)})`}
+                ? 'Enviando Simulación al Panel Admin...'
+                : 'Simular Pedido de Prueba (Sin Pago Real)'}
             </span>
           </button>
         </form>

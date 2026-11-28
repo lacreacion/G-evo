@@ -22,6 +22,41 @@ export default function Header() {
 
   return (
     <>
+      {/* Barra Superior de Navegación del Entorno de Pruebas (Tienda + Plataforma Admin + Tarjeta Digital) */}
+      <div className="bg-[#070B14] text-white border-b border-amber-500/30 px-3 py-2 text-xs">
+        <div className="container flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-[10px] font-extrabold uppercase tracking-wider">
+              🔒 Modo Pruebas (Compras Deshabilitadas)
+            </span>
+            <span className="text-[11px] text-gray-300 hidden md:inline">
+              Explora las 3 vistas del ecosistema de pruebas:
+            </span>
+          </div>
+
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <a
+              href="/"
+              className="px-2.5 py-1 rounded-lg bg-pink-500/20 border border-pink-400/40 text-pink-200 font-bold text-[11px] hover:bg-pink-500/30 transition-all"
+            >
+              🍭 1. Tienda Sweet House
+            </a>
+            <a
+              href="/admin"
+              className="px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-bold text-[11px] hover:bg-emerald-500/30 transition-all"
+            >
+              🔐 2. Plataforma Admin
+            </a>
+            <a
+              href="/tarjeta"
+              className="px-2.5 py-1 rounded-lg bg-amber-500/20 border border-amber-400/40 text-amber-300 font-bold text-[11px] hover:bg-amber-500/30 transition-all"
+            >
+              💳 3. Tarjeta Digital (URL &amp; QR)
+            </a>
+          </div>
+        </div>
+      </div>
+
       {/* Franja decorativa de gradiente dulce (sin texto) */}
       <div className="h-1.5 md:h-2 w-full bg-gradient-to-r from-pink-500 via-purple-500 via-cyan-400 to-amber-400" />
 

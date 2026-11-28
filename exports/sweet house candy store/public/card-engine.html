@@ -1,0 +1,2494 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Carlos Mendoza | Tarjeta Digital Interactiva (NFC & QR)</title>
+  <meta name="description" content="Product Design Director & Frontend Architect — Conecta, agenda o guarda mi contacto al instante vía NFC y QR dinámico." />
+  <meta name="theme-color" content="#070709" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Mi Tarjeta G-evo" />
+  <link id="dynamic-pwa-manifest" rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="/icons/gevo-card-icon.svg" />
+  <link rel="apple-touch-icon" href="/icons/gevo-card-icon.svg" />
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            surface: {
+              950: '#070709',
+              900: '#0d0e12',
+              800: '#14161d',
+              700: '#1e202b',
+            },
+            accent: {
+              DEFAULT: '#10b981',
+              glow: 'rgba(16, 185, 129, 0.25)',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- QRCode Generator (Estándar ISO/IEC 18004 con corrección de errores Reed-Solomon) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+
+  <!-- Polyfill condicional para Popover API en navegadores antiguos -->
+  <script type="module">
+    if (!("popover" in HTMLElement.prototype)) {
+      import("https://unpkg.com/@oddbird/popover-polyfill@latest/dist/popover.min.js");
+    }
+  </script>
+
+  <style>
+    /* ==========================================================================
+       1. Modern Web Best Practices: Native <dialog> & Top-Layer Containment
+       ========================================================================== */
+    dialog:modal {
+      overscroll-behavior: contain;
+    }
+    dialog::backdrop {
+      overflow: hidden;
+      overscroll-behavior: contain;
+      background-color: rgba(4, 5, 8, 0.78);
+      backdrop-filter: blur(8px);
+    }
+    /* Evitar que display sobreescriba el estado cerrado del dialog */
+    dialog[open] {
+      display: flex;
+      flex-direction: column;
+      animation: modalFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* ==========================================================================
+       2. Modern Web Best Practices: Popover API Toast Notification
+       ========================================================================== */
+    [popover]:is(:popover-open, .\:popover-open) {
+      display: flex;
+    }
+    #toast-popover {
+      inset: auto 1rem 1.25rem 1rem;
+      margin: 0 auto;
+      max-width: 26rem;
+      transition: opacity 0.25s ease, transform 0.25s ease, overlay 0.25s allow-discrete, display 0.25s allow-discrete;
+    }
+
+    /* ==========================================================================
+       3. Modern Web Best Practices: Deferred Form Validation (:user-invalid)
+       ========================================================================== */
+    .field-hint {
+      display: block;
+      color: #9ca3af;
+      font-size: 0.75rem;
+      margin-bottom: 0.35rem;
+    }
+    .error-msg {
+      display: none;
+      color: #f87171;
+      font-size: 0.75rem;
+      margin-top: 0.375rem;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    input:user-invalid,
+    textarea:user-invalid,
+    input.user-invalid-fallback,
+    textarea.user-invalid-fallback {
+      border-color: #ef4444 !important;
+      background-color: rgba(239, 68, 68, 0.08) !important;
+    }
+    input:user-invalid + .error-msg,
+    textarea:user-invalid + .error-msg,
+    input.user-invalid-fallback + .error-msg,
+    textarea.user-invalid-fallback + .error-msg {
+      display: flex;
+    }
+    input:user-valid,
+    textarea:user-valid,
+    input.user-valid-fallback,
+    textarea.user-valid-fallback {
+      border-color: rgba(16, 185, 129, 0.55) !important;
+    }
+
+    /* ==========================================================================
+       4. Utilidades Visuales, Temas (Normales + Metalizados) & Micro-interacciones
+       ========================================================================== */
+    :root {
+      --theme-primary: #10b981;
+      --theme-text: #34d399;
+      --theme-border: rgba(16, 185, 129, 0.40);
+      --theme-glow-top: rgba(16, 185, 129, 0.16);
+      --theme-glow-side: rgba(99, 102, 241, 0.12);
+      --theme-btn-bg: #10b981;
+      --theme-btn-text: #090a0f;
+      --theme-ring-grad: linear-gradient(135deg, #10b981 0%, #52525b 50%, #6366f1 100%);
+    }
+    body {
+      background-color: #070709;
+      background-image: 
+        radial-gradient(at 50% -10%, var(--theme-glow-top) 0px, transparent 55%),
+        radial-gradient(at 90% 20%, var(--theme-glow-side) 0px, transparent 50%);
+      background-attachment: fixed;
+      transition: background-image 0.35s ease;
+    }
+    .theme-btn-primary {
+      background: var(--theme-btn-bg) !important;
+      color: var(--theme-btn-text) !important;
+      box-shadow: 0 10px 25px -5px var(--theme-glow-top);
+    }
+    .theme-btn-primary:hover {
+      filter: brightness(1.09);
+    }
+    .theme-ring {
+      background: var(--theme-ring-grad) !important;
+    }
+    .theme-accent-text {
+      color: var(--theme-text) !important;
+    }
+    .theme-accent-bg {
+      background-color: var(--theme-primary) !important;
+    }
+    .theme-border-accent {
+      border-color: var(--theme-border) !important;
+    }
+    .glass-card {
+      background: rgba(19, 21, 28, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .tab-panel {
+      animation: tabSlide 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes tabSlide {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    /* Pulso sutil del indicador NFC */
+    @keyframes nfcPulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.25); opacity: 0.35; }
+    }
+    .nfc-pulse {
+      animation: nfcPulse 2.4s infinite ease-in-out;
+    }
+  </style>
+</head>
+
+<body class="text-zinc-100 antialiased selection:bg-emerald-500/30 selection:text-emerald-200 min-h-screen flex flex-col justify-between pb-24 sm:pb-12">
+
+  <!-- ==========================================================================
+       CONTENEDOR PRINCIPAL MOBILE-FIRST (Max-W-MD centrado)
+       ========================================================================== -->
+  <main class="w-full max-w-md mx-auto px-4 pt-4 pb-8 space-y-5">
+
+    <!-- 1. BARRA SUPERIOR (NFC/QR Pill + Acciones Rápidas de QR y Telemetría) -->
+    <header class="flex items-center justify-between gap-2">
+      <!-- Indicador Visual Pill/Badge: NFC & QR Dinámico -->
+      <button
+        type="button"
+        id="btn-simulate-nfc"
+        title="Clic para simular lectura de chip NFC"
+        class="group inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-card hover:border-emerald-500/40 transition-all text-xs font-medium text-zinc-300 active:scale-95"
+      >
+        <span class="relative flex h-2 w-2">
+          <span class="nfc-pulse theme-accent-bg absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative theme-accent-bg inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </span>
+        <i data-lucide="nfc" class="w-3.5 h-3.5 theme-accent-text text-emerald-400"></i>
+        <span>NFC &amp; QR Dinámico</span>
+      </button>
+
+      <div class="flex items-center gap-2">
+        <!-- Contador / Visor de Analytics en Vivo (EXCLUSIVO DUEÑO: Oculto al público general) -->
+        <button
+          type="button"
+          id="btn-open-analytics"
+          aria-label="Ver registro de eventos Analytics (Solo Dueño)"
+          class="hidden items-center gap-1.5 px-2.5 py-1.5 rounded-xl glass-card hover:bg-zinc-800/80 text-xs font-mono text-zinc-400 hover:text-zinc-200 transition"
+        >
+          <i data-lucide="activity" class="w-3.5 h-3.5 text-indigo-400"></i>
+          <span id="analytics-badge-count">1</span>
+        </button>
+
+        <!-- Botón QR Dinámico Modal -->
+        <button
+          type="button"
+          id="btn-open-qr"
+          aria-label="Mostrar código QR del perfil"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl glass-card hover:border-zinc-700 hover:bg-zinc-800/80 text-xs font-medium text-zinc-200 transition active:scale-95"
+        >
+          <i data-lucide="qr-code" class="w-4 h-4 theme-accent-text text-emerald-400"></i>
+          <span>Mi QR</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. TARJETA DE CABECERA Y PERFIL -->
+    <section id="hero-profile-card" class="glass-card rounded-3xl p-6 text-center relative overflow-hidden shadow-2xl shadow-black/60">
+      <!-- CAPA DE LOGO / IMAGEN DE FONDO PERSONALIZABLE DEL DUEÑO (Ocupa toda la tarjeta con overlay legible) -->
+      <div id="hero-cover-layer" class="hidden absolute inset-0 z-0 pointer-events-none">
+        <img
+          id="profile-cover-bg"
+          src=""
+          alt="Fondo o logo corporativo de la tarjeta"
+          class="w-full h-full object-cover opacity-35 scale-105 transition-all duration-500"
+        />
+        <div class="absolute inset-0 bg-gradient-to-b from-surface-950/55 via-surface-900/75 to-surface-950/95"></div>
+      </div>
+
+      <!-- Decoración ambiental superior -->
+      <div id="hero-ambient-glow" class="absolute -top-16 left-1/2 -translate-x-1/2 w-56 h-28 bg-gradient-to-r from-emerald-500/20 via-teal-500/15 to-indigo-500/20 blur-2xl pointer-events-none z-0"></div>
+
+      <!-- BOTÓN DE EDICIÓN EXCLUSIVO PARA EL DUEÑO DE LA TARJETA (Oculto para visitantes públicos) -->
+      <button
+        type="button"
+        id="btn-owner-edit"
+        aria-label="Editar información del perfil"
+        class="hidden absolute top-4 right-4 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-900/90 hover:bg-zinc-800 border theme-border-accent theme-accent-text text-xs font-semibold shadow-lg transition active:scale-95"
+      >
+        <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+        <span>Editar</span>
+      </button>
+
+      <!-- Contenido Frontal sobre el Fondo / Logo -->
+      <div class="relative z-10">
+        <!-- Foto de Perfil Circular con Borde Gradiente Sutil / Metalizado -->
+        <div class="relative inline-block mb-3.5">
+          <div class="p-1 rounded-full theme-ring bg-gradient-to-tr from-emerald-500 via-zinc-600 to-indigo-500 shadow-lg">
+            <img
+              id="profile-avatar"
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=320&q=80"
+              alt="Foto de perfil de Elena Vance"
+              width="96"
+              height="96"
+              class="w-24 h-24 rounded-full object-cover border-2 border-surface-900 bg-surface-800"
+            />
+          </div>
+          <!-- Badge de Verificación / Estado Disponible -->
+          <span
+            title="Verificada • Disponible para proyectos"
+            class="absolute bottom-0.5 right-0.5 flex items-center justify-center w-6 h-6 rounded-full bg-surface-900 border border-zinc-700 theme-accent-text text-emerald-400 shadow"
+          >
+            <i data-lucide="badge-check" class="w-4 h-4"></i>
+          </span>
+        </div>
+
+        <!-- Nombre, Cargo, Empresa -->
+        <h1 class="text-xl font-bold tracking-tight text-white flex items-center justify-center gap-1.5 drop-shadow">
+          <span id="profile-name">Elena Vance</span>
+        </h1>
+        <p class="text-sm font-medium theme-accent-text text-emerald-400 mt-0.5 drop-shadow">
+          <span id="profile-role">Head of Product Design &amp; UI Architecture</span>
+        </p>
+        <p class="text-xs text-zinc-300 flex items-center justify-center gap-1 mt-0.5">
+          <i data-lucide="building-2" class="w-3.5 h-3.5 text-zinc-400"></i>
+          <span id="profile-company">Kinetix Digital Studio</span>
+          <span class="text-zinc-500">•</span>
+          <span id="profile-location">Madrid / Remoto</span>
+        </p>
+
+        <!-- Biografía breve (máximo 2 líneas con line-clamp-2) -->
+        <p id="profile-bio" class="mt-3 text-xs text-zinc-200/95 leading-relaxed line-clamp-2 max-w-xs mx-auto drop-shadow-sm">
+          Diseñando sistemas de diseño escalables y experiencias web interactivas de alto impacto para startups globales.
+        </p>
+
+        <!-- 4. ACCIONES DE CONTACTO RÁPIDO (3 Botones: Guardar en contactos, Instalar App y Llamar) -->
+        <div class="mt-5 grid grid-cols-3 gap-2">
+          <!-- Botón 1: Guardar en Contactos (.vcf) -->
+          <button
+            type="button"
+            id="btn-save-vcard"
+            class="theme-btn-primary w-full inline-flex items-center justify-center gap-1.5 px-2.5 py-3 rounded-2xl bg-emerald-500 text-zinc-950 font-bold text-xs transition active:scale-[0.98]"
+          >
+            <i data-lucide="user-plus" class="w-4 h-4 stroke-[2.25] shrink-0"></i>
+            <span class="leading-tight">Guardar en contactos</span>
+          </button>
+
+          <!-- Botón 2: Instalar App (PWA) -->
+          <button
+            type="button"
+            id="btn-open-wallet"
+            class="w-full inline-flex items-center justify-center gap-1.5 px-2.5 py-3 rounded-2xl bg-zinc-900/90 hover:bg-zinc-800/90 border border-amber-500/40 text-zinc-100 font-semibold text-xs transition active:scale-[0.98]"
+          >
+            <i data-lucide="smartphone" class="w-4 h-4 text-amber-400 shrink-0"></i>
+            <span class="leading-tight">Instalar App</span>
+          </button>
+
+          <!-- Botón 3: Llamar directo -->
+          <a
+            id="btn-hero-call"
+            href="tel:+34600123456"
+            class="w-full inline-flex items-center justify-center gap-1.5 px-2.5 py-3 rounded-2xl bg-zinc-900/90 hover:bg-zinc-800/90 border border-emerald-500/40 text-zinc-100 font-semibold text-xs transition active:scale-[0.98]"
+          >
+            <i data-lucide="phone-call" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+            <span class="leading-tight">Llamar</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. SELECTOR DE MODOS DE PERFIL (Control Segmentado tipo Tabs) -->
+    <nav
+      aria-label="Modos de perfil"
+      role="tablist"
+      class="glass-card p-1.5 rounded-2xl grid grid-cols-3 gap-1"
+    >
+      <button
+        type="button"
+        role="tab"
+        id="tab-btn-social"
+        aria-selected="true"
+        aria-controls="panel-social"
+        data-tab="social"
+        class="tab-trigger flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all bg-zinc-800 text-white shadow-sm"
+      >
+        <i data-lucide="share-2" class="w-3.5 h-3.5 text-emerald-400"></i>
+        <span>Social</span>
+      </button>
+
+      <button
+        type="button"
+        role="tab"
+        id="tab-btn-negocio"
+        aria-selected="false"
+        aria-controls="panel-negocio"
+        data-tab="negocio"
+        class="tab-trigger flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all text-zinc-400 hover:text-zinc-200"
+      >
+        <i data-lucide="briefcase" class="w-3.5 h-3.5"></i>
+        <span>Negocio</span>
+      </button>
+
+      <button
+        type="button"
+        role="tab"
+        id="tab-btn-contacto"
+        aria-selected="false"
+        aria-controls="panel-contacto"
+        data-tab="contacto"
+        class="tab-trigger flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all text-zinc-400 hover:text-zinc-200"
+      >
+        <i data-lucide="send" class="w-3.5 h-3.5"></i>
+        <span>Contacto</span>
+      </button>
+    </nav>
+
+    <!-- ========================================================================
+         VISTA 1: MODO "SOCIAL"
+         ======================================================================== -->
+    <section
+      id="panel-social"
+      role="tabpanel"
+      aria-labelledby="tab-btn-social"
+      class="tab-panel space-y-2.5"
+    >
+      <div class="flex items-center justify-between px-1">
+        <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Redes &amp; Mensajería Directa</h2>
+        <span class="text-[11px] text-zinc-500">Respuesta rápida</span>
+      </div>
+
+      <!-- LinkedIn -->
+      <a
+        href="https://linkedin.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-social="linkedin"
+        class="social-link glass-card hover:border-zinc-600/80 hover:bg-zinc-800/60 p-3.5 rounded-2xl flex items-center justify-between group transition-all"
+      >
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-[#0A66C2]/15 border border-[#0A66C2]/30 flex items-center justify-center text-[#3894f0] group-hover:scale-105 transition">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-zinc-100">LinkedIn</p>
+            <p class="text-xs text-zinc-400">/in/elenavance-design • +14k seguidores</p>
+          </div>
+        </div>
+        <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-500 group-hover:text-zinc-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition"></i>
+      </a>
+
+      <!-- WhatsApp -->
+      <a
+        href="https://wa.me/34600123456?text=Hola%20Elena,%20acabo%20de%20escanear%20tu%20tarjeta%20digital"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-social="whatsapp"
+        class="social-link glass-card hover:border-emerald-500/40 hover:bg-zinc-800/60 p-3.5 rounded-2xl flex items-center justify-between group transition-all"
+      >
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M16.6 14c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.7-.3-1.4-.7-2-1.2-.5-.5-1-1.1-1.4-1.7-.1-.2 0-.4.1-.5.1-.1.2-.3.4-.4.1-.1.2-.3.2-.4.1-.1.1-.3 0-.4-.1-.1-.6-1.3-.8-1.8-.1-.7-.3-.7-.5-.7h-.5c-.2 0-.5.2-.6.3-.6.6-.9 1.3-.9 2.1.1.9.4 1.8 1 2.6 1.1 1.6 2.5 2.9 4.2 3.7.5.2.9.4 1.4.5.5.2 1 .2 1.6.1.7-.1 1.3-.6 1.7-1.2.2-.4.2-.8.1-1.2l-.4-.2m2.5-9.1C15.2 1 8.9 1 5 4.9c-3.2 3.2-3.8 8.1-1.6 12L2 22l5.3-1.4c1.5.8 3.1 1.2 4.7 1.2 5.5 0 9.9-4.4 9.9-9.9.1-2.6-1-5.1-2.8-7m-2.7 14c-1.3.8-2.8 1.3-4.4 1.3-1.5 0-2.9-.4-4.2-1.1l-.3-.2-3.1.8.8-3-.2-.3c-2.4-4-1.2-9 2.7-11.5S16.6 3.7 19 7.5c2.4 3.9 1.3 9-2.6 11.4"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-zinc-100">WhatsApp Directo</p>
+            <p class="text-xs text-zinc-400">Iniciar conversación ahora</p>
+          </div>
+        </div>
+        <span class="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          En línea
+        </span>
+      </a>
+
+      <!-- Instagram -->
+      <a
+        href="https://instagram.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-social="instagram"
+        class="social-link glass-card hover:border-zinc-600/80 hover:bg-zinc-800/60 p-3.5 rounded-2xl flex items-center justify-between group transition-all"
+      >
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-pink-500/15 border border-pink-500/30 flex items-center justify-center text-pink-400 group-hover:scale-105 transition">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-zinc-100">Instagram</p>
+            <p class="text-xs text-zinc-400">@elenavance.ui • Behind the scenes &amp; UI</p>
+          </div>
+        </div>
+        <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-500 group-hover:text-zinc-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition"></i>
+      </a>
+
+      <!-- X / Twitter -->
+      <a
+        href="https://x.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-social="x_twitter"
+        class="social-link glass-card hover:border-zinc-600/80 hover:bg-zinc-800/60 p-3.5 rounded-2xl flex items-center justify-between group transition-all"
+      >
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-zinc-700/40 border border-zinc-600/40 flex items-center justify-center text-zinc-200 group-hover:scale-105 transition">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-zinc-100">X (Twitter)</p>
+            <p class="text-xs text-zinc-400">@elenavance_dev • Hilos de Arquitectura UI</p>
+          </div>
+        </div>
+        <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-500 group-hover:text-zinc-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition"></i>
+      </a>
+
+      <!-- Facebook -->
+      <a
+        href="https://facebook.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-social="facebook"
+        class="social-link glass-card hover:border-[#1877F2]/40 hover:bg-zinc-800/60 p-3.5 rounded-2xl flex items-center justify-between group transition-all"
+      >
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-[#1877F2]/15 border border-[#1877F2]/30 flex items-center justify-center text-[#4599ff] group-hover:scale-105 transition">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-zinc-100">Facebook</p>
+            <p class="text-xs text-zinc-400">/ElenaVanceStudio • Página Oficial &amp; Comunidad</p>
+          </div>
+        </div>
+        <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-500 group-hover:text-zinc-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition"></i>
+      </a>
+    </section>
+
+    <!-- ========================================================================
+         VISTA 2: MODO "NEGOCIO"
+         ======================================================================== -->
+    <section
+      id="panel-negocio"
+      role="tabpanel"
+      aria-labelledby="tab-btn-negocio"
+      class="tab-panel space-y-3 hidden"
+    >
+      <div class="flex items-center justify-between px-1">
+        <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Recursos Ejecutivos &amp; Agenda</h2>
+        <span class="text-[11px] text-emerald-400 font-medium">Q4 Agenda Abierta</span>
+      </div>
+
+      <!-- 1. Botón para agendar reunión en Calendly / Google Calendar -->
+      <a
+        href="https://calendly.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-business="schedule_meeting"
+        class="business-action block glass-card hover:border-emerald-500/40 p-4 rounded-2xl transition-all group relative overflow-hidden"
+      >
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-start gap-3.5">
+            <div class="w-11 h-11 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0 mt-0.5">
+              <i data-lucide="calendar-clock" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <span class="inline-block text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 mb-1">
+                Calendly / Google Calendar
+              </span>
+              <h3 class="text-sm font-semibold text-white group-hover:text-emerald-300 transition">
+                Agendar sesión de descubrimiento (25 min)
+              </h3>
+              <p class="text-xs text-zinc-400 mt-0.5">
+                Sincronización automática de huso horario y enlace a Google Meet.
+              </p>
+            </div>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-500 group-hover:text-emerald-400 group-hover:translate-x-0.5 transition shrink-0 mt-1"></i>
+        </div>
+      </a>
+
+      <!-- 2. Enlace a Portafolio Interactivo -->
+      <a
+        href="https://kinetix.studio/portfolio"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-business="portfolio_view"
+        class="business-action block glass-card hover:border-indigo-500/40 p-4 rounded-2xl transition-all group"
+      >
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3.5">
+            <div class="w-11 h-11 rounded-xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shrink-0">
+              <i data-lucide="layers" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-semibold text-white group-hover:text-indigo-300 transition">
+                Portafolio &amp; Casos de Estudio 2026
+              </h3>
+              <p class="text-xs text-zinc-400 mt-0.5">
+                Fintech, SaaS Design Systems y Micro-interacciones Next.js
+              </p>
+            </div>
+          </div>
+          <i data-lucide="external-link" class="w-4 h-4 text-zinc-500 group-hover:text-indigo-400 transition shrink-0"></i>
+        </div>
+      </a>
+
+      <!-- 3. Descarga Directa de Catálogo Corporativo en PDF -->
+      <button
+        type="button"
+        id="btn-download-pdf"
+        data-business="catalog_pdf_download"
+        class="business-action w-full text-left glass-card hover:border-amber-500/40 p-4 rounded-2xl transition-all group flex items-center justify-between gap-3"
+      >
+        <div class="flex items-center gap-3.5">
+          <div class="w-11 h-11 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+            <i data-lucide="file-down" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold text-white group-hover:text-amber-300 transition">
+              Descargar Dossier &amp; Catálogo de Servicios
+            </h3>
+            <p class="text-xs text-zinc-400 mt-0.5">
+              PDF Ejecutivo • Tarifas, metodología y entregables (1.4 MB)
+            </p>
+          </div>
+        </div>
+        <span class="px-2.5 py-1 rounded-lg bg-zinc-800 border border-zinc-700 text-[11px] font-mono text-zinc-300 group-hover:bg-amber-500 group-hover:text-zinc-950 group-hover:border-amber-400 transition">
+          PDF
+        </span>
+      </button>
+    </section>
+
+    <!-- ========================================================================
+         VISTA 3: MODO "CONTACTO" (Intercambio Bidireccional / Lead Capture)
+         ======================================================================== -->
+    <section
+      id="panel-contacto"
+      role="tabpanel"
+      aria-labelledby="tab-btn-contacto"
+      class="tab-panel hidden"
+    >
+      <div class="glass-card rounded-3xl p-5">
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <h2 class="text-sm font-bold text-white">Intercambio de Contacto</h2>
+            <p class="text-xs text-zinc-400">Déjame tus datos para enviarte un mensaje de vuelta.</p>
+          </div>
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+            <i data-lucide="Handshake" class="w-4 h-4"></i>
+          </div>
+        </div>
+
+        <!-- Formulario con validación diferida (:user-invalid) -->
+        <form id="lead-capture-form" class="space-y-3.5" novalidate>
+          <!-- Campo: Nombre Completo -->
+          <div>
+            <label for="lead-name" class="block text-xs font-medium text-zinc-200 mb-1">
+              Nombre completo <span class="text-emerald-400">*</span>
+            </label>
+            <span id="name-hint" class="field-hint">Tu nombre y apellido o empresa</span>
+            <input
+              type="text"
+              id="lead-name"
+              name="name"
+              required
+              minlength="2"
+              autocomplete="name"
+              placeholder="Ej. Javier Morales"
+              aria-describedby="name-hint"
+              aria-errormessage="name-error"
+              class="w-full px-3.5 py-2.5 rounded-xl bg-surface-900/90 border border-zinc-800 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500 transition"
+            />
+            <div id="name-error" class="error-msg" role="alert">
+              <span aria-hidden="true">⚠️</span> Ingresa tu nombre (mínimo 2 caracteres).
+            </div>
+          </div>
+
+          <!-- Campo: Teléfono / WhatsApp -->
+          <div>
+            <label for="lead-phone" class="block text-xs font-medium text-zinc-200 mb-1">
+              Teléfono / WhatsApp <span class="text-emerald-400">*</span>
+            </label>
+            <span id="phone-hint" class="field-hint">Incluye código de país si aplica (ej. +34 600 000 000)</span>
+            <input
+              type="tel"
+              id="lead-phone"
+              name="phone"
+              required
+              pattern="[\+]?[0-9\s\-\(\)]{7,18}"
+              autocomplete="tel"
+              placeholder="+34 612 345 678"
+              aria-describedby="phone-hint"
+              aria-errormessage="phone-error"
+              class="w-full px-3.5 py-2.5 rounded-xl bg-surface-900/90 border border-zinc-800 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500 transition"
+            />
+            <div id="phone-error" class="error-msg" role="alert">
+              <span aria-hidden="true">⚠️</span> Introduce un número de teléfono o WhatsApp válido.
+            </div>
+          </div>
+
+          <!-- Campo: Correo Electrónico -->
+          <div>
+            <label for="lead-email" class="block text-xs font-medium text-zinc-200 mb-1">
+              Correo corporativo o personal <span class="text-emerald-400">*</span>
+            </label>
+            <span id="email-hint" class="field-hint">Formato: nombre@empresa.com</span>
+            <input
+              type="email"
+              id="lead-email"
+              name="email"
+              required
+              autocomplete="email"
+              placeholder="javier@empresa.com"
+              aria-describedby="email-hint"
+              aria-errormessage="email-error"
+              class="w-full px-3.5 py-2.5 rounded-xl bg-surface-900/90 border border-zinc-800 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500 transition"
+            />
+            <div id="email-error" class="error-msg" role="alert">
+              <span aria-hidden="true">⚠️</span> Introduce una dirección de correo electrónico válida.
+            </div>
+          </div>
+
+          <!-- Campo: Nota Breve -->
+          <div>
+            <label for="lead-note" class="block text-xs font-medium text-zinc-200 mb-1">
+              Nota breve o contexto <span class="text-zinc-500 font-normal">(opcional)</span>
+            </label>
+            <textarea
+              id="lead-note"
+              name="note"
+              rows="2"
+              maxlength="180"
+              placeholder="Nos conocimos en el evento Tech Summit..."
+              class="w-full px-3.5 py-2 rounded-xl bg-surface-900/90 border border-zinc-800 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500 transition resize-none"
+            ></textarea>
+          </div>
+
+          <!-- Botón de Envío -->
+          <button
+            type="submit"
+            id="btn-submit-lead"
+            class="theme-btn-primary w-full py-3 px-4 rounded-xl bg-emerald-500 text-zinc-950 font-semibold text-sm flex items-center justify-center gap-2 transition active:scale-[0.99]"
+          >
+            <i data-lucide="send" class="w-4 h-4"></i>
+            <span>Enviar mis datos a Elena</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Footer Minimalista con Estado de Integración Next.js y Acceso Dueño -->
+    <footer class="pt-3 text-center space-y-2">
+      <p class="text-[11px] text-zinc-500">
+        Tarjeta Digital Interactiva • Lista para rutas dinámicas en <span class="text-zinc-400 font-mono">Next.js</span>
+      </p>
+      <div class="flex items-center justify-center gap-2">
+        <button
+          type="button"
+          id="btn-toggle-owner-mode"
+          class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 text-[11px] text-zinc-400 hover:text-zinc-200 transition"
+        >
+          <i data-lucide="lock" class="w-3 h-3 text-amber-400"></i>
+          <span id="owner-mode-label">Acceso Dueño (Activar edición)</span>
+        </button>
+      </div>
+    </footer>
+  </main>
+
+  <!-- ==========================================================================
+       BOTÓN SECUNDARIO FLOTANTE (FAB): "Compartir mis datos"
+       Salta directamente a la pestaña Contacto y enfoca el primer campo
+       ========================================================================== -->
+  <div id="floating-cta-wrapper" class="fixed bottom-4 inset-x-0 z-30 flex justify-center px-4 pointer-events-none">
+    <button
+      type="button"
+      id="btn-floating-share-lead"
+      class="pointer-events-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-zinc-900/95 hover:bg-zinc-800 text-zinc-100 border theme-border-accent shadow-xl shadow-black/80 backdrop-blur-md text-xs font-semibold transition-all hover:scale-105 active:scale-95"
+    >
+      <span class="w-2 h-2 rounded-full theme-accent-bg bg-emerald-400 animate-ping"></span>
+      <i data-lucide="arrow-left-right" class="w-3.5 h-3.5 theme-accent-text text-emerald-400"></i>
+      <span>Compartir mis datos con Elena</span>
+    </button>
+  </div>
+
+  <!-- ==========================================================================
+       5. MODAL NATIVO (<dialog>): QR DINÁMICO + WEB SHARE API
+       ========================================================================== -->
+  <dialog
+    id="modal-qr"
+    closedby="any"
+    aria-labelledby="modal-qr-title"
+    class="w-[92vw] max-w-sm rounded-3xl glass-card bg-surface-900 text-zinc-100 p-6 shadow-2xl border border-zinc-800 m-auto"
+  >
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-2">
+        <i data-lucide="qr-code" class="w-5 h-5 text-emerald-400"></i>
+        <h2 id="modal-qr-title" class="text-base font-bold text-white">Código QR Dinámico</h2>
+      </div>
+      <form method="dialog">
+        <button
+          type="submit"
+          aria-label="Cerrar modal QR"
+          autofocus
+          class="p-1.5 rounded-xl bg-zinc-800/80 hover:bg-zinc-700 text-zinc-400 hover:text-white transition"
+        >
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </form>
+    </div>
+
+    <div class="text-center space-y-4">
+      <!-- Contenedor del QR SVG Nítido -->
+      <div class="bg-white p-4 rounded-2xl inline-block shadow-inner mx-auto">
+        <div id="qr-svg-container" class="w-44 h-44 flex items-center justify-center">
+          <!-- Generado dinámicamente en SVG para máxima nitidez sin dependencias externas -->
+        </div>
+      </div>
+
+      <div>
+        <p class="text-sm font-semibold text-white">Elena Vance • Kinetix Studio</p>
+        <p id="qr-profile-url" class="text-xs font-mono text-emerald-400 truncate max-w-[250px] mx-auto mt-0.5">
+          https://kinetix.studio/card/elena-vance
+        </p>
+      </div>
+
+      <!-- Acciones: Web Share API + Copiar Enlace -->
+      <div class="grid grid-cols-2 gap-2 pt-1">
+        <button
+          type="button"
+          id="btn-native-share"
+          class="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold text-xs transition"
+        >
+          <i data-lucide="share" class="w-4 h-4"></i>
+          <span>Compartir</span>
+        </button>
+        <button
+          type="button"
+          id="btn-copy-link"
+          class="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-medium text-xs border border-zinc-700 transition"
+        >
+          <i data-lucide="copy" class="w-4 h-4"></i>
+          <span>Copiar URL</span>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ==========================================================================
+       MODAL NATIVO (<dialog>): APPLE WALLET / GOOGLE WALLET PASS
+       ========================================================================== -->
+  <dialog
+    id="modal-wallet"
+    closedby="any"
+    aria-labelledby="modal-wallet-title"
+    class="w-[92vw] max-w-sm rounded-3xl glass-card bg-surface-900 text-zinc-100 p-6 shadow-2xl border border-zinc-800 m-auto"
+  >
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-2">
+        <i data-lucide="wallet-cards" class="w-5 h-5 text-indigo-400"></i>
+        <h2 id="modal-wallet-title" class="text-base font-bold text-white">Pase Digital Wallet</h2>
+      </div>
+      <form method="dialog">
+        <button
+          type="submit"
+          aria-label="Cerrar modal Wallet"
+          autofocus
+          class="p-1.5 rounded-xl bg-zinc-800/80 hover:bg-zinc-700 text-zinc-400 hover:text-white transition"
+        >
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- Vista previa de la tarjeta Wallet -->
+    <div class="rounded-2xl p-4 bg-gradient-to-br from-zinc-900 via-zinc-800 to-indigo-950 border border-zinc-700/80 shadow-lg mb-4 text-left">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-[10px] font-mono uppercase tracking-widest text-indigo-300">KINETIX PASS • NFC</span>
+        <i data-lucide="wifi" class="w-4 h-4 text-emerald-400 rotate-90"></i>
+      </div>
+      <p class="text-sm font-bold text-white">Elena Vance</p>
+      <p class="text-xs text-zinc-400">Head of Product Design</p>
+      <div class="mt-3 pt-2.5 border-t border-zinc-700/60 flex items-center justify-between text-[11px] text-zinc-400">
+        <span>ID: KNX-2026-EV</span>
+        <span class="text-emerald-400 font-mono">● Sincronizado</span>
+      </div>
+    </div>
+
+    <div class="space-y-2.5 mb-3">
+      <button
+        type="button"
+        id="btn-install-pwa-now"
+        class="w-full py-3 px-4 rounded-xl font-bold text-xs text-zinc-950 flex items-center justify-center gap-2 shadow-lg transition active:scale-95"
+        style="background: linear-gradient(135deg, #FFCC00 0%, #10B981 100%);"
+      >
+        <i data-lucide="download" class="w-4 h-4"></i>
+        <span>📲 Instalar App en Pantalla de Inicio</span>
+      </button>
+
+      <div id="pwa-install-guide" class="rounded-2xl bg-surface-950/90 border border-emerald-500/30 p-3 text-left text-[11px] text-zinc-300 space-y-1.5">
+        <p class="font-bold text-emerald-400 flex items-center gap-1.5">
+          <span>✨ ¿Cómo fijarla como App en tu celular?</span>
+        </p>
+        <p class="leading-relaxed">
+          • <strong class="text-white">En Android (Chrome):</strong> Toca el botón dorado de arriba o abre el menú <strong class="text-amber-300">⋮</strong> (arriba a la derecha) y elige <strong class="text-white">&ldquo;Instalar aplicación&rdquo;</strong> o <strong class="text-white">&ldquo;Agregar a pantalla principal&rdquo;</strong>.
+        </p>
+        <p class="leading-relaxed">
+          • <strong class="text-white">En iPhone (Safari):</strong> Toca el icono <strong class="text-amber-300">Compartir [↑]</strong> en la barra inferior y selecciona <strong class="text-white">&ldquo;Agregar a inicio&rdquo;</strong>.
+        </p>
+      </div>
+    </div>
+
+    <div class="space-y-2 pt-2 border-t border-zinc-800/80">
+      <button
+        type="button"
+        data-wallet-provider="apple_wallet"
+        class="wallet-provider-btn w-full py-2.5 px-4 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 font-semibold text-xs flex items-center justify-center gap-2 transition"
+      >
+        <i data-lucide="smartphone" class="w-4 h-4"></i>
+        <span>Añadir a Apple Wallet (.pkpass)</span>
+      </button>
+      <button
+        type="button"
+        data-wallet-provider="google_wallet"
+        class="wallet-provider-btn w-full py-2.5 px-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-700 font-semibold text-xs flex items-center justify-center gap-2 transition"
+      >
+        <i data-lucide="credit-card" class="w-4 h-4 text-emerald-400"></i>
+        <span>Guardar en Google Wallet</span>
+      </button>
+    </div>
+  </dialog>
+
+  <!-- ==========================================================================
+       6. MODAL NATIVO (<dialog>): CONSOLA DE MÉTRICAS Y ANALYTICS EN VIVO
+       ========================================================================== -->
+  <dialog
+    id="modal-analytics"
+    closedby="any"
+    aria-labelledby="modal-analytics-title"
+    class="w-[92vw] max-w-md rounded-3xl glass-card bg-surface-900 text-zinc-100 p-5 shadow-2xl border border-zinc-800 m-auto"
+  >
+    <div class="flex items-center justify-between mb-3">
+      <div class="flex items-center gap-2">
+        <i data-lucide="bar-chart-3" class="w-5 h-5 text-indigo-400"></i>
+        <h2 id="modal-analytics-title" class="text-sm font-bold text-white">Telemetría &amp; Eventos (GA4 / Meta Pixel)</h2>
+      </div>
+      <form method="dialog">
+        <button
+          type="submit"
+          aria-label="Cerrar panel de métricas"
+          autofocus
+          class="p-1.5 rounded-xl bg-zinc-800/80 hover:bg-zinc-700 text-zinc-400 hover:text-white transition"
+        >
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </form>
+    </div>
+
+    <p class="text-xs text-zinc-400 mb-3">
+      Cada interacción se almacena en <code class="font-mono text-emerald-400">window.CardAnalytics.events</code> y hace puente automático con <code class="font-mono text-zinc-300">gtag()</code>, <code class="font-mono text-zinc-300">fbq()</code> y <code class="font-mono text-zinc-300">window.parent.postMessage</code> para Next.js.
+    </p>
+
+    <div
+      id="analytics-log-list"
+      class="bg-surface-950 border border-zinc-800/90 rounded-2xl p-3 h-52 overflow-y-auto font-mono text-[11px] space-y-2"
+    >
+      <!-- Eventos renderizados dinámicamente -->
+    </div>
+
+    <div class="mt-3 flex items-center justify-between">
+      <button
+        type="button"
+        id="btn-trigger-nfc-test"
+        class="text-xs text-emerald-400 hover:underline inline-flex items-center gap-1"
+      >
+        <i data-lucide="zap" class="w-3.5 h-3.5"></i> Disparar 'nfc_tap'
+      </button>
+      <span class="text-[11px] text-zinc-500 font-mono">Revisa también DevTools Console</span>
+    </div>
+  </dialog>
+
+  <!-- ==========================================================================
+       7. MODAL NATIVO (<dialog>): PIN DE DESBLOQUEO DE DUEÑO
+       ========================================================================== -->
+  <dialog
+    id="modal-owner-auth"
+    closedby="any"
+    aria-labelledby="modal-owner-auth-title"
+    class="w-[92vw] max-w-xs rounded-3xl glass-card bg-surface-900 text-zinc-100 p-6 shadow-2xl border border-zinc-800 m-auto"
+  >
+    <div class="flex items-center justify-between mb-3">
+      <div class="flex items-center gap-2">
+        <i data-lucide="shield-check" class="w-5 h-5 text-emerald-400"></i>
+        <h2 id="modal-owner-auth-title" class="text-sm font-bold text-white">Verificación de Dueño</h2>
+      </div>
+      <form method="dialog">
+        <button
+          type="submit"
+          aria-label="Cerrar acceso dueño"
+          class="p-1.5 rounded-xl bg-zinc-800/80 hover:bg-zinc-700 text-zinc-400 hover:text-white transition"
+        >
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </form>
+    </div>
+
+    <p class="text-xs text-zinc-400 mb-4">
+      Ingresa la <strong class="text-emerald-400">Clave / PIN de Propietario</strong> que te entregó <strong class="text-zinc-200">G-evo.</strong> para habilitar el botón <strong class="text-zinc-200">Editar</strong> desde tu celular o computador.
+    </p>
+
+    <form id="owner-auth-form" class="space-y-3">
+      <input
+        type="password"
+        id="owner-pin-input"
+        inputmode="numeric"
+        maxlength="8"
+        required
+        placeholder="••••"
+        class="w-full text-center tracking-[0.4em] font-mono text-lg py-2.5 rounded-xl bg-surface-950 border border-zinc-800 text-white focus:outline-none focus:border-emerald-500"
+      />
+      <button
+        type="submit"
+        class="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold text-xs transition"
+      >
+        Desbloquear Modo Edición
+      </button>
+    </form>
+  </dialog>
+
+  <!-- ==========================================================================
+       8. MODAL NATIVO (<dialog>): EDITOR DE PERFIL (EXCLUSIVO DUEÑO)
+       ========================================================================== -->
+  <dialog
+    id="modal-edit-profile"
+    closedby="any"
+    aria-labelledby="modal-edit-profile-title"
+    class="w-[94vw] max-w-md rounded-3xl glass-card bg-surface-900 text-zinc-100 p-5 shadow-2xl border border-zinc-800 m-auto max-h-[90vh] overflow-y-auto"
+  >
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-2">
+        <i data-lucide="user-Check" class="w-5 h-5 text-emerald-400"></i>
+        <h2 id="modal-edit-profile-title" class="text-base font-bold text-white">Editar mi Tarjeta Digital</h2>
+      </div>
+      <form method="dialog">
+        <button
+          type="submit"
+          aria-label="Cerrar editor de perfil"
+          class="p-1.5 rounded-xl bg-zinc-800/80 hover:bg-zinc-700 text-zinc-400 hover:text-white transition"
+        >
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </form>
+    </div>
+
+    <form id="edit-profile-form" class="space-y-3 text-left">
+      <div class="grid grid-cols-2 gap-2.5">
+        <div>
+          <label for="edit-first-name" class="block text-[11px] font-medium text-zinc-300 mb-1">Nombre</label>
+          <input
+            type="text"
+            id="edit-first-name"
+            required
+            class="w-full px-3 py-2 rounded-xl bg-surface-950 border border-zinc-800 text-xs text-white focus:outline-none focus:border-emerald-500"
+          />
+        </div>
+        <div>
+          <label for="edit-last-name" class="block text-[11px] font-medium text-zinc-300 mb-1">Apellido</label>
+          <input
+            type="text"
+            id="edit-last-name"
+            required
+            class="w-full px-3 py-2 rounded-xl bg-surface-950 border border-zinc-800 text-xs text-white focus:outline-none focus:border-emerald-500"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label for="edit-title" class="block text-[11px] font-medium text-zinc-300 mb-1">Cargo / Profesión</label>
+        <input
+          type="text"
+          id="edit-title"
+          required
+          class="w-full px-3 py-2 rounded-xl bg-surface-950 border border-zinc-800 text-xs text-white focus:outline-none focus:border-emerald-500"
+        />
+      </div>
+
+      <div class="grid grid-cols-2 gap-2.5">
+        <div>
+          <label for="edit-company" class="block text-[11px] font-medium text-zinc-300 mb-1">Empresa</label>
+          <input
+            type="text"
+            id="edit-company"
+            required
+            class="w-full px-3 py-2 rounded-xl bg-surface-950 border border-zinc-800 text-xs text-white focus:outline-none focus:border-emerald-500"
+          />
+        </div>
+        <div>
+          <label for="edit-location" class="block text-[11px] font-medium text-zinc-300 mb-1">Ubicación</label>
+          <input
+            type="text"
+            id="edit-location"
+            required
+            class="w-full px-3 py-2 rounded-xl bg-surface-950 border border-zinc-800 text-xs text-white focus:outline-none focus:border-emerald-500"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label for="edit-bio" class="block text-[11px] font-medium text-zinc-300 mb-1">Biografía breve (máx. 2 líneas)</label>
+        <textarea
+          id="edit-bio"
+          rows="2"
+          maxlength="160"
+          required
+          class="w-full px-3 py-2 rounded-xl bg-surface-950 border border-zinc-800 text-xs text-white focus:outline-none focus:border-emerald-500 resize-none"
+        ></textarea>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2.5">
+        <div>
+          <label for="edit-phone" class="block text-[11px] font-medium text-zinc-300 mb-1">Teléfono / WhatsApp</label>
+          <input
+            type="tel"
+            id="edit-phone"
+            required
+            class="w-full px-3 py-2 rounded-xl bg-surface-950 border border-zinc-800 text-xs text-white focus:outline-none focus:border-emerald-500"
+          />
+        </div>
+        <div>
+          <label for="edit-email" class="block text-[11px] font-medium text-zinc-300 mb-1">Correo electrónico</label>
+          <input
+            type="email"
+            id="edit-email"
+            required
+            class="w-full px-3 py-2 rounded-xl bg-surface-950 border border-zinc-800 text-xs text-white focus:outline-none focus:border-emerald-500"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label for="edit-avatar" class="block text-[11px] font-medium text-zinc-300 mb-1">1. Foto o Logo Circular (Círculo de perfil)</label>
+        <div class="flex gap-2">
+          <input
+            type="url"
+            id="edit-avatar"
+            placeholder="https://... (o sube foto de tu galería)"
+            class="flex-1 px-3 py-2 rounded-xl bg-surface-950 border border-zinc-800 text-xs text-white focus:outline-none focus:border-emerald-500"
+          />
+          <label
+            for="edit-avatar-file"
+            class="cursor-pointer inline-flex items-center justify-center px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-xs text-zinc-200 shrink-0 transition"
+          >
+            <i data-lucide="upload" class="w-3.5 h-3.5 mr-1"></i> Subir
+          </label>
+          <input type="file" id="edit-avatar-file" accept="image/*" class="hidden" />
+        </div>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between mb-1">
+          <label for="edit-cover-bg" class="block text-[11px] font-medium text-zinc-300">
+            2. Logo o Imagen de Fondo de la Tarjeta
+          </label>
+          <button
+            type="button"
+            id="btn-clear-cover-bg"
+            class="text-[10px] text-rose-400 hover:underline hidden"
+          >
+            Quitar fondo
+          </button>
+        </div>
+        <div class="flex gap-2">
+          <input
+            type="url"
+            id="edit-cover-bg"
+            placeholder="https://... (o sube logo/banner de fondo)"
+            class="flex-1 px-3 py-2 rounded-xl bg-surface-950 border border-zinc-800 text-xs text-white focus:outline-none focus:border-emerald-500"
+          />
+          <label
+            for="edit-cover-file"
+            class="cursor-pointer inline-flex items-center justify-center px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-xs text-zinc-200 shrink-0 transition"
+          >
+            <i data-lucide="image-plus" class="w-3.5 h-3.5 mr-1"></i> Fondo
+          </label>
+          <input type="file" id="edit-cover-file" accept="image/*" class="hidden" />
+        </div>
+        <p class="text-[10px] text-zinc-500 mt-1">
+          Ocupa todo el fondo del bloque principal detrás de tu foto y nombre con contraste automático.
+        </p>
+      </div>
+
+      <!-- Redes Sociales y Enlaces de Negocio (Personalizables por el Cliente) -->
+      <div class="pt-2 border-t border-zinc-800/80 space-y-2">
+        <p class="text-[11px] font-semibold text-emerald-400">Enlaces de Redes &amp; Negocio</p>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label for="edit-instagram" class="block text-[10px] text-zinc-400 mb-0.5">Instagram URL o @usuario</label>
+            <input type="text" id="edit-instagram" placeholder="https://instagram.com/..." class="w-full px-2.5 py-1.5 rounded-xl bg-surface-950 border border-zinc-800 text-xs text-white focus:outline-none focus:border-emerald-500" />
+          </div>
+          <div>
+            <label for="edit-facebook" class="block text-[10px] text-zinc-400 mb-0.5">Facebook URL</label>
+            <input type="text" id="edit-facebook" placeholder="https://facebook.com/..." class="w-full px-2.5 py-1.5 rounded-xl bg-surface-950 border border-zinc-800 text-xs text-white focus:outline-none focus:border-emerald-500" />
+          </div>
+          <div>
+            <label for="edit-linkedin" class="block text-[10px] text-zinc-400 mb-0.5">LinkedIn URL</label>
+            <input type="text" id="edit-linkedin" placeholder="https://linkedin.com/in/..." class="w-full px-2.5 py-1.5 rounded-xl bg-surface-950 border border-zinc-800 text-xs text-white focus:outline-none focus:border-emerald-500" />
+          </div>
+          <div>
+            <label for="edit-portfolio" class="block text-[10px] text-zinc-400 mb-0.5">Web / Catálogo / Portafolio</label>
+            <input type="text" id="edit-portfolio" placeholder="https://..." class="w-full px-2.5 py-1.5 rounded-xl bg-surface-950 border border-zinc-800 text-xs text-white focus:outline-none focus:border-emerald-500" />
+          </div>
+        </div>
+      </div>
+
+      <!-- SELECTOR DE TEMAS Y ACABADOS (Colores Normales + Colores Metalizados) -->
+      <div class="pt-1 border-t border-zinc-800/80 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <label class="text-[11px] font-semibold text-zinc-200 flex items-center gap-1.5">
+            <i data-lucide="palette" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span>Estilo y Color de Tarjeta</span>
+          </label>
+          <span id="selected-theme-label" class="text-[10px] font-mono text-emerald-400">Esmeralda</span>
+        </div>
+
+        <!-- Colores Sólidos / Normales -->
+        <div>
+          <p class="text-[10px] uppercase tracking-wider text-zinc-500 mb-1.5 font-semibold">Colores Normales (Sólidos)</p>
+          <div class="grid grid-cols-4 gap-2" id="theme-swatches-solid">
+            <button
+              type="button"
+              data-theme-key="emerald"
+              class="theme-swatch-btn flex items-center gap-1.5 p-1.5 rounded-xl bg-surface-950 border border-zinc-800 hover:border-zinc-600 text-[11px] text-zinc-200 transition"
+            >
+              <span class="w-4 h-4 rounded-full bg-emerald-500 shrink-0"></span>
+              <span class="truncate">Esmeralda</span>
+            </button>
+            <button
+              type="button"
+              data-theme-key="cobalt"
+              class="theme-swatch-btn flex items-center gap-1.5 p-1.5 rounded-xl bg-surface-950 border border-zinc-800 hover:border-zinc-600 text-[11px] text-zinc-200 transition"
+            >
+              <span class="w-4 h-4 rounded-full bg-blue-500 shrink-0"></span>
+              <span class="truncate">Cobalto</span>
+            </button>
+            <button
+              type="button"
+              data-theme-key="violet"
+              class="theme-swatch-btn flex items-center gap-1.5 p-1.5 rounded-xl bg-surface-950 border border-zinc-800 hover:border-zinc-600 text-[11px] text-zinc-200 transition"
+            >
+              <span class="w-4 h-4 rounded-full bg-purple-500 shrink-0"></span>
+              <span class="truncate">Violeta</span>
+            </button>
+            <button
+              type="button"
+              data-theme-key="crimson"
+              class="theme-swatch-btn flex items-center gap-1.5 p-1.5 rounded-xl bg-surface-950 border border-zinc-800 hover:border-zinc-600 text-[11px] text-zinc-200 transition"
+            >
+              <span class="w-4 h-4 rounded-full bg-rose-500 shrink-0"></span>
+              <span class="truncate">Carmesí</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Colores Metalizados (Acabado Lujo / Brillo Metálico) -->
+        <div>
+          <p class="text-[10px] uppercase tracking-wider text-amber-400/90 mb-1.5 font-semibold flex items-center gap-1">
+            <span>✨ Acabados Metalizados (Luxury)</span>
+          </p>
+          <div class="grid grid-cols-2 gap-2" id="theme-swatches-metallic">
+            <button
+              type="button"
+              data-theme-key="gold_metallic"
+              class="theme-swatch-btn flex items-center gap-2 p-2 rounded-xl bg-surface-950 border border-zinc-800 hover:border-amber-500/50 text-[11px] text-zinc-100 transition"
+            >
+              <span class="w-5 h-5 rounded-full shrink-0 shadow-inner" style="background: linear-gradient(135deg, #9a6f1a 0%, #f6d365 48%, #fff3b0 68%, #b38728 100%);"></span>
+              <span class="truncate font-medium">Oro 24K</span>
+            </button>
+            <button
+              type="button"
+              data-theme-key="silver_chrome"
+              class="theme-swatch-btn flex items-center gap-2 p-2 rounded-xl bg-surface-950 border border-zinc-800 hover:border-zinc-400/50 text-[11px] text-zinc-100 transition"
+            >
+              <span class="w-5 h-5 rounded-full shrink-0 shadow-inner" style="background: linear-gradient(135deg, #52525b 0%, #e4e4e7 48%, #ffffff 68%, #71717a 100%);"></span>
+              <span class="truncate font-medium">Plata Cromo</span>
+            </button>
+            <button
+              type="button"
+              data-theme-key="rose_gold"
+              class="theme-swatch-btn flex items-center gap-2 p-2 rounded-xl bg-surface-950 border border-zinc-800 hover:border-rose-400/50 text-[11px] text-zinc-100 transition"
+            >
+              <span class="w-5 h-5 rounded-full shrink-0 shadow-inner" style="background: linear-gradient(135deg, #9d4e55 0%, #f4a298 48%, #ffdcd6 68%, #b76e79 100%);"></span>
+              <span class="truncate font-medium">Oro Rosa</span>
+            </button>
+            <button
+              type="button"
+              data-theme-key="titanium_cyan"
+              class="theme-swatch-btn flex items-center gap-2 p-2 rounded-xl bg-surface-950 border border-zinc-800 hover:border-cyan-400/50 text-[11px] text-zinc-100 transition"
+            >
+              <span class="w-5 h-5 rounded-full shrink-0 shadow-inner" style="background: linear-gradient(135deg, #0e7490 0%, #38bdf8 48%, #e0f2fe 68%, #1d4ed8 100%);"></span>
+              <span class="truncate font-medium">Titanio Azul</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Autorización Legal Obligatoria (Habeas Data / GDPR - Versión 1.1) -->
+      <div class="pt-2 border-t border-zinc-800/80 space-y-1.5">
+        <label class="flex items-start gap-2 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            id="edit-terms-accepted"
+            name="terms_accepted"
+            class="mt-0.5 w-4 h-4 rounded accent-emerald-500 cursor-pointer shrink-0"
+          />
+          <span class="text-[11px] text-zinc-200 leading-relaxed">
+            Sí autorizo el tratamiento de mis datos personales y acepto los términos de manejo de enlaces y uso de la Tarjeta Digital.
+          </span>
+        </label>
+        <div class="pl-6">
+          <a
+            href="/docs/terminos-y-autorizacion-tarjeta-digital.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-400 hover:text-amber-300 underline"
+          >
+            <span>Ver documento legal (PDF)</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="pt-2 flex items-center justify-between gap-2">
+        <button
+          type="button"
+          id="btn-lock-owner"
+          class="px-3 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-medium transition"
+        >
+          Salir de modo dueño
+        </button>
+        <button
+          type="submit"
+          id="btn-submit-edit-card"
+          disabled
+          class="flex-1 py-2.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold text-xs shadow-lg shadow-emerald-500/20 transition disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          Guardar / Actualizar Tarjeta
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ==========================================================================
+       TOAST NOTIFICATION NO INTRUSIVA (Popover API: popover="manual")
+       ========================================================================== -->
+  <div
+    id="toast-popover"
+    popover="manual"
+    role="status"
+    aria-live="polite"
+    class="rounded-2xl glass-card bg-zinc-900/95 border border-emerald-500/40 px-4 py-3 shadow-2xl items-center justify-between gap-3 text-xs text-zinc-100"
+  >
+    <div class="flex items-center gap-2.5">
+      <span class="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
+        <i data-lucide="check" class="w-3.5 h-3.5"></i>
+      </span>
+      <p id="toast-message" class="font-medium text-zinc-100">Acción completada con éxito.</p>
+    </div>
+    <button
+      type="button"
+      popovertarget="toast-popover"
+      popovertargetaction="hide"
+      aria-label="Cerrar notificación"
+      class="text-zinc-400 hover:text-white p-1 rounded-lg transition shrink-0"
+    >
+      <i data-lucide="x" class="w-3.5 h-3.5"></i>
+    </button>
+  </div>
+
+  <!-- ==========================================================================
+       LÓGICA DE APLICACIÓN (JavaScript Nativo Moderno + Puente Next.js)
+       ========================================================================== -->
+  <script>
+    /**
+     * 1. CONFIGURACIÓN DEL PERFIL Y PALETA DE TEMAS (Normales + Metalizados)
+     */
+    const CARD_THEMES = {
+      // Colores Normales (Sólidos Vibrantes)
+      emerald: {
+        label: "Esmeralda",
+        primary: "#10b981",
+        text: "#34d399",
+        border: "rgba(16, 185, 129, 0.45)",
+        glowTop: "rgba(16, 185, 129, 0.16)",
+        glowSide: "rgba(99, 102, 241, 0.12)",
+        btnBg: "#10b981",
+        btnText: "#090a0f",
+        ringGrad: "linear-gradient(135deg, #10b981 0%, #52525b 50%, #6366f1 100%)"
+      },
+      cobalt: {
+        label: "Azul Cobalto",
+        primary: "#3b82f6",
+        text: "#60a5fa",
+        border: "rgba(59, 130, 246, 0.45)",
+        glowTop: "rgba(59, 130, 246, 0.18)",
+        glowSide: "rgba(14, 165, 233, 0.12)",
+        btnBg: "#3b82f6",
+        btnText: "#ffffff",
+        ringGrad: "linear-gradient(135deg, #2563eb 0%, #38bdf8 50%, #6366f1 100%)"
+      },
+      violet: {
+        label: "Violeta Real",
+        primary: "#a855f7",
+        text: "#c084fc",
+        border: "rgba(168, 85, 247, 0.45)",
+        glowTop: "rgba(168, 85, 247, 0.18)",
+        glowSide: "rgba(236, 72, 153, 0.12)",
+        btnBg: "#a855f7",
+        btnText: "#ffffff",
+        ringGrad: "linear-gradient(135deg, #9333ea 0%, #ec4899 50%, #6366f1 100%)"
+      },
+      crimson: {
+        label: "Carmesí",
+        primary: "#f43f5e",
+        text: "#fb7185",
+        border: "rgba(244, 63, 94, 0.45)",
+        glowTop: "rgba(244, 63, 94, 0.18)",
+        glowSide: "rgba(249, 115, 22, 0.12)",
+        btnBg: "#f43f5e",
+        btnText: "#ffffff",
+        ringGrad: "linear-gradient(135deg, #e11d48 0%, #fb7185 50%, #f97316 100%)"
+      },
+
+      // Acabados Metalizados (Luxury Metallic Shimmer)
+      gold_metallic: {
+        label: "✨ Oro 24K Metalizado",
+        primary: "#d4af37",
+        text: "#f6d365",
+        border: "rgba(212, 175, 55, 0.55)",
+        glowTop: "rgba(212, 175, 55, 0.22)",
+        glowSide: "rgba(180, 130, 35, 0.14)",
+        btnBg: "linear-gradient(135deg, #9a6f1a 0%, #f6d365 45%, #fff3b0 65%, #b38728 100%)",
+        btnText: "#140f02",
+        ringGrad: "linear-gradient(135deg, #8a6010 0%, #f6d365 35%, #ffffff 55%, #b38728 85%, #6e4b0c 100%)"
+      },
+      silver_chrome: {
+        label: "✨ Plata Cromo Metalizado",
+        primary: "#d4d4d8",
+        text: "#f4f4f5",
+        border: "rgba(212, 212, 216, 0.55)",
+        glowTop: "rgba(228, 228, 231, 0.18)",
+        glowSide: "rgba(148, 163, 184, 0.14)",
+        btnBg: "linear-gradient(135deg, #52525b 0%, #e4e4e7 45%, #ffffff 65%, #71717a 100%)",
+        btnText: "#090a0f",
+        ringGrad: "linear-gradient(135deg, #3f3f46 0%, #e4e4e7 40%, #ffffff 55%, #71717a 85%, #27272a 100%)"
+      },
+      rose_gold: {
+        label: "✨ Oro Rosa Metalizado",
+        primary: "#e69a8dff",
+        text: "#f4a298",
+        border: "rgba(244, 162, 152, 0.55)",
+        glowTop: "rgba(244, 162, 152, 0.20)",
+        glowSide: "rgba(183, 110, 121, 0.15)",
+        btnBg: "linear-gradient(135deg, #9d4e55 0%, #f4a298 45%, #ffdcd6 65%, #b76e79 100%)",
+        btnText: "#1c090b",
+        ringGrad: "linear-gradient(135deg, #833c43 0%, #f4a298 38%, #fff0ed 55%, #b76e79 88%, #5e272d 100%)"
+      },
+      titanium_cyan: {
+        label: "✨ Titanio Azul Metalizado",
+        primary: "#38bdf8",
+        text: "#7dd3fc",
+        border: "rgba(56, 189, 248, 0.55)",
+        glowTop: "rgba(56, 189, 248, 0.22)",
+        glowSide: "rgba(37, 99, 235, 0.15)",
+        btnBg: "linear-gradient(135deg, #0e7490 0%, #38bdf8 45%, #e0f2fe 65%, #1d4ed8 100%)",
+        btnText: "#04101c",
+        ringGrad: "linear-gradient(135deg, #155e75 0%, #38bdf8 38%, #f0f9ff 55%, #1d4ed8 88%, #0f172a 100%)"
+      }
+    };
+
+    const DEFAULT_PROFILE = {
+      id: "elena-vance-01",
+      firstName: "Elena",
+      lastName: "Vance",
+      fullName: "Elena Vance",
+      title: "Head of Product Design & UI Architecture",
+      organization: "Kinetix Digital Studio",
+      location: "Madrid / Remoto",
+      bio: "Diseñando sistemas de diseño escalables y experiencias web interactivas de alto impacto para startups globales.",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=320&q=80",
+      coverBg: "",
+      phone: "+34600123456",
+      email: "elena.vance@kinetix.studio",
+      theme: "emerald",
+      url: window.location.href.startsWith("http")
+        ? window.location.href
+        : "https://kinetix.studio/card/elena-vance",
+      note: "Contacto guardado desde Tarjeta Digital NFC/QR."
+    };
+
+    const urlParamsGlobal = new URLSearchParams(window.location.search);
+    const CURRENT_SLUG = urlParamsGlobal.get("slug") || "elena-vance";
+    const STORAGE_KEY = "gevo_card_profile_" + CURRENT_SLUG;
+    const OWNER_STORAGE_KEY = "gevo_card_is_owner_" + CURRENT_SLUG;
+
+    const PRESET_PROFILES = {
+      "laura-restrepo": {
+        id: "laura-restrepo",
+        firstName: "Laura",
+        lastName: "Restrepo",
+        fullName: "Laura Restrepo",
+        title: "Directora de Branding & Estrategia Comercial",
+        organization: "Laura Restrepo Studio",
+        location: "Medellín / Colombia",
+        bio: "Consultoría estratégica de marca, identidad corporativa de alto impacto y posicionamiento digital B2B.",
+        avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=320&q=80",
+        coverBg: "",
+        phone: "+573124567890",
+        email: "hola@laurarestrepo.com",
+        theme: "gold_metallic",
+        ownerPin: "1234",
+        instagram: "https://instagram.com",
+        facebook: "https://facebook.com",
+        linkedin: "https://linkedin.com",
+        portfolio: "https://g-evo.com"
+      },
+      "cafe-origen-alto": {
+        id: "cafe-origen-alto",
+        firstName: "Mateo",
+        lastName: "Giraldo",
+        fullName: "Mateo Giraldo",
+        title: "Maestro Tostador & Fundador",
+        organization: "Café Origen Alto",
+        location: "Jardín, Antioquia",
+        bio: "Café especial de origen cultivado a 1.850 msnm. Exportación y suscripciones mensuales de grano selecto.",
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=320&q=80",
+        coverBg: "",
+        phone: "+573109876543",
+        email: "pedidos@cafeorigenalto.co",
+        theme: "emerald",
+        ownerPin: "1234",
+        instagram: "https://instagram.com",
+        facebook: "https://facebook.com",
+        linkedin: "https://linkedin.com",
+        portfolio: "https://g-evo.com"
+      },
+      "boutique-gaia": {
+        id: "boutique-gaia",
+        firstName: "Valentina",
+        lastName: "Soto",
+        fullName: "Valentina Soto",
+        title: "Directora Creativa & Moda Sostenible",
+        organization: "Boutique Gaia",
+        location: "Bogotá / Medellín",
+        bio: "Diseño de autor y prendas sostenibles con textiles orgánicos. Colecciones cápsula y asesoría de imagen.",
+        avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=320&q=80",
+        coverBg: "",
+        phone: "+573005551234",
+        email: "contacto@boutiquegaia.com",
+        theme: "rose_gold",
+        ownerPin: "1234",
+        instagram: "https://instagram.com",
+        facebook: "https://facebook.com",
+        linkedin: "https://linkedin.com",
+        portfolio: "https://g-evo.com"
+      }
+    };
+
+    const savedProfile = (() => {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY) || (CURRENT_SLUG === "elena-vance" ? localStorage.getItem("gevo_card_profile_v1") : null);
+        return raw ? JSON.parse(raw) : null;
+      } catch (_) {
+        return null;
+      }
+    })();
+
+    const IS_AUTHORIZED_CARD = Boolean(
+      savedProfile ||
+      CURRENT_SLUG === "elena-vance" ||
+      Object.prototype.hasOwnProperty.call(PRESET_PROFILES, CURRENT_SLUG)
+    );
+    const presetForSlug = PRESET_PROFILES[CURRENT_SLUG] || {};
+    const PROFILE_CONFIG = { ...DEFAULT_PROFILE, ...presetForSlug, ...(savedProfile || {}) };
+    PROFILE_CONFIG.url = window.location.origin + "/t/" + CURRENT_SLUG;
+
+    if (!IS_AUTHORIZED_CARD) {
+      document.addEventListener("DOMContentLoaded", () => {
+        document.body.innerHTML = `
+          <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:#090a0f;color:#f4f4f5;font-family:'Plus Jakarta Sans',sans-serif;text-align:center;">
+            <div style="max-width:420px;background:#12141d;border:1px solid rgba(212,175,55,0.35);border-radius:24px;padding:32px 24px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.8);">
+              <div style="width:56px;height:56px;margin:0 auto 16px;border-radius:16px;background:rgba(212,175,55,0.12);border:1px solid rgba(212,175,55,0.4);display:flex;align-items:center;justify-content:center;font-size:24px;">🔒</div>
+              <h1 style="font-size:20px;font-weight:800;margin-bottom:8px;color:#ffffff;">Tarjeta Digital No Emitida</h1>
+              <p style="font-size:13px;line-height:1.6;color:#a1a1aa;margin-bottom:20px;">
+                El identificador <code style="color:#f6d365;background:#1c1f2e;padding:2px 6px;border-radius:6px;">/t/${CURRENT_SLUG}</code> no existe. En <strong style="color:#fff;">G-evo.</strong> únicamente el Administrador Maestro puede crear y habilitar una tarjeta digital por primera vez.
+              </p>
+              <a href="/" style="display:inline-block;padding:12px 20px;border-radius:12px;background:linear-gradient(135deg,#FFCC00 0%,#00E676 100%);color:#060913;font-weight:800;font-size:13px;text-decoration:none;">Volver a G-evo.</a>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // PIN de propietario configurable por tarjeta
+    let OWNER_DEMO_PIN = PROFILE_CONFIG.ownerPin || "1234";
+
+    function syncProfileToDOM() {
+      const setTxt = (id, val) => {
+        const el = document.getElementById(id);
+        if (el && val !== undefined) el.textContent = val;
+      };
+      setTxt("profile-name", PROFILE_CONFIG.fullName);
+      setTxt("profile-role", PROFILE_CONFIG.title);
+      setTxt("profile-company", PROFILE_CONFIG.organization);
+      setTxt("profile-location", PROFILE_CONFIG.location);
+      setTxt("profile-bio", PROFILE_CONFIG.bio);
+      const qrNameCompany = document.querySelector("#modal-qr .text-sm.font-semibold.text-white");
+      if (qrNameCompany) qrNameCompany.textContent = `${PROFILE_CONFIG.fullName} • ${PROFILE_CONFIG.organization}`;
+      const walletName = document.querySelector("#modal-wallet .text-sm.font-bold.text-white");
+      if (walletName) walletName.textContent = PROFILE_CONFIG.fullName;
+      const walletRole = document.querySelector("#modal-wallet .text-xs.text-zinc-400");
+      if (walletRole) walletRole.textContent = PROFILE_CONFIG.title;
+      document.title = `${PROFILE_CONFIG.fullName} | Tarjeta Digital G-evo (NFC & QR)`;
+
+      const igLink = document.querySelector('a[data-social="instagram"]');
+      if (igLink && PROFILE_CONFIG.instagram) igLink.href = PROFILE_CONFIG.instagram.startsWith("http") ? PROFILE_CONFIG.instagram : `https://instagram.com/${PROFILE_CONFIG.instagram.replace("@", "")}`;
+      const fbLink = document.querySelector('a[data-social="facebook"]');
+      if (fbLink && PROFILE_CONFIG.facebook) fbLink.href = PROFILE_CONFIG.facebook;
+      const liLink = document.querySelector('a[data-social="linkedin"]');
+      if (liLink && PROFILE_CONFIG.linkedin) liLink.href = PROFILE_CONFIG.linkedin;
+      const pfLink = document.querySelector('a[data-business="portfolio_view"]');
+      if (pfLink && PROFILE_CONFIG.portfolio) pfLink.href = PROFILE_CONFIG.portfolio;
+
+      const avatarEl = document.getElementById("profile-avatar");
+      if (avatarEl && PROFILE_CONFIG.avatar) {
+        avatarEl.src = PROFILE_CONFIG.avatar;
+        avatarEl.alt = `Foto de perfil de ${PROFILE_CONFIG.fullName}`;
+      }
+
+      // Sincronizar Logo / Imagen de Fondo de toda la tarjeta (Ocupa el bloque completo de la 2da imagen)
+      const coverLayer = document.getElementById("hero-cover-layer");
+      const coverImg = document.getElementById("profile-cover-bg");
+      const clearCoverBtn = document.getElementById("btn-clear-cover-bg");
+      if (coverLayer && coverImg) {
+        if (PROFILE_CONFIG.coverBg) {
+          coverImg.src = PROFILE_CONFIG.coverBg;
+          coverLayer.classList.remove("hidden");
+          clearCoverBtn?.classList.remove("hidden");
+        } else {
+          coverImg.src = "";
+          coverLayer.classList.add("hidden");
+          clearCoverBtn?.classList.add("hidden");
+        }
+      }
+
+      // Actualizar enlace de WhatsApp directo y botón Llamar con el número actualizado
+      const waLink = document.querySelector('a[data-social="whatsapp"]');
+      if (waLink && PROFILE_CONFIG.phone) {
+        const cleanPhone = PROFILE_CONFIG.phone.replace(/[^\d]/g, "");
+        const msg = encodeURIComponent(`Hola ${PROFILE_CONFIG.firstName}, acabo de escanear tu tarjeta digital`);
+        waLink.href = `https://wa.me/${cleanPhone}?text=${msg}`;
+      }
+      const heroCallBtn = document.getElementById("btn-hero-call");
+      if (heroCallBtn && PROFILE_CONFIG.phone) {
+        const cleanTel = PROFILE_CONFIG.phone.replace(/[^\d+]/g, "");
+        heroCallBtn.href = `tel:${cleanTel}`;
+      }
+
+      // Actualizar textos con el nombre de pila (ej. botones de contacto)
+      const submitBtnSpan = document.querySelector("#btn-submit-lead span");
+      if (submitBtnSpan) submitBtnSpan.textContent = `Enviar mis datos a ${PROFILE_CONFIG.firstName}`;
+      const floatBtnSpan = document.querySelector("#btn-floating-share-lead span:last-child");
+      if (floatBtnSpan) floatBtnSpan.textContent = `Compartir mis datos con ${PROFILE_CONFIG.firstName}`;
+
+      // Aplicar tema de color (Normal o Metalizado)
+      const igInput = document.getElementById("edit-instagram");
+        if (igInput) igInput.value = PROFILE_CONFIG.instagram || "";
+        const fbInput = document.getElementById("edit-facebook");
+        if (fbInput) fbInput.value = PROFILE_CONFIG.facebook || "";
+        const liInput = document.getElementById("edit-linkedin");
+        if (liInput) liInput.value = PROFILE_CONFIG.linkedin || "";
+        const pfInput = document.getElementById("edit-portfolio");
+        if (pfInput) pfInput.value = PROFILE_CONFIG.portfolio || "";
+        applyCardTheme(PROFILE_CONFIG.theme || "emerald");
+    }
+
+    function applyCardTheme(themeKey) {
+      const theme = CARD_THEMES[themeKey] || CARD_THEMES.emerald;
+      PROFILE_CONFIG.theme = themeKey in CARD_THEMES ? themeKey : "emerald";
+
+      const root = document.documentElement;
+      root.style.setProperty("--theme-primary", theme.primary);
+      root.style.setProperty("--theme-text", theme.text);
+      root.style.setProperty("--theme-border", theme.border);
+      root.style.setProperty("--theme-glow-top", theme.glowTop);
+      root.style.setProperty("--theme-glow-side", theme.glowSide);
+      root.style.setProperty("--theme-btn-bg", theme.btnBg);
+      root.style.setProperty("--theme-btn-text", theme.btnText);
+      root.style.setProperty("--theme-ring-grad", theme.ringGrad);
+
+      const labelEl = document.getElementById("selected-theme-label");
+      if (labelEl) {
+        labelEl.textContent = theme.label;
+        labelEl.style.color = theme.text;
+      }
+
+      document.querySelectorAll(".theme-swatch-btn").forEach((btn) => {
+        const isCurrent = btn.dataset.themeKey === PROFILE_CONFIG.theme;
+        btn.classList.toggle("ring-2", isCurrent);
+        btn.classList.toggle("ring-white/80", isCurrent);
+        btn.classList.toggle("bg-zinc-800/90", isCurrent);
+      });
+    }
+
+    /**
+     * 2. SISTEMA DE MÉTRICAS Y ANALYTICS (Simulación + Conectores GA4, Meta Pixel y Next.js)
+     * Registra: 'nfc_tap', 'vcard_download', 'lead_form_submitted', clics sociales y de negocio.
+     */
+    const CardAnalytics = {
+      sessionId: "sess_" + Math.random().toString(36).substring(2, 9),
+      events: [],
+      counts: {
+        nfc_tap: 0,
+        vcard_download: 0,
+        lead_form_submitted: 0,
+        social_click: 0
+      },
+
+      track(eventName, metadata = {}) {
+        const payload = {
+          event: eventName,
+          timestamp: new Date().toISOString(),
+          sessionId: this.sessionId,
+          profileId: PROFILE_CONFIG.id,
+          ...metadata
+        };
+
+        this.events.unshift(payload);
+        if (typeof this.counts[eventName] === "number") {
+          this.counts[eventName]++;
+        }
+
+        // 1. Log estructurado en Consola
+        console.info(
+          `%c[Analytics Event] %c${eventName}`,
+          "color: #10b981; font-weight: bold;",
+          "color: #ffffff; background: #1e202b; padding: 2px 6px; border-radius: 4px;",
+          payload
+        );
+
+        // 2. Conector listo para Google Analytics 4 (gtag)
+        if (typeof window.gtag === "function") {
+          window.gtag("event", eventName, payload);
+        }
+
+        // 3. Conector listo para Meta Pixel (fbq)
+        if (typeof window.fbq === "function") {
+          window.fbq("trackCustom", eventName, payload);
+        }
+
+        // 4. Puente con Next.js (CustomEvent en window + postMessage si está en iframe)
+        window.dispatchEvent(new CustomEvent("nextjs:card_analytics", { detail: payload }));
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({ type: "NEXTJS_DIGITAL_CARD_EVENT", payload }, "*");
+        }
+
+        this.renderUI();
+      },
+
+      renderUI() {
+        const badgeEl = document.getElementById("analytics-badge-count");
+        if (badgeEl) badgeEl.textContent = String(this.events.length);
+
+        const listEl = document.getElementById("analytics-log-list");
+        if (!listEl) return;
+
+        listEl.innerHTML = this.events
+          .map(
+            (ev) => `
+            <div class="p-2 rounded-lg bg-zinc-900/90 border border-zinc-800/80 flex flex-col gap-0.5">
+              <div class="flex items-center justify-between">
+                <span class="text-emerald-400 font-semibold">${ev.event}</span>
+                <span class="text-zinc-500 text-[10px]">${ev.timestamp.split("T")[1].slice(0, 8)}</span>
+              </div>
+              <span class="text-zinc-400 truncate">${JSON.stringify(
+                Object.fromEntries(
+                  Object.entries(ev).filter(([k]) => !["event", "timestamp", "sessionId", "profileId"].includes(k))
+                )
+              )}</span>
+            </div>
+          `
+          )
+          .join("");
+      }
+    };
+
+    // Exponer objeto globalmente para inspección desde consola o desde Next.js
+    window.CardAnalytics = CardAnalytics;
+
+    /**
+     * 3. SISTEMA DE NOTIFICACIONES TOAST (Popover API con auto-cierre)
+     */
+    let toastTimer = null;
+    function showToast(message) {
+      const toast = document.getElementById("toast-popover");
+      const msgEl = document.getElementById("toast-message");
+      if (!toast || !msgEl) return;
+
+      msgEl.textContent = message;
+
+      if (typeof toast.showPopover === "function") {
+        try {
+          toast.showPopover();
+        } catch (_) {
+          /* Ya estaba abierto */
+        }
+      } else {
+        toast.classList.add(":popover-open");
+        toast.style.display = "flex";
+      }
+
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        if (typeof toast.hidePopover === "function") {
+          try {
+            toast.hidePopover();
+          } catch (_) {}
+        } else {
+          toast.classList.remove(":popover-open");
+          toast.style.display = "none";
+        }
+      }, 3600);
+    }
+
+    /**
+     * 4. GENERADOR Y DESCARGA DE ARCHIVO .VCF (vCard 3.0)
+     */
+    function generateAndDownloadVCard() {
+      const vcardLines = [
+        "BEGIN:VCARD",
+        "VERSION:3.0",
+        `N:${PROFILE_CONFIG.lastName};${PROFILE_CONFIG.firstName};;;`,
+        `FN:${PROFILE_CONFIG.fullName}`,
+        `ORG:${PROFILE_CONFIG.organization}`,
+        `TITLE:${PROFILE_CONFIG.title}`,
+        `TEL;TYPE=CELL,VOICE:${PROFILE_CONFIG.phone}`,
+        `EMAIL;TYPE=PREF,INTERNET:${PROFILE_CONFIG.email}`,
+        `URL:${PROFILE_CONFIG.url}`,
+        `ADR;TYPE=WORK:;;${PROFILE_CONFIG.location};;;;`,
+        `NOTE:${PROFILE_CONFIG.note}`,
+        "END:VCARD"
+      ];
+
+      const vcardContent = vcardLines.join("\r\n");
+      const blob = new Blob([vcardContent], { type: "text/vcard;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${PROFILE_CONFIG.firstName}_${PROFILE_CONFIG.lastName}.vcf`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+      CardAnalytics.track("vcard_download", {
+        format: "vcf_3.0",
+        contactName: PROFILE_CONFIG.fullName
+      });
+      showToast("Contacto (.vcf) descargado en tu dispositivo.");
+    }
+
+    /**
+     * 5. CONTROLADOR DE PESTAÑAS CONTEXTUALES (Social / Negocio / Contacto)
+     */
+    function switchTab(targetTabName, focusFirstInput = false) {
+      const triggers = document.querySelectorAll(".tab-trigger");
+      const panels = {
+        social: document.getElementById("panel-social"),
+        negocio: document.getElementById("panel-negocio"),
+        contacto: document.getElementById("panel-contacto")
+      };
+      const floatingBtn = document.getElementById("floating-cta-wrapper");
+
+      triggers.forEach((btn) => {
+        const isSelected = btn.dataset.tab === targetTabName;
+        btn.setAttribute("aria-selected", String(isSelected));
+
+        if (isSelected) {
+          btn.classList.add("bg-zinc-800", "text-white", "shadow-sm");
+          btn.classList.remove("text-zinc-400");
+        } else {
+          btn.classList.remove("bg-zinc-800", "text-white", "shadow-sm");
+          btn.classList.add("text-zinc-400");
+        }
+      });
+
+      Object.entries(panels).forEach(([name, panel]) => {
+        if (!panel) return;
+        if (name === targetTabName) {
+          panel.classList.remove("hidden");
+        } else {
+          panel.classList.add("hidden");
+        }
+      });
+
+      // Ocultar el FAB "Compartir mis datos" cuando ya estamos en la pestaña Contacto
+      if (floatingBtn) {
+        floatingBtn.style.display = targetTabName === "contacto" ? "none" : "flex";
+      }
+
+      if (focusFirstInput && targetTabName === "contacto") {
+        setTimeout(() => {
+          document.getElementById("lead-name")?.focus();
+        }, 120);
+      }
+    }
+
+    /**
+     * 6. GENERADOR DE MATRIZ QR REAL ESCANEABLE (Estándar ISO/IEC 18004 + Reed-Solomon)
+     * Codifica la URL real del navegador (window.location.href) para que al escanearse
+     * de celular a celular abra inmediatamente la tarjeta.
+     */
+    function renderDynamicQRSvg(urlText) {
+      const container = document.getElementById("qr-svg-container");
+      const urlLabel = document.getElementById("qr-profile-url");
+      if (!container) return;
+      if (urlLabel) urlLabel.textContent = urlText;
+
+      // Usar librería qrcode-generator (ISO/IEC 18004 real)
+      if (typeof window.qrcode === "function") {
+        try {
+          const qr = window.qrcode(0, "M"); // Tipo 0 = autodetección de tamaño, Nivel M (15% corrección)
+          qr.addData(urlText);
+          qr.make();
+
+          const count = qr.getModuleCount();
+          let rects = "";
+          for (let r = 0; r < count; r++) {
+            for (let c = 0; c < count; c++) {
+              if (qr.isDark(r, c)) {
+                rects += `<rect x="${c}" y="${r}" width="1" height="1" rx="0.12" fill="#090a0f"/>`;
+              }
+            }
+          }
+
+          container.innerHTML = `
+            <svg viewBox="0 0 ${count} ${count}" class="w-full h-full" shape-rendering="crispEdges" aria-label="Código QR escaneable del perfil">
+              ${rects}
+            </svg>
+          `;
+          return;
+        } catch (err) {
+          console.warn("Fallback a imagen QR por API:", err);
+        }
+      }
+
+      // Fallback secundario garantizado si no cargó el script CDN
+      const encoded = encodeURIComponent(urlText);
+      container.innerHTML = `
+        <img
+          src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=0&data=${encoded}"
+          alt="Código QR del perfil"
+          class="w-full h-full object-contain"
+        />
+      `;
+    }
+
+    /**
+     * 7. MODERN WEB BEST PRACTICES: FALLBACKS PARA <dialog closedby="any"> Y :user-invalid
+     */
+    function setupDialogLightDismissFallback() {
+      if (!("closedBy" in HTMLDialogElement.prototype)) {
+        const outside = (e, dialog) => {
+          const r = dialog.getBoundingClientRect();
+          return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+        };
+        for (const dialog of document.querySelectorAll('dialog[closedby="any"]')) {
+          let pressedOutside = false;
+          dialog.addEventListener("pointerdown", (e) => {
+            pressedOutside = outside(e, dialog);
+          });
+          dialog.addEventListener("pointerup", (e) => {
+            if (pressedOutside && outside(e, dialog)) dialog.close();
+          });
+        }
+      }
+    }
+
+    function setupFormValidationSyncAndFallback(form) {
+      if (!form) return;
+
+      // Sincronizar aria-invalid con :user-invalid
+      const syncAria = (el) => {
+        if (!el || typeof el.matches !== "function") return;
+        try {
+          el.setAttribute("aria-invalid", el.matches(":user-invalid") ? "true" : "false");
+        } catch (_) {}
+      };
+
+      form.addEventListener("blur", (e) => syncAria(e.target), true);
+      form.addEventListener("input", (e) => {
+        if (e.target.hasAttribute?.("aria-invalid")) syncAria(e.target);
+      });
+
+      // Fallback WeakMap si el navegador no soporta :user-invalid
+      if (!CSS.supports("selector(:user-invalid)")) {
+        const dirtyState = new WeakMap();
+        const updateState = (input) => {
+          const isValid = input.checkValidity();
+          input.classList.toggle("user-invalid-fallback", !isValid);
+          input.classList.toggle("user-valid-fallback", isValid);
+          if (!isValid) input.setAttribute("aria-invalid", "true");
+          else input.removeAttribute("aria-invalid");
+        };
+
+        form.addEventListener(
+          "blur",
+          (e) => {
+            const input = e.target;
+            if (!input.checkValidity) return;
+            const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+            state.hasBlurred = true;
+            dirtyState.set(input, state);
+            if (state.hasInteracted) updateState(input);
+          },
+          true
+        );
+
+        form.addEventListener("input", (e) => {
+          const input = e.target;
+          if (!input.checkValidity) return;
+          const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+          state.hasInteracted = true;
+          dirtyState.set(input, state);
+          if (state.hasBlurred) updateState(input);
+        });
+      }
+    }
+
+    /**
+     * 8. INICIALIZACIÓN Y EVENT LISTENERS
+     */
+    document.addEventListener("DOMContentLoaded", () => {
+      // Inicializar iconos Lucide
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+
+      // Fallbacks de accesibilidad y estándares web modernos
+      setupDialogLightDismissFallback();
+      const leadForm = document.getElementById("lead-capture-form");
+      setupFormValidationSyncAndFallback(leadForm);
+
+      // Sincronizar datos del perfil (si el dueño ya los había editado antes)
+      syncProfileToDOM();
+
+      // Renderizar QR dinámico
+      renderDynamicQRSvg(PROFILE_CONFIG.url);
+
+      // ======================================================================
+      // CONTROL DE VISIBILIDAD EXCLUSIVA PARA EL DUEÑO (Owner Mode)
+      // ======================================================================
+      const params = new URLSearchParams(window.location.search);
+      const btnOwnerEdit = document.getElementById("btn-owner-edit");
+      const btnToggleOwner = document.getElementById("btn-toggle-owner-mode");
+      const ownerModeLabel = document.getElementById("owner-mode-label");
+      const modalOwnerAuth = document.getElementById("modal-owner-auth");
+      const modalEditProfile = document.getElementById("modal-edit-profile");
+
+      const checkIsOwner = () => {
+        if (params.get("admin_preview") === "1") {
+          return true;
+        }
+        return (
+          localStorage.getItem(OWNER_STORAGE_KEY) === "true" ||
+          window.__NEXT_DATA__?.props?.pageProps?.isOwner === true
+        );
+      };
+
+      const updateOwnerUI = () => {
+        const isOwner = checkIsOwner();
+        const btnAnalytics = document.getElementById("btn-open-analytics");
+        if (isOwner) {
+          btnOwnerEdit?.classList.remove("hidden");
+          btnAnalytics?.classList.remove("hidden");
+          btnAnalytics?.classList.add("inline-flex");
+          if (ownerModeLabel) ownerModeLabel.textContent = "Modo Dueño Activo (Editar tarjeta)";
+        } else {
+          btnOwnerEdit?.classList.add("hidden");
+          btnAnalytics?.classList.add("hidden");
+          btnAnalytics?.classList.remove("inline-flex");
+          if (ownerModeLabel) ownerModeLabel.textContent = "Acceso Dueño (Activar edición)";
+        }
+      };
+
+      updateOwnerUI();
+      if ((params.get("owner") === "1" || params.get("edit") === "1") && !checkIsOwner()) {
+        setTimeout(() => {
+          const pinInput = document.getElementById("owner-pin-input");
+          if (pinInput) pinInput.value = "";
+          modalOwnerAuth?.showModal();
+        }, 250);
+      }
+
+      const openEditModalWithCurrentData = () => {
+        document.getElementById("edit-first-name").value = PROFILE_CONFIG.firstName || "";
+        document.getElementById("edit-last-name").value = PROFILE_CONFIG.lastName || "";
+        document.getElementById("edit-title").value = PROFILE_CONFIG.title || "";
+        document.getElementById("edit-company").value = PROFILE_CONFIG.organization || "";
+        document.getElementById("edit-location").value = PROFILE_CONFIG.location || "";
+        document.getElementById("edit-bio").value = PROFILE_CONFIG.bio || "";
+        document.getElementById("edit-phone").value = PROFILE_CONFIG.phone || "";
+        document.getElementById("edit-email").value = PROFILE_CONFIG.email || "";
+        document.getElementById("edit-avatar").value = PROFILE_CONFIG.avatar?.startsWith("data:")
+          ? ""
+          : PROFILE_CONFIG.avatar || "";
+        document.getElementById("edit-cover-bg").value = PROFILE_CONFIG.coverBg?.startsWith("data:")
+          ? ""
+          : PROFILE_CONFIG.coverBg || "";
+        applyCardTheme(PROFILE_CONFIG.theme || "emerald");
+        const termsCheckbox = document.getElementById("edit-terms-accepted");
+        const submitBtn = document.getElementById("btn-submit-edit-card");
+        if (termsCheckbox && submitBtn) {
+          termsCheckbox.checked = false;
+          submitBtn.disabled = true;
+        }
+        modalEditProfile?.showModal();
+      };
+
+      document.getElementById("edit-terms-accepted")?.addEventListener("change", (e) => {
+        const submitBtn = document.getElementById("btn-submit-edit-card");
+        if (submitBtn) {
+          submitBtn.disabled = !e.target.checked;
+        }
+      });
+
+      // Selector interactivo en tiempo real de temas (Normales y Metalizados)
+      document.querySelectorAll(".theme-swatch-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const chosenTheme = btn.dataset.themeKey;
+          if (chosenTheme) {
+            applyCardTheme(chosenTheme);
+          }
+        });
+      });
+
+      // Al tocar el botón "Editar" (solo visible para el dueño)
+      btnOwnerEdit?.addEventListener("click", openEditModalWithCurrentData);
+
+      // Al tocar "Acceso Dueño" en el pie de página
+      btnToggleOwner?.addEventListener("click", () => {
+        if (checkIsOwner()) {
+          openEditModalWithCurrentData();
+        } else {
+          document.getElementById("owner-pin-input").value = "";
+          modalOwnerAuth?.showModal();
+        }
+      });
+
+      // Verificar PIN de Dueño
+      document.getElementById("owner-auth-form")?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const pin = document.getElementById("owner-pin-input")?.value.trim();
+        if (pin === OWNER_DEMO_PIN) {
+          localStorage.setItem(OWNER_STORAGE_KEY, "true");
+          updateOwnerUI();
+          modalOwnerAuth?.close();
+          showToast("Modo Dueño activado. Ahora ves el botón Editar.");
+          setTimeout(openEditModalWithCurrentData, 200);
+        } else {
+          showToast("Clave / PIN incorrecto. Verifica la clave asignada por G-evo.");
+        }
+      });
+
+      // Salir del Modo Dueño (volver a vista pública de visitante)
+      document.getElementById("btn-lock-owner")?.addEventListener("click", () => {
+        localStorage.removeItem(OWNER_STORAGE_KEY);
+        updateOwnerUI();
+        modalEditProfile?.close();
+        showToast("Modo Dueño cerrado. Vista pública activada.");
+      });
+
+      // Subir foto de perfil desde la galería del celular o PC
+      document.getElementById("edit-avatar-file")?.addEventListener("change", (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          if (typeof reader.result === "string") {
+            PROFILE_CONFIG.avatar = reader.result;
+            document.getElementById("edit-avatar").value = "";
+            syncProfileToDOM();
+            showToast("Foto circular cargada en vista previa.");
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // Subir Logo / Imagen de Fondo de la Tarjeta desde la galería del celular o PC
+      document.getElementById("edit-cover-file")?.addEventListener("change", (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          if (typeof reader.result === "string") {
+            PROFILE_CONFIG.coverBg = reader.result;
+            document.getElementById("edit-cover-bg").value = "";
+            syncProfileToDOM();
+            showToast("Logo/fondo aplicado detrás de la tarjeta.");
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // Botón para quitar el fondo si el dueño quiere volver al fondo limpio
+      document.getElementById("btn-clear-cover-bg")?.addEventListener("click", () => {
+        PROFILE_CONFIG.coverBg = "";
+        document.getElementById("edit-cover-bg").value = "";
+        syncProfileToDOM();
+        showToast("Imagen de fondo eliminada.");
+      });
+
+      // Guardar cambios del formulario de Edición de Perfil
+      document.getElementById("edit-profile-form")?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const firstName = document.getElementById("edit-first-name").value.trim();
+        const lastName = document.getElementById("edit-last-name").value.trim();
+        const avatarUrlInput = document.getElementById("edit-avatar").value.trim();
+        const coverBgUrlInput = document.getElementById("edit-cover-bg").value.trim();
+
+        PROFILE_CONFIG.firstName = firstName;
+        PROFILE_CONFIG.lastName = lastName;
+        PROFILE_CONFIG.fullName = `${firstName} ${lastName}`.trim();
+        PROFILE_CONFIG.title = document.getElementById("edit-title").value.trim();
+        PROFILE_CONFIG.organization = document.getElementById("edit-company").value.trim();
+        PROFILE_CONFIG.location = document.getElementById("edit-location").value.trim();
+        PROFILE_CONFIG.bio = document.getElementById("edit-bio").value.trim();
+        PROFILE_CONFIG.phone = document.getElementById("edit-phone").value.trim();
+        PROFILE_CONFIG.email = document.getElementById("edit-email").value.trim();
+        PROFILE_CONFIG.instagram = document.getElementById("edit-instagram")?.value.trim() || PROFILE_CONFIG.instagram || "";
+        PROFILE_CONFIG.facebook = document.getElementById("edit-facebook")?.value.trim() || PROFILE_CONFIG.facebook || "";
+        PROFILE_CONFIG.linkedin = document.getElementById("edit-linkedin")?.value.trim() || PROFILE_CONFIG.linkedin || "";
+        PROFILE_CONFIG.portfolio = document.getElementById("edit-portfolio")?.value.trim() || PROFILE_CONFIG.portfolio || "";
+        if (avatarUrlInput) {
+          PROFILE_CONFIG.avatar = avatarUrlInput;
+        }
+        if (coverBgUrlInput) {
+          PROFILE_CONFIG.coverBg = coverBgUrlInput;
+        }
+
+        const termsCheckbox = document.getElementById("edit-terms-accepted");
+        if (termsCheckbox && !termsCheckbox.checked) {
+          showToast("Debes marcar 'Sí autorizo' los términos legales (v1.1) para guardar.");
+          return;
+        }
+        PROFILE_CONFIG.terms_accepted = true;
+        PROFILE_CONFIG.terms_accepted_at = new Date().toISOString();
+        PROFILE_CONFIG.terms_version = "1.1";
+
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(PROFILE_CONFIG));
+        } catch (_) {}
+
+        syncProfileToDOM();
+        CardAnalytics.track("profile_updated_by_owner", {
+          updatedName: PROFILE_CONFIG.fullName
+        });
+
+        modalEditProfile?.close();
+        showToast("¡Perfil actualizado! El archivo .vcf y la tarjeta ya tienen tus nuevos datos.");
+      });
+
+      // Detectar entrada por NFC o QR desde query params (ej. ?source=nfc o ?tap=1 en Next.js)
+      const entrySource = params.get("source") || "nfc_or_qr_direct";
+      CardAnalytics.track("nfc_tap", {
+        source: entrySource,
+        userAgent: navigator.userAgent.slice(0, 60)
+      });
+
+      // Botón de insignia superior para simular un nuevo 'nfc_tap'
+      document.getElementById("btn-simulate-nfc")?.addEventListener("click", () => {
+        CardAnalytics.track("nfc_tap", { source: "badge_manual_simulation" });
+        showToast("Lectura de chip NFC / QR registrada en Analytics.");
+      });
+
+      document.getElementById("btn-trigger-nfc-test")?.addEventListener("click", () => {
+        CardAnalytics.track("nfc_tap", { source: "analytics_modal_test" });
+      });
+
+      // Listeners de Tabs (Social / Negocio / Contacto)
+      document.querySelectorAll(".tab-trigger").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = btn.dataset.tab;
+          switchTab(target);
+        });
+      });
+
+      // Botón Flotante "Compartir mis datos" -> Abre pestaña Contacto y enfoca input
+      document.getElementById("btn-floating-share-lead")?.addEventListener("click", () => {
+        switchTab("contacto", true);
+      });
+
+      // Botón Principal: Descargar vCard (.vcf)
+      document.getElementById("btn-save-vcard")?.addEventListener("click", generateAndDownloadVCard);
+
+      // Configurar Manifest Dinámico por Cliente y Service Worker PWA
+      const manifestEl = document.getElementById("dynamic-pwa-manifest");
+      if (manifestEl) {
+        manifestEl.href = `/api/manifest/${encodeURIComponent(CURRENT_SLUG)}?name=${encodeURIComponent(PROFILE_CONFIG.fullName + " | G-evo")}`;
+      }
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/sw.js").catch(() => {});
+      }
+
+      let deferredCardPwaPrompt = null;
+      window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredCardPwaPrompt = e;
+      });
+
+      // Botón Secundario: Abrir Modal Instalar App / Wallet
+      const modalWallet = document.getElementById("modal-wallet");
+      document.getElementById("btn-open-wallet")?.addEventListener("click", () => {
+        modalWallet?.showModal();
+      });
+
+      document.getElementById("btn-install-pwa-now")?.addEventListener("click", async () => {
+        CardAnalytics.track("pwa_install_clicked", { slug: CURRENT_SLUG });
+        if (deferredCardPwaPrompt) {
+          deferredCardPwaPrompt.prompt();
+          const choice = await deferredCardPwaPrompt.userChoice.catch(() => null);
+          deferredCardPwaPrompt = null;
+          if (choice?.outcome === "accepted") {
+            modalWallet?.close();
+            showToast("¡Tarjeta instalada como App en tu pantalla de inicio!");
+          }
+          return;
+        }
+        try {
+          window.parent?.postMessage({ type: "GEVO_TRIGGER_PWA_INSTALL", slug: CURRENT_SLUG }, "*");
+        } catch (_) {}
+        showToast("Sigue los 2 pasos en pantalla según tu celular (Android o iPhone) para fijar el icono.");
+      });
+
+      document.querySelectorAll(".wallet-provider-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const provider = btn.dataset.walletProvider;
+          CardAnalytics.track("wallet_pass_requested", { provider });
+          modalWallet?.close();
+          showToast(
+            provider === "apple_wallet"
+              ? "Pase .pkpass de Apple Wallet generado."
+              : "Pase sincronizado con Google Wallet."
+          );
+        });
+      });
+
+      // Botón Superior: Abrir Modal QR Dinámico
+      const modalQr = document.getElementById("modal-qr");
+      document.getElementById("btn-open-qr")?.addEventListener("click", () => {
+        modalQr?.showModal();
+      });
+
+      // Botón Superior: Abrir Modal Analytics
+      const modalAnalytics = document.getElementById("modal-analytics");
+      document.getElementById("btn-open-analytics")?.addEventListener("click", () => {
+        modalAnalytics?.showModal();
+      });
+
+      // Web Share API en el Modal QR
+      document.getElementById("btn-native-share")?.addEventListener("click", async () => {
+        const shareData = {
+          title: `${PROFILE_CONFIG.fullName} — Tarjeta Digital`,
+          text: `Conecta con ${PROFILE_CONFIG.fullName} (${PROFILE_CONFIG.title} en ${PROFILE_CONFIG.organization})`,
+          url: PROFILE_CONFIG.url
+        };
+
+        if (navigator.share) {
+          try {
+            await navigator.share(shareData);
+            CardAnalytics.track("profile_shared", { method: "web_share_api" });
+          } catch (_) {
+            /* Cancelado por el usuario */
+          }
+        } else {
+          await navigator.clipboard?.writeText(PROFILE_CONFIG.url);
+          CardAnalytics.track("profile_shared", { method: "clipboard_fallback" });
+          showToast("Enlace copiado al portapapeles.");
+        }
+      });
+
+      // Copiar Enlace en el Modal QR
+      document.getElementById("btn-copy-link")?.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(PROFILE_CONFIG.url);
+          CardAnalytics.track("profile_shared", { method: "copy_button" });
+          modalQr?.close();
+          showToast("URL del perfil copiada al portapapeles.");
+        } catch (_) {
+          showToast("No se pudo copiar automáticamente.");
+        }
+      });
+
+      // Tracking de clics en cada Red Social
+      document.querySelectorAll(".social-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          const network = link.dataset.social || "unknown";
+          CardAnalytics.track("social_click", {
+            network,
+            href: link.getAttribute("href")
+          });
+        });
+      });
+
+      // Tracking de acciones de Negocio + Descarga simulada de Catálogo PDF
+      document.querySelectorAll(".business-action").forEach((el) => {
+        el.addEventListener("click", () => {
+          const action = el.dataset.business || "business_interaction";
+          CardAnalytics.track("business_click", { action });
+        });
+      });
+
+      document.getElementById("btn-download-pdf")?.addEventListener("click", () => {
+        // Generar un PDF minimalista válido en memoria para descarga directa real
+        const pdfContent = `%PDF-1.4
+1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
+2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj
+3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >> endobj
+4 0 obj << /Length 98 >> stream
+BT /F1 18 Tf 72 700 Td (Kinetix Digital Studio - Dossier Ejecutivo 2026) Tj /F1 12 Tf 0 -28 Td (Contacto: elena.vance@kinetix.studio) Tj ET
+endstream endobj
+5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000229 00000 n 
+0000000377 00000 n 
+trailer << /Size 6 /Root 1 0 R >>
+startxref
+445
+%%EOF`;
+
+        const blob = new Blob([pdfContent], { type: "application/pdf" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Kinetix_Studio_Catalogo_2026.pdf";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+        showToast("Descargando catálogo corporativo en PDF...");
+      });
+
+      // Envío y Validación del Formulario de Captura de Leads
+      leadForm?.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        if (!leadForm.checkValidity()) {
+          // Enfocar el primer campo inválido; :user-invalid se activa automáticamente tras submit
+          const firstInvalid = leadForm.querySelector(":invalid");
+          firstInvalid?.focus();
+          return;
+        }
+
+        const formData = new FormData(leadForm);
+        const leadPayload = {
+          name: String(formData.get("name") || "").trim(),
+          phone: String(formData.get("phone") || "").trim(),
+          email: String(formData.get("email") || "").trim(),
+          note: String(formData.get("note") || "").trim()
+        };
+
+        // Registrar métrica 'lead_form_submitted'
+        CardAnalytics.track("lead_form_submitted", {
+          leadName: leadPayload.name,
+          leadEmail: leadPayload.email,
+          hasNote: Boolean(leadPayload.note)
+        });
+
+        // Resetear formulario y mostrar confirmación inmediata en Toast
+        leadForm.reset();
+        leadForm.querySelectorAll("[aria-invalid]").forEach((el) => el.removeAttribute("aria-invalid"));
+        showToast(`¡Gracias, ${leadPayload.name}! Tus datos fueron enviados a Elena.`);
+      });
+    });
+  </script>
+</body>
+</html>
+
